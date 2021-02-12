@@ -1,11 +1,9 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
@@ -48,96 +46,24 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.fetchTMDBItems()
     }
 
-    private fun setSelectedItem(item: TMDBItemDetails?) {
-        explorerViewModel.setSelectedItem(item)
-    }
-
-    private fun displayDetails(item: TMDBItemDetails) {
-        explorerViewModel.setSelectedItem(null)
-        (requireActivity() as MainActivity).goToDetails(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        setSelectedItem(null)
+    private fun setupUI() {
+        setTrendingMoviesLayout()
+        setPopularMoviesLayout()
+        setComingSoonMoviesLayout()
     }
 
     private fun initListeners() {
-
-//        explorerViewModel.asyncSubscribe(ExplorerState::trendingRequest,
-//            onSuccess = {
-//                Log.i("Explore State", "trending display async")
-//                showTrendingMovies(it)
-//            }
-//        )
-
-        explorerViewModel.selectSubscribe(ExplorerState::trendingMovies) { list ->
-            Timber.i("Explore State: trending display select")
-            list.forEach { item ->
-                Timber.i("Explore State: %s", item.title)
-            }
-            showTrendingMovies(list)
-        }
-
-//        explorerViewModel.asyncSubscribe(ExplorerState::popularRequest,
-//            onSuccess = {
-//                Log.i("Explore State", "popular display async")
-//                showPopularMovies(it)
-//            }
-//        )
-
-        explorerViewModel.selectSubscribe(ExplorerState::popularMovies) { list ->
-            Timber.i("Explore State: popular display select")
-            list.forEach { item ->
-                Timber.i("Explore State: %s", item.title)
-            }
-            showPopularMovies(list)
-        }
-
-//        explorerViewModel.asyncSubscribe(ExplorerState::comingSoonRequest,
-//            onSuccess = {
-//                Log.i("Explore State", "coming soon display async")
-//                showComingSoonMovies(it)
-//            }
-//        )
-
-        explorerViewModel.selectSubscribe(ExplorerState::comingSoonMovies) { list ->
-            Timber.i("Explore State: coming soon display select")
-            list.forEach { item ->
-                Timber.i("Explore State: %s", item.title)
-            }
-            showComingSoonMovies(list)
-        }
-
-        explorerViewModel.selectSubscribe(ExplorerState::selectedItem) { item ->
-            item?.let {
-                displayDetails(item)
-            }
-        }
+        setTrendingMoviesListeners()
+        setPopularMoviesListeners()
+        setComingSoonMoviesListeners()
+        setItemSelectionListener()
     }
 
-    private fun setupUI() {
-        trendingAdapter = ItemsAdapter { item: TMDBItemDetails ->
-            setSelectedItem(item)
-        }
-        binding.trendingMoviesLayout.trendingRecyclerView.apply {
-            adapter = trendingAdapter
-            setInfiniteScrolling(layoutManager as LinearLayoutManager){
-                explorerViewModel.loadMoreTrendingMovies()
-            }
-        }
+    /*
+        ------------------ UI SETUP ------------------
+     */
 
-        popularAdapter = ItemsAdapter { item: TMDBItemDetails ->
-            setSelectedItem(item)
-        }
-        binding.popularMoviesLayout.popularRecyclerView.apply {
-            adapter = popularAdapter
-            setInfiniteScrolling(layoutManager as LinearLayoutManager){
-                explorerViewModel.loadMorePopularMovies()
-            }
-        }
-
+    private fun setComingSoonMoviesLayout() {
         comingSoonAdapter = ItemsAdapter { item: TMDBItemDetails ->
             setSelectedItem(item)
         }
@@ -149,47 +75,132 @@ class ExplorerFragment: Fragment(), MvRxView {
         }
     }
 
+    private fun setPopularMoviesLayout() {
+        popularAdapter = ItemsAdapter { item: TMDBItemDetails ->
+            setSelectedItem(item)
+        }
+        binding.popularMoviesLayout.popularRecyclerView.apply {
+            adapter = popularAdapter
+            setInfiniteScrolling(layoutManager as LinearLayoutManager){
+                explorerViewModel.loadMorePopularMovies()
+            }
+        }
+    }
+
+    private fun setTrendingMoviesLayout() {
+        trendingAdapter = ItemsAdapter { item: TMDBItemDetails ->
+            setSelectedItem(item)
+        }
+        binding.trendingMoviesLayout.trendingRecyclerView.apply {
+            adapter = trendingAdapter
+            setInfiniteScrolling(layoutManager as LinearLayoutManager){
+                explorerViewModel.loadMoreTrendingMovies()
+            }
+        }
+    }
+
+    /*
+        ------------------ LISTENERS ------------------
+     */
     override fun invalidate() {
         withState(explorerViewModel) { state ->
             if (state.trendingRequest is Loading) {
-                showTrendingMoviesLoader()
+                updateTrendingMoviesLoader(View.VISIBLE)
             }
 
             if (state.popularRequest is Loading) {
-                showPopularMoviesLoader()
+                updatePopularMoviesLoader(View.VISIBLE)
             }
 
             if (state.comingSoonRequest is Loading) {
-                showComingSoonMoviesLoader()
+                updateComingSoonMoviesLoader(View.VISIBLE)
             }
         }
     }
 
-    private fun showTrendingMoviesLoader() {
+    private fun setItemSelectionListener() {
+        explorerViewModel.selectSubscribe(ExplorerState::selectedItem) { item ->
+            item?.let {
+                displayDetails(item)
+            }
+        }
+    }
+
+    private fun setComingSoonMoviesListeners() {
+        explorerViewModel.asyncSubscribe(ExplorerState::comingSoonRequest,
+            onFail = {
+                updateComingSoonMoviesLoader(View.GONE)
+            }
+        )
+
+        explorerViewModel.selectSubscribe(ExplorerState::comingSoonMovies) { list ->
+            Timber.i("Explore State: coming soon display select")
+            list.forEach { item ->
+                Timber.i("Explore State: %s", item.title)
+            }
+            updateComingSoonMoviesList(list)
+        }
+    }
+
+    private fun setPopularMoviesListeners() {
+        explorerViewModel.asyncSubscribe(ExplorerState::popularRequest,
+            onFail = {
+                updatePopularMoviesLoader(View.GONE)
+            }
+        )
+
+        explorerViewModel.selectSubscribe(ExplorerState::popularMovies) { list ->
+            Timber.i("Explore State: popular display select")
+            list.forEach { item ->
+                Timber.i("Explore State: %s", item.title)
+            }
+            updatePopularMoviesList(list)
+        }
+    }
+
+    private fun setTrendingMoviesListeners() {
+        explorerViewModel.asyncSubscribe(ExplorerState::trendingRequest,
+            onFail = {
+                updateTrendingMoviesLoader(View.GONE)
+            }
+        )
+
+        explorerViewModel.selectSubscribe(ExplorerState::trendingMovies) { list ->
+            Timber.i("Explore State: trending display select")
+            list.forEach { item ->
+                Timber.i("Explore State: %s", item.title)
+            }
+            updateTrendingMoviesList(list)
+        }
+    }
+
+    /*
+        ------------------ UPDATE UI ------------------
+    */
+
+    private fun updateTrendingMoviesLoader(visibility: Int) {
         Timber.i("Explore State: trending loading")
         binding.trendingMoviesLayout.apply {
-            trendingMoviesProgressBar.visibility = View.VISIBLE
+            trendingMoviesProgressBar.visibility = visibility
         }
     }
 
-    private fun showPopularMoviesLoader() {
+    private fun updatePopularMoviesLoader(visibility: Int) {
         Timber.i("Explore State: popular loading")
         binding.popularMoviesLayout.apply {
-            popularMoviesProgressBar.visibility = View.VISIBLE
+            popularMoviesProgressBar.visibility = visibility
         }
     }
 
-    private fun showComingSoonMoviesLoader() {
+    private fun updateComingSoonMoviesLoader(visibility: Int) {
         Timber.i("Explore State: coming soon loading")
         binding.comingSoonMoviesLayout.apply {
-            comingSoonMoviesProgressBar.visibility = View.VISIBLE
+            comingSoonMoviesProgressBar.visibility = visibility
         }
     }
 
-    private fun showTrendingMovies(items: List<TMDBItemDetails>) {
-        binding.trendingMoviesLayout.apply {
-                trendingMoviesProgressBar.visibility = View.GONE
-            }
+    private fun updateTrendingMoviesList(items: List<TMDBItemDetails>) {
+        updateTrendingMoviesLoader(View.GONE)
         if (items.isEmpty()) {
             Timber.i("Explore State: trending display select empty")
             binding.trendingMoviesLayout.noDataImgView.visibility = View.VISIBLE
@@ -200,10 +211,8 @@ class ExplorerFragment: Fragment(), MvRxView {
         }
     }
 
-    private fun showPopularMovies(items: List<TMDBItemDetails>) {
-        binding.popularMoviesLayout.apply {
-            popularMoviesProgressBar.visibility = View.GONE
-        }
+    private fun updatePopularMoviesList(items: List<TMDBItemDetails>) {
+        updatePopularMoviesLoader(View.GONE)
         if (items.isEmpty()) {
             binding.popularMoviesLayout.noDataImgView.visibility = View.VISIBLE
         } else {
@@ -212,10 +221,8 @@ class ExplorerFragment: Fragment(), MvRxView {
         }
     }
 
-    private fun showComingSoonMovies(items: List<TMDBItemDetails>) {
-        binding.comingSoonMoviesLayout.apply {
-            comingSoonMoviesProgressBar.visibility = View.GONE
-        }
+    private fun updateComingSoonMoviesList(items: List<TMDBItemDetails>) {
+        updateComingSoonMoviesLoader(View.GONE)
         if (items.isEmpty()) {
             binding.comingSoonMoviesLayout.noDataImgView.visibility = View.VISIBLE
         } else {
@@ -223,6 +230,25 @@ class ExplorerFragment: Fragment(), MvRxView {
             comingSoonAdapter.addData(items)
         }
     }
+
+
+
+
+
+
+
+    private fun setSelectedItem(item: TMDBItemDetails?) {
+        explorerViewModel.setSelectedItem(item)
+    }
+
+    private fun displayDetails(item: TMDBItemDetails) {
+        explorerViewModel.setSelectedItem(null)
+        (requireActivity() as MainActivity).goToDetails(item)
+    }
+
+
+
+
 
 //    private fun showError() {
 //        Toast.makeText(requireContext(), "Failed to load watchlist", Toast.LENGTH_SHORT).show()
