@@ -231,11 +231,9 @@ class ExplorerFragment: Fragment(), MvRxView {
         }
     }
 
-
-
-
-
-
+    /*
+        ------------------ SELECT ITEM HANDLERS ------------------
+     */
 
     private fun setSelectedItem(item: TMDBItemDetails?) {
         explorerViewModel.setSelectedItem(item)
@@ -245,10 +243,6 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.setSelectedItem(null)
         (requireActivity() as MainActivity).goToDetails(item)
     }
-
-
-
-
 
 //    private fun showError() {
 //        Toast.makeText(requireContext(), "Failed to load watchlist", Toast.LENGTH_SHORT).show()
