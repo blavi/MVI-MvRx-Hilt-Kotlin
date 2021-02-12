@@ -9,26 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.softvision.mvi_mvrx_hilt_kotlin.R
+import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentSearchBinding
+import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentTvShowsBinding
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.TVShowsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TVShowsFragment : Fragment() {
 
-    private lateinit var TVShowsViewModel: TVShowsViewModel
+    private lateinit var binding: FragmentTvShowsBinding
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        TVShowsViewModel =
-                ViewModelProvider(this).get(TVShowsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_tv_shows, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        TVShowsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        binding = FragmentTvShowsBinding.inflate(inflater)
+        return binding.root
     }
 }

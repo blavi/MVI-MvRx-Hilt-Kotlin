@@ -1,5 +1,6 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.ui
 
+import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
@@ -39,9 +42,15 @@ class DetailsFragment: BottomSheetDialogFragment(){
         setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
     }
 
-//    override fun getTheme(): Int {
-//        return R.style.BottomSheetDialog_Rounded
-//    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener {
+            val dialog = it as BottomSheetDialog
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            BottomSheetBehavior.from(bottomSheet as View).state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return bottomSheetDialog
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 

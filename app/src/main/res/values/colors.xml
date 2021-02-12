@@ -15,4 +15,10 @@
     <color name="gray_800">#424242</color>
     <color name="gray_900">#212121</color>
     <color name="brown_900">#3E2723</color>
+
+    <color name="space_cadet">#2d3142</color>
+    <color name="independence">#4f5d75</color>
+    <color name="silver">#bfc0c0</color>
+    <color name="mandarin">#ef8354</color>
+    <color name="flame">#ea5c1f</color>
 </resources>

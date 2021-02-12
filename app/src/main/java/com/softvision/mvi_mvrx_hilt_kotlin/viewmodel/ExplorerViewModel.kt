@@ -25,9 +25,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
         }
 
         fetchTrendingMovies()
-
         fetchPopularMovies()
-
         fetchComingSoonMovies()
     }
 
@@ -66,25 +64,25 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
     }
 
     fun loadMorePopularMovies() = withState {
-        it.popularMovies?.let { list ->
-            if (it.popularRequest.complete && list.isNotEmpty()) {
-                fetchPopularMovies(list.count())
+        it.apply {
+            if (popularRequest.complete && popularMovies.isNotEmpty()) {
+                fetchPopularMovies(popularMovies.count())
             }
         }
     }
 
     fun loadMoreTrendingMovies() = withState {
-        it.trendingMovies?.let { list ->
-            if (it.trendingRequest.complete && list.isNotEmpty()) {
-                fetchTrendingMovies(list.count())
+        it.apply{
+            if (trendingRequest.complete && trendingMovies.isNotEmpty()) {
+                fetchTrendingMovies(trendingMovies.count())
             }
         }
     }
 
     fun loadMoreComingSoonMovies() = withState {
-        it.comingSoonMovies?.let { list ->
-            if (it.comingSoonRequest.complete && list.isNotEmpty()) {
-                fetchComingSoonMovies(list.count())
+        it.apply {
+            if (comingSoonRequest.complete && comingSoonMovies.isNotEmpty()) {
+                fetchComingSoonMovies(comingSoonMovies.count())
             }
         }
     }
@@ -102,9 +100,9 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
     }
 
     companion object : MvRxViewModelFactory<ExplorerViewModel, ExplorerState> {
-        override fun create(viewModelContext: ViewModelContext, initialExplorerState: ExplorerState): ExplorerViewModel =
+        override fun create(viewModelContext: ViewModelContext, state: ExplorerState): ExplorerViewModel =
             (viewModelContext as FragmentViewModelContext)
                 .fragment<ExplorerFragment>()
-                .viewModelFactory.create(initialExplorerState)
+                .viewModelFactory.create(state)
     }
 }
