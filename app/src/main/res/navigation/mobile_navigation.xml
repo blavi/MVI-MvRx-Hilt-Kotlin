@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_explorer">
+
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.MoviesFragment"
+        android:label="@string/title_movies"
+        tools:layout="@layout/fragment_movies" />
+
+    <fragment
+        android:id="@+id/navigation_explorer"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment"
+        android:label="@string/title_explorer"
+        tools:layout="@layout/fragment_explorer" >
+        <action
+            android:id="@+id/action_navigation_explorer_to_popupDialogFragment"
+            app:destination="@id/popupDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_tv_shows"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.TVShowsFragment"
+        android:label="@string/title_tv_shows"
+        tools:layout="@layout/fragment_tv_shows" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.FavoritesFragment"
+        android:label="@string/title_favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <dialog
+        android:id="@+id/popupDialogFragment"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.DetailsFragment"
+        android:label="Details"
+        android:theme="@style/Theme.MaterialComponents.BottomSheetDialog">
+        <argument
+            android:name="item"
+            app:argType="com.softvision.domain.model.TMDBItemDetails" />
+    </dialog>
+</navigation>

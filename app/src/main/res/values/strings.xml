@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MVI-MvRx-Hilt-Kotlin</string>
+    <string name="title_explorer">Explore</string>
+    <string name="title_movies">Movies</string>
+    <string name="title_tv_shows">TV Shows</string>
+    <string name="title_search">Search</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="trending_movies">Trending Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="coming_soon_movies">Coming Soon Movies</string>
+</resources>

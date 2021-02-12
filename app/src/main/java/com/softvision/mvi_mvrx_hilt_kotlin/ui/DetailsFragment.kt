@@ -1,0 +1,75 @@
+package com.softvision.mvi_mvrx_hilt_kotlin.ui
+
+import android.net.Uri
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
+import com.softvision.mvi_mvrx_hilt_kotlin.R
+import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+
+
+@AndroidEntryPoint
+class DetailsFragment: BottomSheetDialogFragment(){
+
+    private lateinit var binding: FragmentDetailsBinding
+    private lateinit var item: TMDBItemDetails
+
+    companion object {
+        const val ITEM = "item"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            if (it.containsKey(ITEM)) {
+                item = it.getParcelable<TMDBItemDetails>(ITEM)!!
+            }
+        }
+
+        setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
+    }
+
+//    override fun getTheme(): Int {
+//        return R.style.BottomSheetDialog_Rounded
+//    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        binding = FragmentDetailsBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        displayItemDetails(item)
+    }
+
+    private fun displayItemDetails(item: TMDBItemDetails) {
+        item.backdrop_path?.let {
+            val requestOptions = RequestOptions()
+            requestOptions.placeholder(R.drawable.ic_baseline_hourglass_bottom_24)
+            requestOptions.error(R.drawable.ic_baseline_mood_bad_24)
+            Timber.i("Explore State: item selected - display details")
+            Glide.with(binding.poster.context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(Uri.parse(BuildConfig.IMAGE_BASE_URL + it))
+                .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
+                .into(binding.poster)
+        }
+
+        binding.title.text = item.original_title
+
+        binding.description.text = item.overview
+    }
+}
