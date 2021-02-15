@@ -1,0 +1,30 @@
+package com.softvision.data.database.dao
+
+import androidx.room.*
+import com.softvision.data.database.base.TMDB_TV_SHOWS
+import com.softvision.data.database.model.PartialTMDBTVShowEntity
+import com.softvision.data.database.model.TMDBTVShowEntity
+
+@Dao
+interface TMDBTVShowsDAO {
+    @Query("SELECT * FROM $TMDB_TV_SHOWS ORDER BY ID")
+    fun loadAllItems(): List<TMDBTVShowEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertItems(items: List<TMDBTVShowEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertItem(item: TMDBTVShowEntity)
+
+    @Query("DELETE FROM $TMDB_TV_SHOWS")
+    fun deleteAll()
+
+    @Update(entity = TMDBTVShowEntity::class)
+    fun update(partialItem: PartialTMDBTVShowEntity)
+
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE ID = :itemID LIMIT 1")
+    fun getItem(itemID: Int): TMDBTVShowEntity?
+
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE :category in (CATEGORIES)")
+    fun loadItemsByCategory(category: String): List<TMDBTVShowEntity>
+}

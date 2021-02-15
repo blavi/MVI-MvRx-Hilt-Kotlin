@@ -5,13 +5,13 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class TMDBResponse (
+data class TMDBTVShowsResponse (
     @Json(name = "page") val page : Int,
-    @Json(name = "results") val tmdbItemResponses : List<TMDBItemResponse>,
+    @Json(name = "results") val tmdbItemResponses : List<TMDBTVShowResponse>,
     @Json(name = "total_pages") val total_pages : Int,
     @Json(name = "total_results") val total_results : Int
-): TMDBRetrofitResponse<TMDBItemResponse> {
-    override fun getContent(): List<TMDBItemResponse> {
+): TMDBRetrofitResponse<TMDBTVShowResponse> {
+    override fun getContent(): List<TMDBTVShowResponse> {
         return tmdbItemResponses
     }
 }

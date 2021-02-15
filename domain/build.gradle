@@ -72,6 +72,9 @@ dependencies {
 
     // MvRx
     implementation "com.airbnb.android:mvrx-rxjava2:2.0.0-beta3"
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
 kapt {
     correctErrorTypes true

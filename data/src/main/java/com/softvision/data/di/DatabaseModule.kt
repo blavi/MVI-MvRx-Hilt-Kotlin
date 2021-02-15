@@ -3,7 +3,8 @@ package com.softvision.data.di
 import android.content.Context
 import androidx.room.Room
 import com.softvision.data.database.base.EntitiesDatabase
-import com.softvision.data.database.dao.TMDBItemsDAO
+import com.softvision.data.database.dao.TMDBMoviesDAO
+import com.softvision.data.database.dao.TMDBTVShowsDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,15 +17,16 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Provides
     @Singleton
-    fun providePersonsDAO(appDatabase: EntitiesDatabase): TMDBItemsDAO {
-        return appDatabase.getItemsDAO()
+    fun provideMoviesDAO(appDatabase: EntitiesDatabase): TMDBMoviesDAO {
+        return appDatabase.getMoviesDAO()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideRoomsDAO(appDatabase: EntitiesDatabase): RoomsDAO {
-//        return appDatabase.getRoomsDAO()
-//    }
+    @Provides
+    @Singleton
+    fun provideTVShowsDAO(appDatabase: EntitiesDatabase): TMDBTVShowsDAO {
+        return appDatabase.getTVShowsDAO()
+    }
+
 
     @Provides
     @Singleton

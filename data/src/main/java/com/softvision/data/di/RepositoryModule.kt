@@ -1,8 +1,10 @@
 package com.softvision.data.di
 
-import com.softvision.data.network.base.DataType
-import com.softvision.data.repository.ExplorerRepositoryImpl
+import com.softvision.data.repository.ExplorerMoviesRepositoryImpl
+import com.softvision.data.repository.ExplorerTVShowsRepositoryImpl
 import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.repository.ResourcesRepository
 import dagger.Binds
 import dagger.Module
@@ -14,8 +16,8 @@ import dagger.hilt.android.components.ApplicationComponent
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun bindExplorerRepository(impl: ExplorerRepositoryImpl): ResourcesRepository<String, TMDBItemDetails, Int>
+    abstract fun bindExplorerMoviesRepository(impl: ExplorerMoviesRepositoryImpl): ResourcesRepository<String, TMDBMovieDetails, Int>
 
-//    @Binds
-//    abstract fun bindRoomsRepository(impl: RoomsRepositoryImpl): ResourcesRepository<RoomDetails>
+    @Binds
+    abstract fun bindExplorerTVShowsRepository(impl: ExplorerTVShowsRepositoryImpl): ResourcesRepository<String, TMDBTVShowDetails, Int>
 }

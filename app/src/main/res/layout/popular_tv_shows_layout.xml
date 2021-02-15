@@ -6,13 +6,13 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/popularMoviesTitle"
+        android:id="@+id/popularTVShowsTitle"
         style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/popular_movies"
+        android:text="@string/popular_tv_shows"
         android:paddingBottom="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,15 +21,15 @@
         android:layout_height="150dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/popularMoviesTitle"
+        app:layout_constraintTop_toBottomOf="@id/popularTVShowsTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
-        android:id="@+id/noPopularMoviesImgView"
+        android:id="@+id/noPopularTVShowsImgView"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        app:layout_constraintTop_toBottomOf="@+id/popularMoviesTitle"
+        app:layout_constraintTop_toBottomOf="@+id/popularTVShowsTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
         android:visibility="gone"/>
 
     <ProgressBar
-        android:id="@+id/popularMoviesProgressBar"
+        android:id="@+id/popularTVShowsProgressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="5dp"

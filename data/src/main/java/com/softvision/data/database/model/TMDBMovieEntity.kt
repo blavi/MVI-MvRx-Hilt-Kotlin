@@ -3,15 +3,12 @@ package com.softvision.data.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.softvision.data.database.base.IntListConverter
-import com.softvision.data.database.base.StringListConverter
-import com.softvision.data.database.base.TMDB_ITEMS
+import com.softvision.data.database.base.TMDB_MOVIES
 import com.softvision.data.network.base.DomainMapper
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
 
-@Entity(tableName = TMDB_ITEMS)
-data class TMDBItemEntity(
+@Entity(tableName = TMDB_MOVIES)
+data class TMDBMovieEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id : Int,
@@ -60,9 +57,9 @@ data class TMDBItemEntity(
 
     @ColumnInfo(name = "categories")
     val categories : List<String>
-): DomainMapper<TMDBItemDetails> {
-    override fun mapToDomainModel(): TMDBItemDetails {
-        return TMDBItemDetails(id, adult, backdrop_path, genre_ids, original_language, original_title,
+): DomainMapper<TMDBMovieDetails> {
+    override fun mapToDomainModel(): TMDBMovieDetails {
+        return TMDBMovieDetails(id, adult, backdrop_path, genre_ids, original_language, original_title,
             overview, popularity, poster_path, release_date, title, video, vote_average, vote_count,
             media_type, categories)
     }

@@ -4,8 +4,11 @@ package com.softvision.data.network.base
 class DataType {
     companion object {
         const val TRENDING_MOVIES = "trending_movies"
+        const val TRENDING_TV_SHOWS = "trending_tv_shows"
         const val POPULAR_MOVIES = "popular_movies"
+        const val POPULAR_TV_SHOWS = "popular_tv_shows"
         const val COMING_SOON_MOVIES = "coming_soon_movies"
+        const val COMING_SOON_TV_SHOWS = "coming_soon_tv_shows"
     }
 }
 

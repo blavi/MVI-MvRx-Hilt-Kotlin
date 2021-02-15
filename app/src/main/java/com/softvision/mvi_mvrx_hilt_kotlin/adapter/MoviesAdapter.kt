@@ -8,16 +8,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
+import timber.log.Timber
 
 
-class ItemsAdapter(private val clickListener: (TMDBItemDetails) -> Unit): RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
-    private var items: MutableList<TMDBItemDetails> = mutableListOf()
+class MoviesAdapter(private val clickListener: (TMDBMovieDetails) -> Unit): RecyclerView.Adapter<MoviesAdapter.DataViewHolder>() {
+    private var items: MutableList<TMDBMovieDetails> = mutableListOf()
 
     class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TMDBItemDetails, clickListener: (TMDBItemDetails) -> Unit) {
+        fun bind(item: TMDBMovieDetails, clickListener: (TMDBMovieDetails) -> Unit) {
             item.poster_path?.let {
                 val requestOptions = RequestOptions()
                 requestOptions.apply {
@@ -34,6 +36,8 @@ class ItemsAdapter(private val clickListener: (TMDBItemDetails) -> Unit): Recycl
             binding.root.setOnClickListener() {
                 clickListener(item)
             }
+
+            Timber.i("Explore State: MOVIE- %s", item.title)
         }
     }
 
@@ -48,7 +52,8 @@ class ItemsAdapter(private val clickListener: (TMDBItemDetails) -> Unit): Recycl
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
         holder.bind(items[position], clickListener)
 
-    fun addData(list: List<TMDBItemDetails>) {
+    fun addData(list: List<TMDBMovieDetails>) {
+        Timber.i("Explore State: MOVIES - trending notifydatasetchanged")
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()

@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import dagger.hilt.android.AndroidEntryPoint
 

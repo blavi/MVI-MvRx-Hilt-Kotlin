@@ -1,12 +1,12 @@
 package com.softvision.data.network.model
 
 import com.softvision.data.network.base.RoomMapper
-import com.softvision.data.database.model.TMDBItemEntity
+import com.softvision.data.database.model.TMDBMovieEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class TMDBItemResponse (
+data class TMDBMovieResponse (
     @Json(name = "id") val id : Int,
     @Json(name = "adult") val adult : Boolean,
     @Json(name = "backdrop_path") val backdrop_path : String?,
@@ -22,9 +22,9 @@ data class TMDBItemResponse (
     @Json(name = "vote_average") val vote_average : Double,
     @Json(name = "vote_count") val vote_count : Int,
     @Json(name = "media_type") val media_type : String?
-): RoomMapper<TMDBItemEntity, String> {
-    override fun mapToRoomEntity(categories: List<String>): TMDBItemEntity {
-        return TMDBItemEntity(id, adult, backdrop_path, genre_ids, original_language, original_title,
+): RoomMapper<TMDBMovieEntity, String> {
+    override fun mapToRoomEntity(categories: List<String>): TMDBMovieEntity {
+        return TMDBMovieEntity(id, adult, backdrop_path, genre_ids, original_language, original_title,
         overview, popularity, poster_path, release_date, title, video, vote_average,
         vote_count, media_type, categories)
     }

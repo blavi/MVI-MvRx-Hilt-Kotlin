@@ -44,10 +44,4 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiEndpoints = retrofit.create(ApiEndpoints::class.java)
-
-
-//    API ENDPOINTS
-//    @Provides
-//    @Singleton
-//    fun provideApiHelper(apiHelperImpl: ApiProviderImpl): ApiProvider = apiHelperImpl
 }

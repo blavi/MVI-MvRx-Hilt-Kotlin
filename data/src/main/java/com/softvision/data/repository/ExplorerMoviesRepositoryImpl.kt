@@ -1,23 +1,24 @@
 package com.softvision.data.repository
 
-import com.softvision.data.database.dao.TMDBItemsDAO
-import com.softvision.data.database.model.PartialTMDBItemEntity
-import com.softvision.data.database.model.TMDBItemEntity
+import com.softvision.data.database.dao.TMDBMoviesDAO
+import com.softvision.data.database.dao.TMDBTVShowsDAO
+import com.softvision.data.database.model.PartialTMDBMovieEntity
+import com.softvision.data.database.model.TMDBMovieEntity
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.getData
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.repository.ResourcesRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class ExplorerRepositoryImpl @Inject constructor(private val tmdbItemsDAO: TMDBItemsDAO,
-                                                 private val resourcesApi: ApiEndpoints):
-    BaseRepository<TMDBItemDetails, TMDBItemEntity>(), ResourcesRepository<String, TMDBItemDetails, Int> {
+class ExplorerMoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMoviesDAO,
+                                                       private val resourcesApi: ApiEndpoints):
+    BaseRepository<TMDBMovieDetails, TMDBMovieEntity>(), ResourcesRepository<String, TMDBMovieDetails, Int> {
 
-    override fun getData(type: String, page: Int): Single<List<TMDBItemDetails>> {
+    override fun getData(type: String, page: Int): Single<List<TMDBMovieDetails>> {
 
         Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
@@ -43,20 +44,20 @@ class ExplorerRepositoryImpl @Inject constructor(private val tmdbItemsDAO: TMDBI
         ).subscribeOn(Schedulers.io())
     }
 
-    private fun insertItems(type: String, items: List<TMDBItemEntity>) {
+    private fun insertItems(type: String, items: List<TMDBMovieEntity>) {
         items.forEach {
-            val foundItem = tmdbItemsDAO.getItem(it.id)
+            val foundItem = tmdbMoviesDAO.getItem(it.id)
             if (foundItem != null) {
                 if (!foundItem.categories.contains(type)) {
-                    tmdbItemsDAO.update(PartialTMDBItemEntity(it.id, foundItem.categories.plus(type)))
+                    tmdbMoviesDAO.update(PartialTMDBMovieEntity(it.id, foundItem.categories.plus(type)))
                 }
             } else {
-                tmdbItemsDAO.insertItem(it)
+                tmdbMoviesDAO.insertItem(it)
             }
         }
     }
 
-    private fun loadItemsByCategory(type: String): List<TMDBItemEntity> {
-        return tmdbItemsDAO.loadItemsByCategory(type)
+    private fun loadItemsByCategory(type: String): List<TMDBMovieEntity> {
+        return tmdbMoviesDAO.loadItemsByCategory(type)
     }
 }

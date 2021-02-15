@@ -3,14 +3,16 @@ package com.softvision.data.database.base
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.softvision.data.database.dao.TMDBItemsDAO
-import com.softvision.data.database.model.TMDBItemEntity
+import com.softvision.data.database.dao.TMDBMoviesDAO
+import com.softvision.data.database.dao.TMDBTVShowsDAO
+import com.softvision.data.database.model.TMDBMovieEntity
+import com.softvision.data.database.model.TMDBTVShowEntity
 
-@Database(entities = [TMDBItemEntity::class], version = 1, exportSchema = false)
+@Database(entities = [TMDBMovieEntity::class, TMDBTVShowEntity::class], version = 1, exportSchema = false)
 @TypeConverters(IntListConverter::class, StringListConverter::class)
 abstract class EntitiesDatabase : RoomDatabase() {
 
-    abstract fun getItemsDAO(): TMDBItemsDAO
+    abstract fun getMoviesDAO(): TMDBMoviesDAO
 
-//    abstract fun getRoomsDAO(): RoomsDAO
+    abstract fun getTVShowsDAO(): TMDBTVShowsDAO
 }

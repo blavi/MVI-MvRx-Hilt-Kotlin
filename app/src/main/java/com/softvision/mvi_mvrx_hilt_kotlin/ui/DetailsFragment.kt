@@ -13,12 +13,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-
 
 @AndroidEntryPoint
 class DetailsFragment: BottomSheetDialogFragment(){
@@ -61,11 +62,41 @@ class DetailsFragment: BottomSheetDialogFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        displayItemDetails(item)
+        (item as? TMDBMovieDetails)?.apply {
+            displayMovieDetails(this)
+        }
+
+        (item as? TMDBTVShowDetails)?.apply {
+            displayTVShowDetails(this)
+        }
     }
 
-    private fun displayItemDetails(item: TMDBItemDetails) {
-        item.backdrop_path?.let {
+    private fun displayTVShowDetails(item: TMDBTVShowDetails) {
+        item.apply {
+            setPoster(backdrop_path)
+            setTitle(title)
+            setDescription(overview)
+        }
+    }
+
+    private fun displayMovieDetails(item: TMDBMovieDetails) {
+        item.apply {
+            setPoster(backdrop_path)
+            setTitle(title)
+            setDescription(overview)
+        }
+    }
+
+    private fun setDescription(description: String) {
+        binding.description.text = description
+    }
+
+    private fun setTitle(title: String) {
+        binding.title.text = title
+    }
+
+    private fun setPoster(posterPath: String?) {
+        posterPath?.let {
             val requestOptions = RequestOptions()
             requestOptions.placeholder(R.drawable.ic_baseline_hourglass_bottom_24)
             requestOptions.error(R.drawable.ic_baseline_mood_bad_24)
@@ -76,9 +107,5 @@ class DetailsFragment: BottomSheetDialogFragment(){
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
                 .into(binding.poster)
         }
-
-        binding.title.text = item.original_title
-
-        binding.description.text = item.overview
     }
 }

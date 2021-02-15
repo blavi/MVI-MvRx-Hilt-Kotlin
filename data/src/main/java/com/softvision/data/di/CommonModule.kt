@@ -19,10 +19,4 @@ class CommonModule {
     fun provideConnectivity(@ApplicationContext appContext: Context): Connectivity {
         return ConnectivityImpl(appContext)
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideCoroutineContextProvider(): CoroutineContextProvider {
-//        return CoroutineContextProvider()
-//    }
 }

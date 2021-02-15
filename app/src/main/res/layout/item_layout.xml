@@ -8,5 +8,6 @@
         android:id="@+id/itemBanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:paddingEnd="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

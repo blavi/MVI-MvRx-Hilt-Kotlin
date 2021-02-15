@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_explorer" >
         <action
             android:id="@+id/action_navigation_explorer_to_popupDialogFragment"
-            app:destination="@id/popupDialogFragment" />
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -40,10 +40,11 @@
         tools:layout="@layout/fragment_favorites" />
 
     <dialog
-        android:id="@+id/popupDialogFragment"
+        android:id="@+id/detailsFragment"
         android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.DetailsFragment"
         android:label="Details"
-        android:theme="@style/Theme.MaterialComponents.BottomSheetDialog">
+        android:theme="@style/Theme.MaterialComponents.BottomSheetDialog"
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="item"
             app:argType="com.softvision.domain.model.TMDBItemDetails" />

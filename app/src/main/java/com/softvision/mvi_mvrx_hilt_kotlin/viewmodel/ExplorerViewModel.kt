@@ -1,42 +1,64 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
 import android.util.Log
-import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.ViewModelContext
+import com.airbnb.mvrx.*
 import com.softvision.data.network.base.DataType
-import com.softvision.domain.interactor.FetchInteractor
+import com.softvision.domain.interactor.FetchMoviesInteractor
+import com.softvision.domain.interactor.FetchTVShowsInteractor
 import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import javax.inject.Named
 
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerState: ExplorerState,
-                                                    private val interactor: FetchInteractor)
+                                                    @Named("MoviesInteractor") private val interactor: FetchMoviesInteractor,
+                                                    @Named("TVShowsInteractor") private val tvShowsInteractor: FetchTVShowsInteractor)
     : BaseViewModel<ExplorerState>(initialExplorerState) {
 
     fun fetchTMDBItems() = withState {
         setState {
-            copy(trendingRequest = Loading())
-            copy(popularRequest = Loading())
-            copy(comingSoonRequest = Loading())
+            copy(trendingMoviesRequest = Loading())
+            copy(trendingTVShowsRequest = Loading())
+
+            copy(popularMoviesRequest = Loading())
+            copy(popularTVShowsRequest = Loading())
+
+            copy(comingSoonMoviesRequest = Loading())
+            copy(comingSoonTVShowsRequest = Loading())
         }
 
         fetchTrendingMovies()
-        fetchPopularMovies()
-        fetchComingSoonMovies()
-    }
+        fetchTrendingTVShows()
 
+        fetchPopularMovies()
+        fetchPopularTVShows()
+
+        fetchComingSoonMovies()
+        fetchComingSoonTVShows()
+    }
 
     private fun fetchPopularMovies(offset: Int = 0) {
         Log.i("Explore State", "popular invoke")
         interactor.invoke(DataType.POPULAR_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
-                    popularRequest = it,
+                    popularMoviesRequest = it as Async<List<TMDBMovieDetails>>,
                     popularMovies = combinePopularMoviesItems(offset, it)
+                )
+            }
+    }
+
+    private fun fetchPopularTVShows(offset: Int = 0) {
+        Log.i("Explore State", "popular tv shows invoke")
+        tvShowsInteractor.invoke(DataType.POPULAR_TV_SHOWS, offset / 20 + 1)
+            .execute {
+                copy(
+                    popularTVShowsRequest = it,
+                    popularTVShows = combinePopularTVShowsItems(offset, it)
                 )
             }
     }
@@ -46,8 +68,19 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
         interactor.invoke(DataType.TRENDING_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
-                    trendingRequest = it,
+                    trendingMoviesRequest = it,
                     trendingMovies = combineTrendingMoviesItems(offset, it)
+                )
+            }
+    }
+
+    private fun fetchTrendingTVShows(offset: Int = 0) {
+        Log.i("Explore State", "trending invoke")
+        tvShowsInteractor.invoke(DataType.TRENDING_TV_SHOWS, offset / 20 + 1)
+            .execute {
+                copy(
+                    trendingTVShowsRequest = it,
+                    trendingTVShows = combineTrendingTVShowsItems(offset, it)
                 )
             }
     }
@@ -57,15 +90,26 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
         interactor.invoke(DataType.COMING_SOON_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
-                    comingSoonRequest = it,
+                    comingSoonMoviesRequest = it,
                     comingSoonMovies = combineComingSoonMoviesItems(offset, it)
+                )
+            }
+    }
+
+    private fun fetchComingSoonTVShows(offset: Int = 0) {
+        Log.i("Explore State", "coming soon invoke")
+        tvShowsInteractor.invoke(DataType.COMING_SOON_TV_SHOWS, offset / 20 + 1)
+            .execute {
+                copy(
+                    comingSoonTVShowsRequest = it,
+                    comingSoonTVShows = combineComingSoonTVShowsItems(offset, it)
                 )
             }
     }
 
     fun loadMorePopularMovies() = withState {
         it.apply {
-            if (popularRequest.complete && popularMovies.isNotEmpty()) {
+            if (popularMoviesRequest.complete && popularMovies.isNotEmpty()) {
                 fetchPopularMovies(popularMovies.count())
             }
         }
@@ -73,7 +117,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     fun loadMoreTrendingMovies() = withState {
         it.apply{
-            if (trendingRequest.complete && trendingMovies.isNotEmpty()) {
+            if (trendingMoviesRequest.complete && trendingMovies.isNotEmpty()) {
                 fetchTrendingMovies(trendingMovies.count())
             }
         }
@@ -81,7 +125,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     fun loadMoreComingSoonMovies() = withState {
         it.apply {
-            if (comingSoonRequest.complete && comingSoonMovies.isNotEmpty()) {
+            if (comingSoonMoviesRequest.complete && comingSoonMovies.isNotEmpty()) {
                 fetchComingSoonMovies(comingSoonMovies.count())
             }
         }
@@ -92,6 +136,17 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
         setState {
             copy(selectedItem = item)
         }
+    }
+
+    fun loadMoreComingSoonTVShows() {
+
+    }
+
+    fun loadMoreTVShowsMovies() {
+
+    }
+
+    fun loadMoreTrendingTVShows() {
     }
 
     @AssistedInject.Factory

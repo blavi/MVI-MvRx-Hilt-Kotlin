@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity
-data class PartialTMDBItemEntity(
+data class PartialTMDBTVShowEntity(
     @ColumnInfo(name = "id")
     val id: Int,
 

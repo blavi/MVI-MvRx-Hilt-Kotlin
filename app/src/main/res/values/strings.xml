@@ -8,4 +8,7 @@
     <string name="trending_movies">Trending Movies</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="coming_soon_movies">Coming Soon Movies</string>
+    <string name="trending_tv_shows">Trending TV Shows</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="coming_soon_tv_shows">Coming Soon TV Shows</string>
 </resources>

@@ -21,11 +21,27 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <include
+            android:id="@+id/trendingTVShowsLayout"
+            layout="@layout/trending_tv_shows_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/trendingMoviesLayout"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <include
             android:id="@+id/popularMoviesLayout"
             layout="@layout/popular_movies_layout"
             android:layout_height="0dp"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/trendingMoviesLayout"
+            app:layout_constraintTop_toBottomOf="@id/trendingTVShowsLayout"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <include
+            android:id="@+id/popularTVShowsLayout"
+            layout="@layout/popular_tv_shows_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/popularMoviesLayout"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <include
@@ -33,7 +49,15 @@
             layout="@layout/coming_soon_movies_layout"
             android:layout_height="0dp"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/popularMoviesLayout"
+            app:layout_constraintTop_toBottomOf="@id/popularTVShowsLayout"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <include
+            android:id="@+id/comingSoonTVShowsLayout"
+            layout="@layout/coming_soon_tv_shows_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/comingSoonMoviesLayout"
             app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
