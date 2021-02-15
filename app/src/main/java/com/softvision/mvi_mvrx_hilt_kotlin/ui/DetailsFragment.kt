@@ -43,16 +43,6 @@ class DetailsFragment: BottomSheetDialogFragment(){
         setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        bottomSheetDialog.setOnShowListener {
-            val dialog = it as BottomSheetDialog
-            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            BottomSheetBehavior.from(bottomSheet as View).state = BottomSheetBehavior.STATE_EXPANDED
-        }
-        return bottomSheetDialog
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = FragmentDetailsBinding.inflate(inflater)
@@ -61,6 +51,13 @@ class DetailsFragment: BottomSheetDialogFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val offsetFromTop = 150
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            isFitToContents = true
+            expandedOffset = offsetFromTop
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
         (item as? TMDBMovieDetails)?.apply {
             displayMovieDetails(this)
