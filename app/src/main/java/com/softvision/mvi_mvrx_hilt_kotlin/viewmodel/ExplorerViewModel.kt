@@ -3,23 +3,22 @@ package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.data.network.base.DataType
-import com.softvision.domain.interactor.FetchMoviesInteractor
-import com.softvision.domain.interactor.FetchTVShowsInteractor
+import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.mvi.ExplorerState
+import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import javax.inject.Named
 
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerState: ExplorerState,
-                                                    @Named("MoviesInteractor") private val interactor: FetchMoviesInteractor,
-                                                    @Named("TVShowsInteractor") private val tvShowsInteractor: FetchTVShowsInteractor)
-    : BaseViewModel<ExplorerState>(initialExplorerState) {
+                                                    private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>,
+                                                    private val tvShowsInteractor: BaseFetchItemsUseCase<String, TMDBTVShowDetails, Int>)
+    :BaseMvRxViewModel<ExplorerState>(initialExplorerState) {
 
-    fun fetchTMDBItems() = withState {
+    fun fetchTMDBItems() {
         setState {
             copy(trendingMoviesRequest = Loading())
             copy(trendingTVShowsRequest = Loading())
@@ -43,10 +42,10 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     private fun fetchPopularMovies(offset: Int = 0) {
         Log.i("Explore State", "popular invoke")
-        interactor.invoke(DataType.POPULAR_MOVIES, offset / 20 + 1)
+        moviesInteractor.invoke(DataType.POPULAR_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
-                    popularMoviesRequest = it as Async<List<TMDBMovieDetails>>,
+                    popularMoviesRequest = it,
                     popularMovies = combinePopularMoviesItems(offset, it)
                 )
             }
@@ -65,7 +64,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     private fun fetchTrendingMovies(offset: Int = 0) {
         Log.i("Explore State", "trending invoke")
-        interactor.invoke(DataType.TRENDING_MOVIES, offset / 20 + 1)
+        moviesInteractor.invoke(DataType.TRENDING_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
                     trendingMoviesRequest = it,
@@ -87,7 +86,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     private fun fetchComingSoonMovies(offset: Int = 0) {
         Log.i("Explore State", "coming soon invoke")
-        interactor.invoke(DataType.COMING_SOON_MOVIES, offset / 20 + 1)
+        moviesInteractor.invoke(DataType.COMING_SOON_MOVIES, offset / 20 + 1)
             .execute {
                 copy(
                     comingSoonMoviesRequest = it,

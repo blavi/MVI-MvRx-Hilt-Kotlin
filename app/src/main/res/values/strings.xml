@@ -11,4 +11,8 @@
     <string name="trending_tv_shows">Trending TV Shows</string>
     <string name="popular_tv_shows">Popular TV Shows</string>
     <string name="coming_soon_tv_shows">Coming Soon TV Shows</string>
+    <string name="spinner_title">Choose a genre</string>
+
+    <string name="loading_genres">Loading Genres</string>
+    <string name="loading_movies">Loading Movies</string>
 </resources>

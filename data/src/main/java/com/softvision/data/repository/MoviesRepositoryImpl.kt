@@ -1,22 +1,21 @@
 package com.softvision.data.repository
 
 import com.softvision.data.database.dao.TMDBMoviesDAO
-import com.softvision.data.database.dao.TMDBTVShowsDAO
 import com.softvision.data.database.model.PartialTMDBMovieEntity
 import com.softvision.data.database.model.TMDBMovieEntity
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.getData
 import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.repository.ResourcesRepository
+import com.softvision.domain.repository.ItemsRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class ExplorerMoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMoviesDAO,
-                                                       private val resourcesApi: ApiEndpoints):
-    BaseRepository<TMDBMovieDetails, TMDBMovieEntity>(), ResourcesRepository<String, TMDBMovieDetails, Int> {
+class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMoviesDAO,
+                                               private val resourcesApi: ApiEndpoints):
+    BaseRepository<TMDBMovieDetails, TMDBMovieEntity>(), ItemsRepository<String, TMDBMovieDetails, Int> {
 
     override fun getData(type: String, page: Int): Single<List<TMDBMovieDetails>> {
 
@@ -24,7 +23,8 @@ class ExplorerMoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO
         val apiDataProviderVal = when (type) {
             DataType.TRENDING_MOVIES -> resourcesApi.fetchTrendingMovies(page = page).subscribeOn(Schedulers.io())
             DataType.POPULAR_MOVIES -> resourcesApi.fetchPopularMovies(page = page).subscribeOn(Schedulers.io())
-            else -> resourcesApi.fetchComingSoonMovies(page = page).subscribeOn(Schedulers.io())
+            DataType.COMING_SOON_MOVIES -> resourcesApi.fetchComingSoonMovies(page = page).subscribeOn(Schedulers.io())
+            else -> resourcesApi.fetchMoviesByGenre(genre = type, page = page).subscribeOn(Schedulers.io())
         }
 
         return fetchData(

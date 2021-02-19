@@ -3,10 +3,8 @@ package com.softvision.data.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.softvision.data.database.base.TMDB_MOVIES
 import com.softvision.data.database.base.TMDB_TV_SHOWS
-import com.softvision.data.network.base.DomainMapper
-import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.data.network.base.ItemDomainMapper
 import com.softvision.domain.model.TMDBTVShowDetails
 
 @Entity(tableName = TMDB_TV_SHOWS)
@@ -53,7 +51,7 @@ data class TMDBTVShowEntity(
 
     @ColumnInfo(name = "categories")
     val categories : List<String>
-): DomainMapper<TMDBTVShowDetails> {
+): ItemDomainMapper<TMDBTVShowDetails> {
     override fun mapToDomainModel(): TMDBTVShowDetails {
         return TMDBTVShowDetails(id, backdrop_path, genre_ids, origin_country, original_language, original_title,
             overview, popularity, poster_path, release_date, title, vote_average, vote_count,

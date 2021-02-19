@@ -7,15 +7,15 @@ import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.getData
 import com.softvision.domain.model.TMDBTVShowDetails
-import com.softvision.domain.repository.ResourcesRepository
+import com.softvision.domain.repository.ItemsRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class ExplorerTVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDBTVShowsDAO,
-                                                       private val resourcesApi: ApiEndpoints):
-    BaseRepository<TMDBTVShowDetails, TMDBTVShowEntity>(), ResourcesRepository<String, TMDBTVShowDetails, Int> {
+class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDBTVShowsDAO,
+                                                private val resourcesApi: ApiEndpoints):
+    BaseRepository<TMDBTVShowDetails, TMDBTVShowEntity>(), ItemsRepository<String, TMDBTVShowDetails, Int> {
 
     override fun getData(type: String, page: Int): Single<List<TMDBTVShowDetails>> {
 
@@ -23,7 +23,8 @@ class ExplorerTVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsD
         val apiDataProviderVal = when (type) {
             DataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page).subscribeOn(Schedulers.io())
             DataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page).subscribeOn(Schedulers.io())
-            else -> resourcesApi.fetchComingSoonTVShows(page = page).subscribeOn(Schedulers.io())
+            DataType.COMING_SOON_TV_SHOWS -> resourcesApi.fetchComingSoonTVShows(page = page).subscribeOn(Schedulers.io())
+            else -> resourcesApi.fetchTVShowsByGenre(genre = type, page = page).subscribeOn(Schedulers.io())
         }
 
         return fetchData(

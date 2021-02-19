@@ -34,6 +34,8 @@ class NetworkConstants {
 
         const val MOVIE_RELEASE_YEAR = "primary_release_year"
         const val TV_SHOW_RELEASE_YEAR = "first_air_date_year"
+
+        const val WITH_GENRES = "with_genres"
     }
 }
 

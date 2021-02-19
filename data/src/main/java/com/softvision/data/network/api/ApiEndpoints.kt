@@ -9,6 +9,8 @@ import com.softvision.data.network.base.NetworkConstants.Companion.PAGE
 import com.softvision.data.network.base.NetworkConstants.Companion.SORT_BY
 import com.softvision.data.network.base.NetworkConstants.Companion.TIME_WINDOW
 import com.softvision.data.network.base.NetworkConstants.Companion.TV_SHOW_RELEASE_YEAR
+import com.softvision.data.network.base.NetworkConstants.Companion.WITH_GENRES
+import com.softvision.data.network.model.TMDBMovieGenresResponse
 import com.softvision.data.network.model.TMDBMoviesResponse
 import com.softvision.data.network.model.TMDBTVShowsResponse
 import io.reactivex.Single
@@ -51,4 +53,21 @@ interface ApiEndpoints {
                                @Query(TV_SHOW_RELEASE_YEAR) year: String = "2021",
                                @Query(SORT_BY) sortByValue: String = NetworkConstants.SORT_BY_COMMING_SOON_TV_SHOWS,
                                @Query(PAGE) page: Int): Single<TMDBTVShowsResponse>
+
+
+    @GET("discover/movie")
+    fun fetchMoviesByGenre(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY,
+                           @Query(WITH_GENRES) genre: String,
+                           @Query(PAGE) page: Int): Single<TMDBMoviesResponse>
+
+    @GET("discover/movie")
+    fun fetchTVShowsByGenre(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY,
+                           @Query(WITH_GENRES) genre: String,
+                           @Query(PAGE) page: Int): Single<TMDBTVShowsResponse>
+
+    @GET("genre/movie/list")
+    fun fetchMovieGenres(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY): Single<TMDBMovieGenresResponse>
+
+    @GET("genre/tv/list")
+    fun fetchTVShowGenres(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY): Single<TMDBMovieGenresResponse>
 }

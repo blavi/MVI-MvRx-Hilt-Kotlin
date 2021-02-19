@@ -7,7 +7,7 @@ import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.model.TMDBMovieResponse
 import com.softvision.data.network.model.TMDBMoviesResponse
-import com.softvision.data.repository.ExplorerMoviesRepositoryImpl
+import com.softvision.data.repository.MoviesRepositoryImpl
 import com.softvision.domain.model.TMDBMovieDetails
 import io.mockk.*
 import io.reactivex.Single
@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class ExplorerRepositoryTest {
-    private lateinit var repository: ExplorerMoviesRepositoryImpl
+    private lateinit var repository: MoviesRepositoryImpl
 
     private lateinit var mockResult: TMDBMoviesResponse
     private lateinit var mockDetailsList: List<TMDBMovieDetails>
@@ -68,7 +68,7 @@ class ExplorerRepositoryTest {
 
         connectivity = mockk()
 
-        repository = ExplorerMoviesRepositoryImpl(itemsDAO, api)
+        repository = MoviesRepositoryImpl(itemsDAO, api)
         repository.connectivity = connectivity
     }
 

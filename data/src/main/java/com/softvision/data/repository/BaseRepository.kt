@@ -1,11 +1,11 @@
 package com.softvision.data.repository
 
 import com.softvision.data.common.Connectivity
-import com.softvision.data.network.base.DomainMapper
+import com.softvision.data.network.base.ItemDomainMapper
 import io.reactivex.Single
 import javax.inject.Inject
 
-abstract class BaseRepository<D : Any, E : DomainMapper<D>> {
+abstract class BaseRepository<D : Any, E : ItemDomainMapper<D>> {
     @Inject
     lateinit var connectivity: Connectivity
 

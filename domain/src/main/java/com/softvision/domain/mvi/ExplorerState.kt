@@ -27,7 +27,7 @@ data class ExplorerState(
     val comingSoonTVShows: List<TMDBTVShowDetails> = emptyList(),
 
     val selectedItem: TMDBItemDetails? = null
-) : MvRxState {
+): MvRxState {
 
     fun combineTrendingMoviesItems(offset: Int, newRequestItems: Async<List<TMDBMovieDetails>>): List<TMDBMovieDetails> =
         (when {

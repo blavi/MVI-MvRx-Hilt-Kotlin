@@ -3,6 +3,7 @@ package com.softvision.data.di
 import android.content.Context
 import androidx.room.Room
 import com.softvision.data.database.base.EntitiesDatabase
+import com.softvision.data.database.dao.TMDBMovieGenresDAO
 import com.softvision.data.database.dao.TMDBMoviesDAO
 import com.softvision.data.database.dao.TMDBTVShowsDAO
 import dagger.Module
@@ -27,6 +28,11 @@ class DatabaseModule {
         return appDatabase.getTVShowsDAO()
     }
 
+    @Provides
+    @Singleton
+    fun provideMovieGenresDAO(appDatabase: EntitiesDatabase): TMDBMovieGenresDAO {
+        return appDatabase.getMovieGenresDAO()
+    }
 
     @Provides
     @Singleton
