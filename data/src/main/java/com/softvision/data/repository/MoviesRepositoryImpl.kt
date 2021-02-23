@@ -30,15 +30,15 @@ class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMo
         return fetchData(
             apiDataProvider = {
                 apiDataProviderVal
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        fetchFromCacheAction = { loadItemsByCategory(type) },
-//                        type
-//                    )
                     .getData(
                         cacheAction = {  entities -> insertItems(type, entities) },
+                        fetchFromCacheAction = { loadItemsByCategory(type) },
                         type
                     )
+//                    .getData(
+//                        cacheAction = {  entities -> insertItems(type, entities) },
+//                        type
+//                    )
             },
             dbDataProvider = { loadItemsByCategory(type) }
         ).subscribeOn(Schedulers.io())
@@ -57,7 +57,7 @@ class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMo
         }
     }
 
-    private fun loadItemsByCategory(type: String): List<TMDBMovieEntity> {
-        return tmdbMoviesDAO.loadItemsByCategory(type)
+    private fun loadItemsByCategory(type: String): Single<List<TMDBMovieEntity>> {
+        return tmdbMoviesDAO.loadItemsByCategory(type).subscribeOn(Schedulers.io())
     }
 }

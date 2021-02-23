@@ -1,7 +1,7 @@
 package com.softvision.data.network.model
 
 import com.softvision.data.database.model.TMDBMovieGenreEntity
-import com.softvision.data.network.base.GenreRoomMapper
+import com.softvision.data.mappers.GenreRoomMapper
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

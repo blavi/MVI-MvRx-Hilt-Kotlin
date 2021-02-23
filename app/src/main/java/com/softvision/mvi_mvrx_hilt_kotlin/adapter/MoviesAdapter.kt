@@ -7,19 +7,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
 
-class MoviesAdapter(private val clickListener: (TMDBMovieDetails) -> Unit): RecyclerView.Adapter<MoviesAdapter.DataViewHolder>() {
+class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.DataViewHolder>() {
     private var items: MutableList<TMDBMovieDetails> = mutableListOf()
+    private val movieSelectSubject: PublishSubject<TMDBMovieDetails> = PublishSubject.create()
+    val clickEvent: Observable<TMDBMovieDetails> = movieSelectSubject.hide()
 
-    class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TMDBMovieDetails, clickListener: (TMDBMovieDetails) -> Unit) {
+    inner class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: TMDBMovieDetails) {
             item.poster_path?.let {
                 val requestOptions = RequestOptions()
                 requestOptions.apply {
@@ -33,8 +37,9 @@ class MoviesAdapter(private val clickListener: (TMDBMovieDetails) -> Unit): Recy
                     .into(binding.itemBanner)
                 }
 
-            binding.root.setOnClickListener() {
-                clickListener(item)
+            binding.root.setOnClickListener {
+                movieSelectSubject.onNext(item)
+//                clickListener(item)
             }
 
             Timber.i("Explore State: MOVIE- %s", item.title)
@@ -50,7 +55,7 @@ class MoviesAdapter(private val clickListener: (TMDBMovieDetails) -> Unit): Recy
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(items[position], clickListener)
+        holder.bind(items[position])
 
     fun addData(list: List<TMDBMovieDetails>) {
         Timber.i("Explore State: MOVIES - trending notifydatasetchanged")

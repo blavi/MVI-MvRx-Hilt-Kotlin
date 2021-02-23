@@ -18,6 +18,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.Single
+import timber.log.Timber
 
 class MoviesViewModel @AssistedInject constructor(@Assisted initialExplorerState: MoviesByGenreState,
                                                   private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>,
@@ -44,6 +45,7 @@ class MoviesViewModel @AssistedInject constructor(@Assisted initialExplorerState
     }
 
     fun fetchMoviesByGenre(genreID: Int, offset: Int = 0) {
+        Timber.i("Explore State: fetch movies by genre")
         moviesInteractor.invoke(genreID.toString(), offset / 20 + 1)
             .execute {
                 copy(

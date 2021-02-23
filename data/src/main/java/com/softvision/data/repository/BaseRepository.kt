@@ -1,8 +1,9 @@
 package com.softvision.data.repository
 
 import com.softvision.data.common.Connectivity
-import com.softvision.data.network.base.ItemDomainMapper
+import com.softvision.data.mappers.ItemDomainMapper
 import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseRepository<D : Any, E : ItemDomainMapper<D>> {
@@ -12,20 +13,24 @@ abstract class BaseRepository<D : Any, E : ItemDomainMapper<D>> {
     /**
      * Use this if you need to cache data after fetching it from the api, or retrieve something from cache
      */
-    protected fun fetchData(apiDataProvider: () -> Single<List<D>>, dbDataProvider: () -> List<E>): Single<List<D>> {
+    protected fun fetchData(apiDataProvider: () -> Single<List<D>>, dbDataProvider: () -> Single<List<E>>): Single<List<D>> {
         return if (connectivity.hasNetworkAccess()) {
             apiDataProvider()
         } else {
-            val dbResult = dbDataProvider()
-            var mappedDbResult = emptyList<D>()
-
-            if (dbResult != null) {
-                dbResult.forEach {
-                    mappedDbResult = mappedDbResult.plus(it.mapToDomainModel())
+            dbDataProvider()
+                .filter {
+                    it.isNotEmpty()
                 }
-            }
-
-            Single.just(mappedDbResult)
+                .toSingle()
+                .map { list ->
+                    list.map {
+                        it.mapToDomainModel()
+                    }
+                }
+                .onErrorResumeNext {
+                    Timber.i("Explore State - repo error - %s", it.localizedMessage)
+                    Single.error(it)
+                }
         }
     }
 

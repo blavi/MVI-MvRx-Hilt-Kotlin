@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -111,6 +112,9 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // RxBinding
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 }
 kapt {
     correctErrorTypes true

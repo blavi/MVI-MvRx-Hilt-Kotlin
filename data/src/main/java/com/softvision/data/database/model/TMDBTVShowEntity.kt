@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.softvision.data.database.base.TMDB_TV_SHOWS
-import com.softvision.data.network.base.ItemDomainMapper
+import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.domain.model.TMDBTVShowDetails
 
 @Entity(tableName = TMDB_TV_SHOWS)

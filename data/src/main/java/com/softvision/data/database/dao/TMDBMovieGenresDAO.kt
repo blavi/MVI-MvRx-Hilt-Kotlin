@@ -4,11 +4,12 @@ import androidx.room.*
 import com.softvision.data.database.base.TMDB_MOVIE_GENRES
 import com.softvision.data.database.model.TMDBMovieGenreEntity
 import com.softvision.data.database.model.TMDBMovieEntity
+import io.reactivex.Single
 
 @Dao
 interface TMDBMovieGenresDAO {
     @Query("SELECT * FROM $TMDB_MOVIE_GENRES ORDER BY ID")
-    fun loadAllItems(): List<TMDBMovieGenreEntity>
+    fun loadAllItems(): Single<List<TMDBMovieGenreEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertItems(items: List<TMDBMovieGenreEntity>)

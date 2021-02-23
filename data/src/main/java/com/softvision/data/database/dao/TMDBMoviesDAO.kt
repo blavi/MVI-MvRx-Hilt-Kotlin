@@ -4,11 +4,12 @@ import androidx.room.*
 import com.softvision.data.database.base.TMDB_MOVIES
 import com.softvision.data.database.model.PartialTMDBMovieEntity
 import com.softvision.data.database.model.TMDBMovieEntity
+import io.reactivex.Single
 
 @Dao
 interface TMDBMoviesDAO {
     @Query("SELECT * FROM $TMDB_MOVIES ORDER BY ID")
-    fun loadAllItems(): List<TMDBMovieEntity>
+    fun loadAllItems(): Single<List<TMDBMovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertItems(items: List<TMDBMovieEntity>)
@@ -26,5 +27,5 @@ interface TMDBMoviesDAO {
     fun getItem(itemID: Int): TMDBMovieEntity?
 
     @Query("SELECT * FROM $TMDB_MOVIES WHERE :category in (CATEGORIES)")
-    fun loadItemsByCategory(category: String): List<TMDBMovieEntity>
+    fun loadItemsByCategory(category: String): Single<List<TMDBMovieEntity>>
 }

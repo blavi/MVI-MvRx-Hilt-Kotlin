@@ -137,15 +137,28 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
         }
     }
 
-    fun loadMoreComingSoonTVShows() {
-
+    fun loadMoreComingSoonTVShows() = withState {
+        it.apply {
+            if (comingSoonTVShowsRequest.complete && comingSoonTVShows.isNotEmpty()) {
+                fetchComingSoonTVShows(comingSoonTVShows.count())
+            }
+        }
     }
 
-    fun loadMoreTVShowsMovies() {
-
+    fun loadMorePopularTVShows() = withState {
+        it.apply {
+            if (popularTVShowsRequest.complete && popularTVShows.isNotEmpty()) {
+                fetchPopularTVShows(popularTVShows.count())
+            }
+        }
     }
 
-    fun loadMoreTrendingTVShows() {
+    fun loadMoreTrendingTVShows() = withState {
+        it.apply{
+            if (trendingTVShowsRequest.complete && trendingTVShows.isNotEmpty()) {
+                fetchTrendingTVShows(trendingTVShows.count())
+            }
+        }
     }
 
     @AssistedInject.Factory

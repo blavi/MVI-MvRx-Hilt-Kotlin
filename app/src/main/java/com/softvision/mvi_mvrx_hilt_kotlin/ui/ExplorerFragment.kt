@@ -20,6 +20,7 @@ import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentExplorerBinding
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.ExplorerViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -39,6 +40,8 @@ class ExplorerFragment: Fragment(), MvRxView {
     private lateinit var trendingTVShowsAdapter: TVShowsAdapter
     private lateinit var popularTVShowsAdapter: TVShowsAdapter
     private lateinit var comingSoonTVShowsAdapter: TVShowsAdapter
+
+    private var disposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -81,9 +84,19 @@ class ExplorerFragment: Fragment(), MvRxView {
      */
 
     private fun setComingSoonMoviesLayout() {
-        comingSoonMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+        // comingSoonMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        //    setSelectedItem(item)
+        // }
+
+        // Item selection listener using Rx
+        comingSoonMoviesAdapter = MoviesAdapter()
+        val comingSoonMoviesDisposable = comingSoonMoviesAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(comingSoonMoviesDisposable)
+
         binding.comingSoonMoviesLayout.comingSoonRecyclerView.apply {
             adapter = comingSoonMoviesAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
@@ -93,9 +106,19 @@ class ExplorerFragment: Fragment(), MvRxView {
     }
 
     private fun setPopularMoviesLayout() {
-        popularMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+        // popularMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        //    setSelectedItem(item)
+        // }
+
+        // Item selection listener using Rx
+        popularMoviesAdapter = MoviesAdapter()
+        val popularMoviesDisposable = popularMoviesAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(popularMoviesDisposable)
+
         binding.popularMoviesLayout.popularRecyclerView.apply {
             adapter = popularMoviesAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
@@ -105,9 +128,19 @@ class ExplorerFragment: Fragment(), MvRxView {
     }
 
     private fun setTrendingMoviesLayout() {
-        trendingMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+        // trendingMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        //    setSelectedItem(item)
+        // }
+
+        // Item selection listener using Rx
+        trendingMoviesAdapter = MoviesAdapter()
+        val trendingMoviesDisposable = trendingMoviesAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(trendingMoviesDisposable)
+
         binding.trendingMoviesLayout.trendingMoviesRecyclerView.apply {
             adapter = trendingMoviesAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
@@ -117,9 +150,19 @@ class ExplorerFragment: Fragment(), MvRxView {
     }
 
     private fun setComingSoonTVShowsLayout() {
-        comingSoonTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+//        comingSoonTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//            setSelectedItem(item)
+//        }
+
+        // Item selection listener using Rx
+        comingSoonTVShowsAdapter = TVShowsAdapter()
+        val comingSoonTvShowsDisposable = comingSoonTVShowsAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(comingSoonTvShowsDisposable)
+
         binding.comingSoonTVShowsLayout.comingSoonRecyclerView.apply {
             adapter = comingSoonTVShowsAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
@@ -129,21 +172,42 @@ class ExplorerFragment: Fragment(), MvRxView {
     }
 
     private fun setPopularTVShowsLayout() {
-        popularTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+//        popularTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//            setSelectedItem(item)
+//        }
+
+        // Item selection listener using Rx
+        popularTVShowsAdapter = TVShowsAdapter()
+        val popularTvShowsDisposable = popularTVShowsAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(popularTvShowsDisposable)
+
+
         binding.popularTVShowsLayout.popularRecyclerView.apply {
             adapter = popularTVShowsAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
-                explorerViewModel.loadMoreTVShowsMovies()
+                explorerViewModel.loadMorePopularTVShows()
             }
         }
     }
 
     private fun setTrendingTVShowsLayout() {
-        trendingTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
-            setSelectedItem(item)
-        }
+        // Item selection listener without Rx
+//        trendingTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//            setSelectedItem(item)
+//        }
+
+        // Item selection listener using Rx
+        trendingTVShowsAdapter = TVShowsAdapter()
+        val trendingTvShowsDisposable = trendingTVShowsAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(trendingTvShowsDisposable)
+
         binding.trendingTVShowsLayout.trendingTVShowsRecyclerView.apply {
             adapter = trendingTVShowsAdapter
             setInfiniteScrolling(layoutManager as LinearLayoutManager){
@@ -195,6 +259,7 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonMoviesRequest,
             onFail = {
                 updateComingSoonMoviesLoader(View.GONE)
+                updateNoComingSoonMoviesLabel(View.VISIBLE)
             }
         )
 
@@ -211,6 +276,7 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonTVShowsRequest,
             onFail = {
                 updateComingSoonTVShowsLoader(View.GONE)
+                updateNoComingSoonTVShowsLabel(View.VISIBLE)
             }
         )
 
@@ -227,6 +293,7 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::popularMoviesRequest,
             onFail = {
                 updatePopularMoviesLoader(View.GONE)
+                updateNoPopularMoviesLabel(View.VISIBLE)
             }
         )
 
@@ -243,6 +310,7 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::popularTVShowsRequest,
             onFail = {
                 updatePopularTVShowsLoader(View.GONE)
+                updateNoPopularTVShowsLabel(View.VISIBLE)
             }
         )
 
@@ -258,7 +326,9 @@ class ExplorerFragment: Fragment(), MvRxView {
     private fun setTrendingMoviesListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingMoviesRequest,
             onFail = {
+                Timber.i("Explore State: trending movies async failed")
                 updateTrendingMoviesLoader(View.GONE)
+                updateNoTrendingMoviesLabel(View.VISIBLE)
             }
         )
 
@@ -275,6 +345,7 @@ class ExplorerFragment: Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingTVShowsRequest,
             onFail = {
                 updateTrendingTVShowsLoader(View.GONE)
+                updateNoTrendingTVShowsLabel(View.VISIBLE)
             }
         )
 
@@ -290,6 +361,36 @@ class ExplorerFragment: Fragment(), MvRxView {
     /*
         ------------------ UPDATE UI ------------------
     */
+
+    private fun updateNoTrendingMoviesLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = visibility
+    }
+
+    private fun updateNoTrendingTVShowsLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = visibility
+    }
+
+    private fun updateNoPopularMoviesLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.popularMoviesLayout.noPopularMoviesImgView.visibility = visibility
+    }
+
+    private fun updateNoPopularTVShowsLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = visibility
+    }
+
+    private fun updateNoComingSoonMoviesLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = visibility
+    }
+
+    private fun updateNoComingSoonTVShowsLabel(visibility: Int) {
+        Timber.i("Explore State: trending movies no data label %s", visibility)
+        binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = visibility
+    }
 
     private fun updateTrendingMoviesLoader(visibility: Int) {
         Timber.i("Explore State: trending loading")
@@ -335,11 +436,13 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updateTrendingMoviesList(items: List<TMDBMovieDetails>) {
         updateTrendingMoviesLoader(View.GONE)
-        if (items.isEmpty()) {
-            Timber.i("Explore State: trending display select empty")
-            binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = View.VISIBLE
-        } else {
-            Timber.i("Explore State: trending display select not empty")
+//        if (items.isEmpty()) {
+//            Timber.i("Explore State: trending movies display select empty")
+//            binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = View.VISIBLE
+//        } else
+
+        if (items.isNotEmpty()) {
+            Timber.i("Explore State: trending movies display select not empty")
             trendingMoviesAdapter.addData(items)
             binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = View.GONE
         }
@@ -347,11 +450,12 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updateTrendingTVShowsList(items: List<TMDBTVShowDetails>) {
         updateTrendingTVShowsLoader(View.GONE)
-        if (items.isEmpty()) {
-            Timber.i("Explore State: trending display select empty")
-            binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = View.VISIBLE
-        } else {
-            Timber.i("Explore State: trending display select not empty")
+//        if (items.isEmpty()) {
+//            Timber.i("Explore State: trending display select empty")
+//            binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = View.VISIBLE
+//        } else {
+        if (items.isNotEmpty()) {
+            Timber.i("Explore State: trending tv shows display select not empty")
             trendingTVShowsAdapter.addData(items)
             binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = View.GONE
         }
@@ -359,9 +463,10 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updatePopularMoviesList(items: List<TMDBMovieDetails>) {
         updatePopularMoviesLoader(View.GONE)
-        if (items.isEmpty()) {
-            binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.VISIBLE
-        } else {
+//        if (items.isEmpty()) {
+//            binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.VISIBLE
+//        } else {
+        if (items.isNotEmpty()) {
             binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.GONE
             popularMoviesAdapter.addData(items)
         }
@@ -369,9 +474,10 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updatePopularTVShowsList(items: List<TMDBTVShowDetails>) {
         updatePopularTVShowsLoader(View.GONE)
-        if (items.isEmpty()) {
-            binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.VISIBLE
-        } else {
+//        if (items.isEmpty()) {
+//            binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.VISIBLE
+//        } else {
+        if (items.isNotEmpty()) {
             binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.GONE
             popularTVShowsAdapter.addData(items)
         }
@@ -379,9 +485,10 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updateComingSoonMoviesList(items: List<TMDBMovieDetails>) {
         updateComingSoonMoviesLoader(View.GONE)
-        if (items.isEmpty()) {
-            binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.VISIBLE
-        } else {
+//        if (items.isEmpty()) {
+//            binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.VISIBLE
+//        } else {
+        if (items.isNotEmpty()) {
             binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.GONE
             comingSoonMoviesAdapter.addData(items)
         }
@@ -389,9 +496,10 @@ class ExplorerFragment: Fragment(), MvRxView {
 
     private fun updateComingSoonTVShowsList(items: List<TMDBTVShowDetails>) {
         updateComingSoonTVShowsLoader(View.GONE)
-        if (items.isEmpty()) {
-            binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.VISIBLE
-        } else {
+//        if (items.isEmpty()) {
+//            binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.VISIBLE
+//        } else {
+        if (items.isNotEmpty()) {
             binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.GONE
             comingSoonTVShowsAdapter.addData(items)
         }
@@ -413,4 +521,9 @@ class ExplorerFragment: Fragment(), MvRxView {
 //    private fun showError() {
 //        Toast.makeText(requireContext(), "Failed to load watchlist", Toast.LENGTH_SHORT).show()
 //    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
+    }
 }

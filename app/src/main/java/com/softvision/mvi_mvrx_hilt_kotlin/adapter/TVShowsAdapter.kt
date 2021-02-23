@@ -12,13 +12,17 @@ import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-class TVShowsAdapter(private val clickListener: (TMDBTVShowDetails) -> Unit): RecyclerView.Adapter<TVShowsAdapter.DataViewHolder>() {
+class TVShowsAdapter: RecyclerView.Adapter<TVShowsAdapter.DataViewHolder>() {
     private var items: MutableList<TMDBTVShowDetails> = mutableListOf()
+    private val tvShowSelectSubject: PublishSubject<TMDBTVShowDetails> = PublishSubject.create()
+    val clickEvent: Observable<TMDBTVShowDetails> = tvShowSelectSubject.hide()
 
-    class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TMDBTVShowDetails, clickListener: (TMDBTVShowDetails) -> Unit) {
+    inner class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: TMDBTVShowDetails) {
             item.poster_path?.let {
                 val requestOptions = RequestOptions()
                 requestOptions.apply {
@@ -33,7 +37,8 @@ class TVShowsAdapter(private val clickListener: (TMDBTVShowDetails) -> Unit): Re
             }
 
             binding.root.setOnClickListener() {
-                clickListener(item)
+                tvShowSelectSubject.onNext(item)
+//                clickListener(item)
             }
 
             Timber.i("Explore State: TV SHOW - %s", item.title)
@@ -49,7 +54,7 @@ class TVShowsAdapter(private val clickListener: (TMDBTVShowDetails) -> Unit): Re
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(items[position], clickListener)
+        holder.bind(items[position])
 
     fun addData(list: List<TMDBTVShowDetails>) {
         Timber.i("Explore State: TV SHOWS - trending notifydatasetchanged")

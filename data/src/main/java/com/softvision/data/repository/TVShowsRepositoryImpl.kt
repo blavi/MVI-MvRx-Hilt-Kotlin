@@ -30,15 +30,15 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDB
         return fetchData(
             apiDataProvider = {
                 apiDataProviderVal
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        fetchFromCacheAction = { loadItemsByCategory(type) },
-//                        type
-//                    )
                     .getData(
                         cacheAction = {  entities -> insertItems(type, entities) },
+                        fetchFromCacheAction = { loadItemsByCategory(type) },
                         type
                     )
+//                    .getData(
+//                        cacheAction = {  entities -> insertItems(type, entities) },
+//                        type
+//                    )
             },
             dbDataProvider = { loadItemsByCategory(type) }
         ).subscribeOn(Schedulers.io())
@@ -57,7 +57,7 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDB
         }
     }
 
-    private fun loadItemsByCategory(type: String): List<TMDBTVShowEntity> {
-        return tmdbTVShowsDAO.loadItemsByCategory(type)
+    private fun loadItemsByCategory(type: String): Single<List<TMDBTVShowEntity>> {
+        return tmdbTVShowsDAO.loadItemsByCategory(type).subscribeOn(Schedulers.io())
     }
 }

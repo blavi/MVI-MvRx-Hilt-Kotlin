@@ -15,6 +15,7 @@ import com.airbnb.mvrx.withState
 import com.softvision.domain.model.TMDBGenre
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.domain.mvi.ExplorerState
 import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.GenresAdapter
@@ -23,6 +24,7 @@ import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentMoviesBinding
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,6 +36,8 @@ class MoviesFragment: Fragment(), MvRxView {
 
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var genresAdapter: GenresAdapter
+
+    private var disposables: CompositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var viewModelFactory: MoviesViewModel.Factory
@@ -63,6 +67,7 @@ class MoviesFragment: Fragment(), MvRxView {
     private fun initListeners() {
         initGenresListener()
         initMoviesListener()
+        setItemSelectionListener()
     }
 
     /*
@@ -70,9 +75,18 @@ class MoviesFragment: Fragment(), MvRxView {
      */
 
     private fun setMoviesByGenreLayout() {
-        moviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
-            setSelectedItem(item)
-        }
+//        moviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+//            setSelectedItem(item)
+//        }
+
+        // Item selection listener using Rx
+        moviesAdapter = MoviesAdapter()
+        val popularTvShowsDisposable = moviesAdapter.clickEvent
+            .subscribe {
+                setSelectedItem(it)
+            }
+        disposables.add(popularTvShowsDisposable)
+
         val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.moviesRecyclerView.apply {
             adapter = moviesAdapter
@@ -108,10 +122,12 @@ class MoviesFragment: Fragment(), MvRxView {
             MoviesByGenreState::moviesByGenreRequest,
             onFail = {
                 updateLoader(View.GONE)
+                updateNoDataLabel(View.VISIBLE)
             }
         )
 
         moviesViewModel.selectSubscribe(MoviesByGenreState::moviesByGenreList){
+            Timber.i("Explore State: movies select subscribe")
             updateMoviesList(it)
         }
     }
@@ -121,13 +137,22 @@ class MoviesFragment: Fragment(), MvRxView {
             MoviesByGenreState::genresRequest,
             onFail = {
                 updateLoader(View.GONE)
+                updateNoDataLabel(View.VISIBLE)
             }
         )
 
         moviesViewModel.selectSubscribe(MoviesByGenreState::genres) { list ->
-            updateGenresDropdown(list)
             if (list.isNotEmpty()) {
+                updateGenresDropdown(list)
                 moviesViewModel.fetchMoviesByGenre(list[0].id)
+            }
+        }
+    }
+
+    private fun setItemSelectionListener() {
+        moviesViewModel.selectSubscribe(MoviesByGenreState::selectedItem) { item ->
+            item?.let {
+                displayDetails(item)
             }
         }
     }
@@ -136,12 +161,18 @@ class MoviesFragment: Fragment(), MvRxView {
         ------------------ UPDATE UI ------------------
     */
 
+    private fun updateNoDataLabel(visibility: Int) {
+        Timber.i("Explore State: movies genre no data label %s", visibility)
+        binding.noMoviesImgView.visibility = visibility
+    }
+
     private fun updateMoviesList(list: List<TMDBMovieDetails>) {
         updateLoader(View.GONE)
-        if (list.isEmpty()) {
-            Timber.i("Explore State: movies empty")
-            binding.noMoviesImgView.visibility = View.VISIBLE
-        } else {
+//        if (list.isEmpty()) {
+//            Timber.i("Explore State: movies empty")
+//            binding.noMoviesImgView.visibility = View.VISIBLE
+//        } else {
+        if (list.isNotEmpty()) {
             Timber.i("Explore State: movies not empty")
             moviesAdapter.addData(list)
             binding.noMoviesImgView.visibility = View.GONE
@@ -176,5 +207,15 @@ class MoviesFragment: Fragment(), MvRxView {
 
     private fun setSelectedItem(item: TMDBItemDetails?) {
         moviesViewModel.setSelectedItem(item)
+    }
+
+    private fun displayDetails(item: TMDBItemDetails) {
+        moviesViewModel.setSelectedItem(null)
+        (requireActivity() as MainActivity).goToDetails(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 }

@@ -9,7 +9,11 @@
         android:id="@+id/navigation_movies"
         android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.MoviesFragment"
         android:label="@string/title_movies"
-        tools:layout="@layout/fragment_movies" />
+        tools:layout="@layout/fragment_movies" >
+        <action
+            android:id="@+id/action_navigation_movies_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_explorer"
@@ -17,7 +21,7 @@
         android:label="@string/title_explorer"
         tools:layout="@layout/fragment_explorer" >
         <action
-            android:id="@+id/action_navigation_explorer_to_popupDialogFragment"
+            android:id="@+id/action_navigation_explorer_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
 
@@ -25,7 +29,11 @@
         android:id="@+id/navigation_tv_shows"
         android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.TVShowsFragment"
         android:label="@string/title_tv_shows"
-        tools:layout="@layout/fragment_tv_shows" />
+        tools:layout="@layout/fragment_tv_shows" >
+        <action
+            android:id="@+id/action_navigation_tv_shows_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"

@@ -23,16 +23,12 @@ class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: TMDBM
         return fetchData(
             apiDataProvider = {
                 apiDataProviderVal
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        fetchFromCacheAction = { loadItemsByCategory(type) },
-//                        type
-//                    )
                     .getData(
-                        cacheAction = {  entities -> insertItems(entities) }
+                        cacheAction = {  entities -> insertItems(entities) },
+                        fetchFromCacheAction = { loadAllItems() }
                     )
             },
-            dbDataProvider = { loadItemsByCategory() }
+            dbDataProvider = { loadAllItems() }
         ).subscribeOn(Schedulers.io())
     }
 
@@ -40,7 +36,7 @@ class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: TMDBM
         genresDAO.insertItems(items)
     }
 
-    private fun loadItemsByCategory(): List<TMDBMovieGenreEntity> {
-        return genresDAO.loadAllItems()
+    private fun loadAllItems(): Single<List<TMDBMovieGenreEntity>> {
+        return genresDAO.loadAllItems().subscribeOn(Schedulers.io())
     }
 }
