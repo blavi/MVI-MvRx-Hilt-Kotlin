@@ -7,12 +7,12 @@ import com.softvision.domain.model.TMDBMovieDetails
 
 data class MoviesByGenreState(
     val genresRequest: Async<List<TMDBGenre>> = Uninitialized,
-    @PersistState val genres: List<TMDBGenre> = emptyList(),
+    val genres: List<TMDBGenre> = emptyList(),
 
-    @PersistState val displayedGenre: TMDBGenre? = null,
+    val displayedGenre: TMDBGenre? = null,
 
     val moviesByGenreRequest: Async<List<TMDBMovieDetails>> = Uninitialized,
-    @PersistState val moviesByGenreList: List<TMDBMovieDetails> = emptyList(),
+    val moviesByGenreList: List<TMDBMovieDetails> = emptyList(),
 
     val selectedItem: TMDBItemDetails? = null
 ): MvRxState {
