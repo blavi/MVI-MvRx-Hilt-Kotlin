@@ -41,7 +41,7 @@ class TVShowsAdapter: RecyclerView.Adapter<TVShowsAdapter.DataViewHolder>() {
 //                clickListener(item)
             }
 
-            Timber.i("Explore State: TV SHOW - %s", item.title)
+//            Timber.i("Explore State: TV SHOW - %s", item.title)
         }
     }
 
@@ -57,7 +57,7 @@ class TVShowsAdapter: RecyclerView.Adapter<TVShowsAdapter.DataViewHolder>() {
         holder.bind(items[position])
 
     fun addData(list: List<TMDBTVShowDetails>) {
-        Timber.i("Explore State: TV SHOWS - trending notifydatasetchanged")
+//        Timber.i("Explore State: TV SHOWS - trending notifydatasetchanged")
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()

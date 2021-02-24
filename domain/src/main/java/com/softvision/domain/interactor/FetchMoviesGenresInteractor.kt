@@ -10,7 +10,7 @@ import javax.inject.Inject
 class FetchMoviesGenresInteractor @Inject constructor(private val repository: GenresRepository<TMDBGenre>): BaseFetchGenresUseCase<TMDBGenre> {
 
     override fun invoke(): Single<List<TMDBGenre>> {
-        Timber.i("Explore State: genres interactor")
+//        Timber.i("Explore State: genres interactor")
         return repository.getData()
     }
 }

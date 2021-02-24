@@ -63,35 +63,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
-<!--    </FrameLayout>-->
-
-
-<!--<androidx.constraintlayout.widget.ConstraintLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".ui.ExplorerFragment">-->
-
-<!--    <include-->
-<!--        android:id="@+id/explorerMasterLayout"-->
-<!--        layout="@layout/explorer_master_layout"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_width="match_parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
-
-<!--&lt;!&ndash;    <androidx.fragment.app.FragmentContainerView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/itemDetailsContainer"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.DetailsFragment"/>&ndash;&gt;-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

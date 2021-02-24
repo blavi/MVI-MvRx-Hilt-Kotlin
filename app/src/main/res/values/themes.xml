@@ -2,36 +2,24 @@
     <!-- Base application theme. -->
     <style name="Theme.MVIKnotHiltKotlin" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/mandarin</item>
-        <item name="colorPrimaryVariant">@color/flame</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/copper_rose</item>
+        <item name="colorPrimaryVariant">@color/rose_taupe</item>
+        <item name="colorOnPrimary">@color/battleship_gray</item>
 
-        <item name="android:colorBackground">@color/white</item>
+        <item name="android:colorBackground">@color/magnolia</item>
         <!--        <item name="android:windowBackground">@color/orange_900</item>-->
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/flame</item>
-        <item name="colorSecondaryVariant">@color/mandarin</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/rose_taupe</item>
+        <item name="colorSecondaryVariant">@color/battleship_gray</item>
+        <item name="colorOnSecondary">@color/silver_sand</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="android:textColor">@color/space_cadet</item>
+        <item name="android:textColor">@color/battleship_gray</item>
 
         <item name="bottomSheetDialogTheme">@style/MyBottomSheetDialogTheme</item>
     </style>
 
-    <!-- BottomSheet Dialog-->
-    <style name="MyBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/MYBottomSheetStyle</item>
-    </style>
 
-    <style name="MYBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="Title">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 </resources>

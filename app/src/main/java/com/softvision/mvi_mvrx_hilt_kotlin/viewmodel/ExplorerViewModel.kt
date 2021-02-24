@@ -8,7 +8,6 @@ import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.mvi.ExplorerState
-import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -18,7 +17,11 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
                                                     private val tvShowsInteractor: BaseFetchItemsUseCase<String, TMDBTVShowDetails, Int>)
     :BaseMvRxViewModel<ExplorerState>(initialExplorerState) {
 
-    fun fetchTMDBItems() {
+    init {
+        initiateLoadingMoviesAndTVShows()
+    }
+
+    private fun initiateLoadingMoviesAndTVShows() {
         setState {
             copy(trendingMoviesRequest = Loading())
             copy(trendingTVShowsRequest = Loading())

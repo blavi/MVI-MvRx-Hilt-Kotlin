@@ -8,6 +8,7 @@
 
     <Spinner
         android:id="@+id/genresSpinner"
+        style="@style/spinnerStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
@@ -15,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:spinnerMode="dropdown"
-        android:prompt="@string/spinner_title" />
+        android:prompt="@string/spinner_title"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/moviesRecyclerView"

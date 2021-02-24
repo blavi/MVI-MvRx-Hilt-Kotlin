@@ -19,7 +19,7 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDB
 
     override fun getData(type: String, page: Int): Single<List<TMDBTVShowDetails>> {
 
-        Timber.i("Explore State: type: %s, page: %s", type, page)
+//        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
             DataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page).subscribeOn(Schedulers.io())
             DataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page).subscribeOn(Schedulers.io())

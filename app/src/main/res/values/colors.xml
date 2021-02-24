@@ -21,4 +21,15 @@
     <color name="silver">#bfc0c0</color>
     <color name="mandarin">#ef8354</color>
     <color name="flame">#ea5c1f</color>
+
+    <color name="eerie_black">#141414</color>
+    <color name="translucid_eerie_black">#E6141414</color>
+    <color name="magnolia">#FCF7FF</color>
+    <color name="translucid_magnolia">#E6FCF7FF</color>
+    <color name="silver_sand">#C4CAD0</color>
+    <color name="battleship_gray">#878C8F</color>
+    <color name="heliotrope_gray">#A4969B</color>
+    <color name="green_sheen">#7DAA92</color>
+    <color name="copper_rose">#A26769</color>
+    <color name="rose_taupe">#8B5557</color>
 </resources>

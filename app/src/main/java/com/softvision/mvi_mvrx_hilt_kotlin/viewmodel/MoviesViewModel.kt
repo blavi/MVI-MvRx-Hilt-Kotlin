@@ -2,30 +2,28 @@ package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
 import android.util.Log
 import com.airbnb.mvrx.*
-import com.softvision.data.network.base.DataType
 import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
-import com.softvision.domain.interactor.FetchMoviesInteractor
 import com.softvision.domain.model.TMDBGenre
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBMoviesByGenre
-import com.softvision.domain.mvi.ExplorerState
 import com.softvision.domain.mvi.MoviesByGenreState
-import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
+//import com.softvision.mvi_mvrx_hilt_kotlin.di.AssistedViewModelFactory
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.MoviesFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.reactivex.Observable
-import io.reactivex.Single
 import timber.log.Timber
 
-class MoviesViewModel @AssistedInject constructor(@Assisted initialExplorerState: MoviesByGenreState,
+class MoviesViewModel @AssistedInject constructor(@Assisted initialState: MoviesByGenreState,
                                                   private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>,
                                                   private val genresInteractor: BaseFetchGenresUseCase<TMDBGenre>
-) :BaseMvRxViewModel<MoviesByGenreState>(initialExplorerState) {
+) :BaseMvRxViewModel<MoviesByGenreState>(initialState) {
 
-    fun initiateGenresRequest() {
+    init {
+        initiateLoadingGenresAndMovies()
+    }
+
+    private fun initiateLoadingGenresAndMovies() {
         setState {
             copy(genresRequest = Loading())
         }
@@ -34,32 +32,36 @@ class MoviesViewModel @AssistedInject constructor(@Assisted initialExplorerState
     }
 
     private fun fetchGenres() {
-        Log.i("Explore State", "movies invoke")
+        Timber.i("Movies: movie genres invoke")
         genresInteractor.invoke()
             .execute {
                 copy(
                     genresRequest = it,
-                    genres = it.invoke() ?: emptyList()
+                    genres = it.invoke() ?: emptyList(),
+                    displayedGenre = it.invoke()?.get(0)
                 )
             }
     }
 
-    fun fetchMoviesByGenre(genreID: Int, offset: Int = 0) {
-        Timber.i("Explore State: fetch movies by genre")
-        moviesInteractor.invoke(genreID.toString(), offset / 20 + 1)
-            .execute {
-                copy(
-                    moviesByGenreRequest = it,
-                    moviesByGenreList = combineMoviesByGenre(offset, genreID, it),
-                    displayedGenreId = genreID
-                )
-            }
+    fun fetchMoviesByGenre(offset: Int = 0) = withState { state ->
+        state.displayedGenre?.let { genre ->
+            Timber.i("Explore State: genre id: %s", genre.id)
+            moviesInteractor.invoke(genre.id.toString(), offset / 20 + 1)
+                .execute {
+                    copy(
+                        moviesByGenreRequest = it,
+                        moviesByGenreList = combineMoviesByGenre(offset, genre.id, it)
+                    )
+                }
+        }
+
+        Timber.i("Movies: %s",  this)
     }
 
     fun loadMoreMoviesWithSelectedGenre() = withState {
         it.apply {
-            if (moviesByGenreRequest.complete && moviesByGenreList.isNotEmpty() && displayedGenreId != null) {
-                fetchMoviesByGenre(displayedGenreId!!, moviesByGenreList.count())
+            if (moviesByGenreRequest.complete && moviesByGenreList.isNotEmpty() && displayedGenre != null) {
+                fetchMoviesByGenre(moviesByGenreList.count())
             }
         }
     }
@@ -71,15 +73,22 @@ class MoviesViewModel @AssistedInject constructor(@Assisted initialExplorerState
         }
     }
 
+    fun updateSelectedGenre(genre: TMDBGenre) {
+        Timber.i("Explore State: update selected genre id: %s", genre.name)
+        setState {
+            copy(displayedGenre = genre)
+        }
+    }
+
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialExplorerState: MoviesByGenreState): MoviesViewModel
+        fun create(initialState: MoviesByGenreState): MoviesViewModel
     }
 
     companion object : MvRxViewModelFactory<MoviesViewModel, MoviesByGenreState> {
-        override fun create(viewModelContext: ViewModelContext, state: MoviesByGenreState): MoviesViewModel =
+        override fun create(viewModelContext: ViewModelContext, initialState: MoviesByGenreState): MoviesViewModel =
             (viewModelContext as FragmentViewModelContext)
                 .fragment<MoviesFragment>()
-                .viewModelFactory.create(state)
+                .viewModelFactory.create(initialState)
     }
 }

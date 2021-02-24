@@ -19,7 +19,7 @@ class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: TMDBMo
 
     override fun getData(type: String, page: Int): Single<List<TMDBMovieDetails>> {
 
-        Timber.i("Explore State: type: %s, page: %s", type, page)
+//        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
             DataType.TRENDING_MOVIES -> resourcesApi.fetchTrendingMovies(page = page).subscribeOn(Schedulers.io())
             DataType.POPULAR_MOVIES -> resourcesApi.fetchPopularMovies(page = page).subscribeOn(Schedulers.io())

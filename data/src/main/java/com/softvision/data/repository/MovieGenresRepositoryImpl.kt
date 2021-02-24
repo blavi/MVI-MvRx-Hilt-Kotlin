@@ -18,7 +18,7 @@ class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: TMDBM
     override fun getData(): Single<List<TMDBGenre>> {
 
         val apiDataProviderVal = resourcesApi.fetchMovieGenres()
-        Timber.i("Explore State: type: FETCH GENRES")
+//        Timber.i("Explore State: type: FETCH GENRES")
 
         return fetchData(
             apiDataProvider = {

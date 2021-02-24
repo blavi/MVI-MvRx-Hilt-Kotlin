@@ -22,6 +22,9 @@ class GenresAdapter(context: Context, layout: Int, private var genresList: Mutab
         return position.toLong()
     }
 
+    fun getPositionById(genreId: Int): Int {
+        return getPosition(genresList.find { it.id == genreId })
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = super.getView(position, convertView, parent) as TextView
@@ -36,7 +39,7 @@ class GenresAdapter(context: Context, layout: Int, private var genresList: Mutab
     }
 
     fun addData(list: List<TMDBGenre>) {
-        Timber.i("Explore State: MOVIES - trending notifydatasetchanged")
+        Timber.i("Explore State: Genres - notifydatasetchanged")
         genresList.clear()
         genresList.addAll(list)
         notifyDataSetChanged()

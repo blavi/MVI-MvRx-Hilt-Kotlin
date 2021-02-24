@@ -42,7 +42,7 @@ class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.DataViewHolder>() {
 //                clickListener(item)
             }
 
-            Timber.i("Explore State: MOVIE- %s", item.title)
+//            Timber.i("Explore State: MOVIE- %s", item.title)
         }
     }
 
@@ -58,7 +58,7 @@ class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.DataViewHolder>() {
         holder.bind(items[position])
 
     fun addData(list: List<TMDBMovieDetails>) {
-        Timber.i("Explore State: MOVIES - trending notifydatasetchanged")
+//        Timber.i("Explore State: MOVIES - notifydatasetchanged %s", list.size)
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()

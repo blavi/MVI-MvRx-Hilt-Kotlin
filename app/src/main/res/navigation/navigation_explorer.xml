@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_explorer"
+    app:startDestination="@+id/navigation_frg_explorer">
+
+    <fragment
+        android:id="@+id/navigation_frg_explorer"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment"
+        android:label="@string/title_explorer"
+        tools:layout="@layout/fragment_explorer" >
+        <action
+            android:id="@+id/action_navigation_explorer_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/detailsFragment"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.DetailsFragment"
+        android:label="Details"
+        android:theme="@style/Theme.MaterialComponents.BottomSheetDialog"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="item"
+            app:argType="com.softvision.domain.model.TMDBItemDetails" />
+    </dialog>
+</navigation>
