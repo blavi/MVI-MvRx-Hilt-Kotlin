@@ -8,7 +8,7 @@ import com.softvision.data.network.base.DataType
 import com.softvision.data.network.model.TMDBMovieResponse
 import com.softvision.data.network.model.TMDBMoviesResponse
 import com.softvision.data.repository.MoviesRepositoryImpl
-import com.softvision.domain.model.TMDBMovieDetails
+import com.softvision.domain.model.TMDBItemDetails
 import io.mockk.*
 import io.reactivex.Single
 import org.junit.After
@@ -20,7 +20,7 @@ class ExplorerRepositoryTest {
     private lateinit var repository: MoviesRepositoryImpl
 
     private lateinit var mockResult: TMDBMoviesResponse
-    private lateinit var mockDetailsList: List<TMDBMovieDetails>
+    private lateinit var mockDetailsList: List<TMDBItemDetails>
     private lateinit var mockResponseList: List<TMDBMovieResponse>
     private lateinit var mockEntityList: List<TMDBMovieEntity>
     private lateinit var api: ApiEndpoints
@@ -30,7 +30,7 @@ class ExplorerRepositoryTest {
 
     private lateinit var itemE: TMDBMovieEntity
     private lateinit var itemR: TMDBMovieResponse
-    private lateinit var itemD: TMDBMovieDetails
+    private lateinit var itemD: TMDBItemDetails
 
     private val page: Int = 1
 
@@ -44,7 +44,7 @@ class ExplorerRepositoryTest {
             every { id } returns 1
             every { categories } returns mockk()
         }
-        itemD = mockk<TMDBMovieDetails>()
+        itemD = mockk<TMDBItemDetails>()
 
         mockResponseList = listOf(itemR, itemR)
         mockEntityList = listOf(itemE, itemE)

@@ -6,6 +6,7 @@ import com.softvision.data.network.base.NetworkConstants.Companion.API_KEY
 import com.softvision.data.network.base.NetworkConstants.Companion.MEDIA_TYPE
 import com.softvision.data.network.base.NetworkConstants.Companion.MOVIE_RELEASE_YEAR
 import com.softvision.data.network.base.NetworkConstants.Companion.PAGE
+import com.softvision.data.network.base.NetworkConstants.Companion.QUERY
 import com.softvision.data.network.base.NetworkConstants.Companion.SORT_BY
 import com.softvision.data.network.base.NetworkConstants.Companion.TIME_WINDOW
 import com.softvision.data.network.base.NetworkConstants.Companion.TV_SHOW_RELEASE_YEAR
@@ -70,4 +71,9 @@ interface ApiEndpoints {
 
     @GET("genre/tv/list")
     fun fetchTVShowGenres(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY): Single<TMDBMovieGenresResponse>
+
+    @GET("search/multi")
+    fun searchTMDBItems(@Query(API_KEY) apiKey: String  = BuildConfig.TMDB_API_KEY,
+                        @Query(QUERY) query: String,
+                        @Query(PAGE) page: Int): Single<TMDBMoviesResponse>
 }

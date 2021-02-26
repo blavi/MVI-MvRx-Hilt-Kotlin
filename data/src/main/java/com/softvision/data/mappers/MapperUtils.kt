@@ -6,6 +6,12 @@ fun <R : ItemRoomMapper<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> apiToD
     }
 }
 
+fun <R : ItemDomainMapper<D>, D : Any> apiToDomain(list: List<R>): List<D> {
+    return list.map {
+        it.mapToDomainModel()
+    }
+}
+
 fun <R : GenreRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> apiToDB(list: List<R>): List<E> {
     return list.map {
         it.mapToRoomEntity()

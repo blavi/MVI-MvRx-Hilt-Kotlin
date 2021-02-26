@@ -14,11 +14,10 @@ import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.softvision.domain.model.TMDBItemDetails
-import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.GenresAdapter
-import com.softvision.mvi_mvrx_hilt_kotlin.adapter.MoviesAdapter
+import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentMoviesBinding
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.MoviesViewModel
@@ -33,7 +32,7 @@ class MoviesFragment: Fragment(), MvRxView {
 
     private lateinit var binding: FragmentMoviesBinding
 
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var itemsAdapter: ItemsAdapter
     private lateinit var genresAdapter: GenresAdapter
 
     private var disposables: CompositeDisposable = CompositeDisposable()
@@ -74,13 +73,13 @@ class MoviesFragment: Fragment(), MvRxView {
      */
 
     private fun setMoviesByGenreLayout() {
-//        moviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+//        moviesAdapter = MoviesAdapter { item: TMDBItemDetails ->
 //            setSelectedItem(item)
 //        }
 
         // Item selection listener using Rx
-        moviesAdapter = MoviesAdapter()
-        val popularTvShowsDisposable = moviesAdapter.clickEvent
+        itemsAdapter = ItemsAdapter()
+        val popularTvShowsDisposable = itemsAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
             }
@@ -88,7 +87,7 @@ class MoviesFragment: Fragment(), MvRxView {
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 4)
         binding.moviesRecyclerView.apply {
-            adapter = moviesAdapter
+            adapter = itemsAdapter
             layoutManager = gridLayoutManager
             setInfiniteScrolling(layoutManager as GridLayoutManager){
                 moviesViewModel.loadMoreMoviesWithSelectedGenre()
@@ -174,10 +173,10 @@ class MoviesFragment: Fragment(), MvRxView {
         binding.noMoviesImgView.visibility = visibility
     }
 
-    private fun updateMoviesList(list: List<TMDBMovieDetails>) {
+    private fun updateMoviesList(list: List<TMDBItemDetails>) {
         updateLoader(View.GONE)
         if (list.isNotEmpty()) {
-            moviesAdapter.addData(list)
+            itemsAdapter.addData(list)
             binding.noMoviesImgView.visibility = View.GONE
         }
     }

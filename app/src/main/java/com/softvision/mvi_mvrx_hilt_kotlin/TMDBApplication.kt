@@ -7,7 +7,6 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
 @HiltAndroidApp
 class TMDBApplication: Application() {
     override fun onCreate() {

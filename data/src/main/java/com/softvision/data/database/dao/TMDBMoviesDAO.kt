@@ -3,7 +3,9 @@ package com.softvision.data.database.dao
 import androidx.room.*
 import com.softvision.data.database.base.TMDB_MOVIES
 import com.softvision.data.database.model.PartialTMDBMovieEntity
+import com.softvision.data.database.model.TMDBItemEntity
 import com.softvision.data.database.model.TMDBMovieEntity
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
@@ -28,4 +30,7 @@ interface TMDBMoviesDAO {
 
     @Query("SELECT * FROM $TMDB_MOVIES WHERE :category in (CATEGORIES)")
     fun loadItemsByCategory(category: String): Single<List<TMDBMovieEntity>>
+
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE :title in (TITLE)")
+    fun loadItemsByTitle(title: String): Single<List<TMDBMovieEntity>>
 }

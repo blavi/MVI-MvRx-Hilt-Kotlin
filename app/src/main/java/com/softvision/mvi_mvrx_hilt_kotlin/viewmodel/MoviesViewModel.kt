@@ -1,21 +1,25 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
+//import com.softvision.mvi_mvrx_hilt_kotlin.di.AssistedViewModelFactory
 import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
+import com.softvision.domain.di.InteractorModule
+import com.softvision.domain.di.MoviesInteractor
 import com.softvision.domain.model.TMDBGenre
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.mvi.MoviesByGenreState
-//import com.softvision.mvi_mvrx_hilt_kotlin.di.AssistedViewModelFactory
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.MoviesFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Named
 
 class MoviesViewModel @AssistedInject constructor(@Assisted initialState: MoviesByGenreState,
-                                                  private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>,
+                                                  @MoviesInteractor private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>,
                                                   private val genresInteractor: BaseFetchGenresUseCase<TMDBGenre>
 ) :BaseMvRxViewModel<MoviesByGenreState>(initialState) {
 

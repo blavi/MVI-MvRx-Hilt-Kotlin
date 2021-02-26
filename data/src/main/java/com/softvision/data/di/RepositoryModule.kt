@@ -1,28 +1,50 @@
 package com.softvision.data.di
 
+import com.softvision.data.common.Connectivity
+import com.softvision.data.database.dao.TMDBMovieGenresDAO
+import com.softvision.data.database.dao.TMDBMoviesDAO
+import com.softvision.data.database.dao.TMDBTVShowsDAO
+import com.softvision.data.network.api.ApiEndpoints
+import com.softvision.data.repository.ItemsQueryRepositoryImpl
 import com.softvision.data.repository.MovieGenresRepositoryImpl
 import com.softvision.data.repository.MoviesRepositoryImpl
 import com.softvision.data.repository.TVShowsRepositoryImpl
+import com.softvision.domain.di.MoviesRepository
+import com.softvision.domain.di.QueryRepository
+import com.softvision.domain.di.TvShowsRepository
 import com.softvision.domain.model.TMDBGenre
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
+import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.repository.GenresRepository
 import com.softvision.domain.repository.ItemsRepository
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 
 @Module
 @InstallIn(ApplicationComponent::class)
-abstract class RepositoryModule {
+class RepositoryModule {
 
-    @Binds
-    abstract fun bindExplorerMoviesRepository(impl: MoviesRepositoryImpl): ItemsRepository<String, TMDBMovieDetails, Int>
+    @Provides
+    @MoviesRepository
+    fun provideExplorerMoviesRepository(tmdbMoviesDAO: TMDBMoviesDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): ItemsRepository<String, TMDBItemDetails, Int> {
+        return MoviesRepositoryImpl(tmdbMoviesDAO, resourcesApi, connectivity)
+    }
 
-    @Binds
-    abstract fun bindExplorerTVShowsRepository(impl: TVShowsRepositoryImpl): ItemsRepository<String, TMDBTVShowDetails, Int>
+    @Provides
+    @TvShowsRepository
+    fun provideExplorerTVShowsRepository(tmdbTVShowsDAO: TMDBTVShowsDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): ItemsRepository<String, TMDBItemDetails, Int> {
+        return TVShowsRepositoryImpl(tmdbTVShowsDAO, resourcesApi, connectivity)
+    }
 
-    @Binds
-    abstract fun bindMovieGenresRepository(impl: MovieGenresRepositoryImpl): GenresRepository<TMDBGenre>
+    @Provides
+    @QueryRepository
+    fun provideDiscoveryRepository(tmdbMoviesDAO: TMDBMoviesDAO,tmdbTVShowsDAO: TMDBTVShowsDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): ItemsRepository<String, TMDBItemDetails, Int> {
+        return ItemsQueryRepositoryImpl(tmdbMoviesDAO, tmdbTVShowsDAO, resourcesApi, connectivity)
+    }
+
+    @Provides
+    fun provideMovieGenresRepository(genresDAO: TMDBMovieGenresDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): GenresRepository<TMDBGenre> {
+        return MovieGenresRepositoryImpl(genresDAO, resourcesApi, connectivity)
+    }
 }

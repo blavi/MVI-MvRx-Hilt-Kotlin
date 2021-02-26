@@ -6,9 +6,7 @@ import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseRepository<D : Any, E : ItemDomainMapper<D>> {
-    @Inject
-    lateinit var connectivity: Connectivity
+ open class BaseRepository<D : Any, E : ItemDomainMapper<D>> @Inject constructor(val connectivity: Connectivity){
 
     /**
      * Use this if you need to cache data after fetching it from the api, or retrieve something from cache

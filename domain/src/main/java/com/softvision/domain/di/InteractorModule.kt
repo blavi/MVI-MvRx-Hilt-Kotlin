@@ -4,25 +4,41 @@ import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.interactor.FetchMoviesGenresInteractor
 import com.softvision.domain.interactor.FetchMoviesInteractor
+import com.softvision.domain.interactor.FetchQueryInteractor
 import com.softvision.domain.interactor.FetchTVShowsInteractor
 import com.softvision.domain.model.TMDBGenre
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
-import dagger.Binds
+import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.repository.GenresRepository
+import com.softvision.domain.repository.ItemsRepository
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 
 @Module
 @InstallIn(ApplicationComponent::class)
-abstract class InteractorModule {
+class InteractorModule {
 
-    @Binds
-    abstract fun bindMoviesInteractor(impl: FetchMoviesInteractor): BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>
+    @Provides
+    @MoviesInteractor
+    fun providesMoviesInteractor(@MoviesRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+        return FetchMoviesInteractor(repository)
+    }
 
-    @Binds
-    abstract fun bindTVShowsInteractor(impl: FetchTVShowsInteractor): BaseFetchItemsUseCase<String, TMDBTVShowDetails, Int>
+    @Provides
+    @TvShowsInteractor
+    fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+        return FetchTVShowsInteractor(repository)
+    }
 
-    @Binds
-    abstract fun bindGenresInteractor(impl: FetchMoviesGenresInteractor): BaseFetchGenresUseCase<TMDBGenre>
+    @Provides
+    @QueryInteractor
+    fun providesQueryInteractor(@QueryRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+        return FetchQueryInteractor(repository)
+    }
+
+    @Provides
+    fun bindGenresInteractor(repository: GenresRepository<TMDBGenre>): BaseFetchGenresUseCase<TMDBGenre> {
+        return FetchMoviesGenresInteractor(repository)
+    }
 }

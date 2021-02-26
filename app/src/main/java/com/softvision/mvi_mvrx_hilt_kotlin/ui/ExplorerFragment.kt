@@ -12,11 +12,8 @@ import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.softvision.domain.model.TMDBItemDetails
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.mvi.ExplorerState
-import com.softvision.mvi_mvrx_hilt_kotlin.adapter.MoviesAdapter
-import com.softvision.mvi_mvrx_hilt_kotlin.adapter.TVShowsAdapter
+import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentExplorerBinding
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.ExplorerViewModel
@@ -33,13 +30,13 @@ class ExplorerFragment : Fragment(), MvRxView {
     lateinit var viewModelFactory: ExplorerViewModel.Factory
     private val explorerViewModel: ExplorerViewModel by fragmentViewModel(ExplorerViewModel::class)
 
-    private lateinit var trendingMoviesAdapter: MoviesAdapter
-    private lateinit var popularMoviesAdapter: MoviesAdapter
-    private lateinit var comingSoonMoviesAdapter: MoviesAdapter
+    private lateinit var trendingMoviesAdapter: ItemsAdapter
+    private lateinit var popularMoviesAdapter: ItemsAdapter
+    private lateinit var comingSoonMoviesAdapter: ItemsAdapter
 
-    private lateinit var trendingTVShowsAdapter: TVShowsAdapter
-    private lateinit var popularTVShowsAdapter: TVShowsAdapter
-    private lateinit var comingSoonTVShowsAdapter: TVShowsAdapter
+    private lateinit var trendingTVShowsAdapter: ItemsAdapter
+    private lateinit var popularTVShowsAdapter: ItemsAdapter
+    private lateinit var comingSoonTVShowsAdapter: ItemsAdapter
 
     private var disposables: CompositeDisposable = CompositeDisposable()
 
@@ -88,12 +85,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setComingSoonMoviesLayout() {
         // Item selection listener without Rx
-        // comingSoonMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        // comingSoonMoviesAdapter = MoviesAdapter { item: TMDBItemDetails ->
         //    setSelectedItem(item)
         // }
 
         // Item selection listener using Rx
-        comingSoonMoviesAdapter = MoviesAdapter()
+        comingSoonMoviesAdapter = ItemsAdapter()
         val comingSoonMoviesDisposable = comingSoonMoviesAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -110,12 +107,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setPopularMoviesLayout() {
         // Item selection listener without Rx
-        // popularMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        // popularMoviesAdapter = MoviesAdapter { item: TMDBItemDetails ->
         //    setSelectedItem(item)
         // }
 
         // Item selection listener using Rx
-        popularMoviesAdapter = MoviesAdapter()
+        popularMoviesAdapter = ItemsAdapter()
         val popularMoviesDisposable = popularMoviesAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -132,12 +129,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setTrendingMoviesLayout() {
         // Item selection listener without Rx
-        // trendingMoviesAdapter = MoviesAdapter { item: TMDBMovieDetails ->
+        // trendingMoviesAdapter = MoviesAdapter { item: TMDBItemDetails ->
         //    setSelectedItem(item)
         // }
 
         // Item selection listener using Rx
-        trendingMoviesAdapter = MoviesAdapter()
+        trendingMoviesAdapter = ItemsAdapter()
         val trendingMoviesDisposable = trendingMoviesAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -154,12 +151,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setComingSoonTVShowsLayout() {
         // Item selection listener without Rx
-//        comingSoonTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//        comingSoonItemsAdapter = ItemsAdapter { item: TMDBTVShowDetails ->
 //            setSelectedItem(item)
 //        }
 
         // Item selection listener using Rx
-        comingSoonTVShowsAdapter = TVShowsAdapter()
+        comingSoonTVShowsAdapter = ItemsAdapter()
         val comingSoonTvShowsDisposable = comingSoonTVShowsAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -176,12 +173,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setPopularTVShowsLayout() {
         // Item selection listener without Rx
-//        popularTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//        popularItemsAdapter = ItemsAdapter { item: TMDBTVShowDetails ->
 //            setSelectedItem(item)
 //        }
 
         // Item selection listener using Rx
-        popularTVShowsAdapter = TVShowsAdapter()
+        popularTVShowsAdapter = ItemsAdapter()
         val popularTvShowsDisposable = popularTVShowsAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -199,12 +196,12 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setTrendingTVShowsLayout() {
         // Item selection listener without Rx
-//        trendingTVShowsAdapter = TVShowsAdapter { item: TMDBTVShowDetails ->
+//        trendingItemsAdapter = ItemsAdapter { item: TMDBTVShowDetails ->
 //            setSelectedItem(item)
 //        }
 
         // Item selection listener using Rx
-        trendingTVShowsAdapter = TVShowsAdapter()
+        trendingTVShowsAdapter = ItemsAdapter()
         val trendingTvShowsDisposable = trendingTVShowsAdapter.clickEvent
             .subscribe {
                 setSelectedItem(it)
@@ -401,7 +398,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateTrendingMoviesList(items: List<TMDBMovieDetails>) {
+    private fun updateTrendingMoviesList(items: List<TMDBItemDetails>) {
         updateTrendingMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             trendingMoviesAdapter.addData(items)
@@ -409,7 +406,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateTrendingTVShowsList(items: List<TMDBTVShowDetails>) {
+    private fun updateTrendingTVShowsList(items: List<TMDBItemDetails>) {
         updateTrendingTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             trendingTVShowsAdapter.addData(items)
@@ -417,7 +414,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updatePopularMoviesList(items: List<TMDBMovieDetails>) {
+    private fun updatePopularMoviesList(items: List<TMDBItemDetails>) {
         updatePopularMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.GONE
@@ -425,7 +422,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updatePopularTVShowsList(items: List<TMDBTVShowDetails>) {
+    private fun updatePopularTVShowsList(items: List<TMDBItemDetails>) {
         updatePopularTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.GONE
@@ -433,7 +430,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateComingSoonMoviesList(items: List<TMDBMovieDetails>) {
+    private fun updateComingSoonMoviesList(items: List<TMDBItemDetails>) {
         updateComingSoonMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.GONE
@@ -441,7 +438,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateComingSoonTVShowsList(items: List<TMDBTVShowDetails>) {
+    private fun updateComingSoonTVShowsList(items: List<TMDBItemDetails>) {
         updateComingSoonTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.GONE
@@ -458,7 +455,7 @@ class ExplorerFragment : Fragment(), MvRxView {
     }
 
     private fun displayDetails(item: TMDBItemDetails) {
-        explorerViewModel.setSelectedItem(null)
+        setSelectedItem(null)
         showDetails(item)
     }
 

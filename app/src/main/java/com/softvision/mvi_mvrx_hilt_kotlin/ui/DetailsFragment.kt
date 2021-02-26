@@ -1,6 +1,5 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.ui
 
-import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -4,6 +4,9 @@ import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.data.network.base.DataType
 import com.softvision.domain.base.BaseFetchItemsUseCase
+import com.softvision.domain.di.InteractorModule
+import com.softvision.domain.di.MoviesInteractor
+import com.softvision.domain.di.TvShowsInteractor
 import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.model.TMDBTVShowDetails
@@ -11,11 +14,13 @@ import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import javax.inject.Inject
+import javax.inject.Named
 
-class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerState: ExplorerState,
-                                                    private val moviesInteractor: BaseFetchItemsUseCase<String, TMDBMovieDetails, Int>,
-                                                    private val tvShowsInteractor: BaseFetchItemsUseCase<String, TMDBTVShowDetails, Int>)
-    :BaseMvRxViewModel<ExplorerState>(initialExplorerState) {
+class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: ExplorerState,
+                                                    @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>,
+                                                    @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>)
+    :BaseMvRxViewModel<ExplorerState>(initialState) {
 
     init {
         initiateLoadingMoviesAndTVShows()
@@ -166,7 +171,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialExplorerSta
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialExplorerState: ExplorerState): ExplorerViewModel
+        fun create(initialState: ExplorerState): ExplorerViewModel
     }
 
     companion object : MvRxViewModelFactory<ExplorerViewModel, ExplorerState> {

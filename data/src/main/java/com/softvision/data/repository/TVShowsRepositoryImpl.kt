@@ -1,23 +1,28 @@
 package com.softvision.data.repository
 
+import android.content.Context
+import com.softvision.data.common.Connectivity
 import com.softvision.data.database.dao.TMDBTVShowsDAO
 import com.softvision.data.database.model.PartialTMDBTVShowEntity
 import com.softvision.data.database.model.TMDBTVShowEntity
+import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.getData
+import com.softvision.domain.model.TMDBItemDetails
 import com.softvision.domain.model.TMDBTVShowDetails
 import com.softvision.domain.repository.ItemsRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDBTVShowsDAO,
-                                                private val resourcesApi: ApiEndpoints):
-    BaseRepository<TMDBTVShowDetails, TMDBTVShowEntity>(), ItemsRepository<String, TMDBTVShowDetails, Int> {
+                                                private val resourcesApi: ApiEndpoints,
+                                                connectivity: Connectivity
+): BaseRepository<TMDBItemDetails, ItemDomainMapper<TMDBItemDetails>>(connectivity), ItemsRepository<String, TMDBItemDetails, Int> {
 
-    override fun getData(type: String, page: Int): Single<List<TMDBTVShowDetails>> {
+    override fun getData(type: String, page: Int): Single<List<TMDBItemDetails>> {
 
 //        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
@@ -40,7 +45,7 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TMDB
 //                        type
 //                    )
             },
-            dbDataProvider = { loadItemsByCategory(type) }
+            dbDataProvider = { loadItemsByCategory(type).map { it } }
         ).subscribeOn(Schedulers.io())
     }
 

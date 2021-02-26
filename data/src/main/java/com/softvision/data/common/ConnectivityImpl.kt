@@ -3,12 +3,16 @@ package com.softvision.data.common
 import android.content.Context
 import android.net.ConnectivityManager
 import com.softvision.data.common.Connectivity
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ConnectivityImpl(private val context: Context) : Connectivity {
-  
-  override fun hasNetworkAccess(): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val info = connectivityManager.activeNetworkInfo
-    return info != null && info.isConnected
-  }
+class ConnectivityImpl @Inject constructor(private val context: Context) : Connectivity {
+
+    override fun hasNetworkAccess(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val info = connectivityManager.activeNetworkInfo
+        return info != null && info.isConnected
+    }
 }
