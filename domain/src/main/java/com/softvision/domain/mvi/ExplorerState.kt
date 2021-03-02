@@ -3,66 +3,66 @@ package com.softvision.domain.mvi
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 
 data class ExplorerState(
-    val trendingMoviesRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val trendingMovies: List<TMDBItemDetails> = emptyList(),
+    val trendingMoviesRequest: Async<List<ItemDetails>> = Uninitialized,
+    val trendingMovies: List<ItemDetails> = emptyList(),
 
-    val trendingTVShowsRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val trendingTVShows: List<TMDBItemDetails> = emptyList(),
+    val trendingTVShowsRequest: Async<List<ItemDetails>> = Uninitialized,
+    val trendingTVShows: List<ItemDetails> = emptyList(),
 
-    val popularMoviesRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val popularMovies: List<TMDBItemDetails> = emptyList(),
+    val popularMoviesRequest: Async<List<ItemDetails>> = Uninitialized,
+    val popularMovies: List<ItemDetails> = emptyList(),
 
-    val popularTVShowsRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val popularTVShows: List<TMDBItemDetails> = emptyList(),
+    val popularTVShowsRequest: Async<List<ItemDetails>> = Uninitialized,
+    val popularTVShows: List<ItemDetails> = emptyList(),
 
-    val comingSoonMoviesRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val comingSoonMovies: List<TMDBItemDetails> = emptyList(),
+    val comingSoonMoviesRequest: Async<List<ItemDetails>> = Uninitialized,
+    val comingSoonMovies: List<ItemDetails> = emptyList(),
 
-    val comingSoonTVShowsRequest: Async<List<TMDBItemDetails>> = Uninitialized,
-    val comingSoonTVShows: List<TMDBItemDetails> = emptyList(),
+    val comingSoonTVShowsRequest: Async<List<ItemDetails>> = Uninitialized,
+    val comingSoonTVShows: List<ItemDetails> = emptyList(),
 
-    val selectedItem: TMDBItemDetails? = null
+    val selectedItem: ItemDetails? = null
 ): MvRxState {
 
-    fun combineTrendingMoviesItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combineTrendingMoviesItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.trendingMovies
             else -> emptyList()
         } + (newRequestItems() ?: emptyList()))
             .distinct()
 
-    fun combineTrendingTVShowsItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combineTrendingTVShowsItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.trendingTVShows
             else -> emptyList()
         } + (newRequestItems() ?: emptyList()))
             .distinct()
 
-    fun combinePopularMoviesItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combinePopularMoviesItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.popularMovies
             else -> emptyList()
         } + (newRequestItems() ?: emptyList()))
             .distinct()
 
-    fun combinePopularTVShowsItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combinePopularTVShowsItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.popularTVShows
             else -> emptyList()
         } + (newRequestItems() ?: emptyList()))
             .distinct()
 
-    fun combineComingSoonMoviesItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combineComingSoonMoviesItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.comingSoonMovies
             else -> emptyList()
         } + (newRequestItems() ?: emptyList()))
             .distinct()
 
-    fun combineComingSoonTVShowsItems(offset: Int, newRequestItems: Async<List<TMDBItemDetails>>): List<TMDBItemDetails> =
+    fun combineComingSoonTVShowsItems(offset: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> =
         (when {
             offset != 0 -> this.comingSoonTVShows
             else -> emptyList()

@@ -5,16 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.softvision.domain.model.TMDBGenre
+import com.softvision.domain.model.Genre
 import timber.log.Timber
 
 
-class GenresAdapter(context: Context, layout: Int, private var genresList: MutableList<TMDBGenre>): ArrayAdapter<TMDBGenre>(context, layout, genresList) {
+class GenresAdapter(context: Context, layout: Int, private var genresList: MutableList<Genre>): ArrayAdapter<Genre>(context, layout, genresList) {
     override fun getCount(): Int {
         return genresList.size
     }
 
-    override fun getItem(position: Int): TMDBGenre {
+    override fun getItem(position: Int): Genre {
         return genresList[position]
     }
 
@@ -38,14 +38,14 @@ class GenresAdapter(context: Context, layout: Int, private var genresList: Mutab
         return view
     }
 
-    fun addData(list: List<TMDBGenre>) {
+    fun addData(list: List<Genre>) {
         Timber.i("Explore State: Genres - notifydatasetchanged")
         genresList.clear()
         genresList.addAll(list)
         notifyDataSetChanged()
     }
 
-    private fun setGenre(view: TextView, genre: TMDBGenre) {
+    private fun setGenre(view: TextView, genre: Genre) {
         view.text = genre.name
     }
 }

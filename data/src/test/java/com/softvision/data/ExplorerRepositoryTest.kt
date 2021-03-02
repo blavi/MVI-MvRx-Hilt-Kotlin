@@ -1,14 +1,14 @@
 package com.softvision.data
 
 import com.softvision.data.common.Connectivity
-import com.softvision.data.database.dao.TMDBMoviesDAO
-import com.softvision.data.database.model.TMDBMovieEntity
+import com.softvision.data.database.dao.MoviesDAO
+import com.softvision.data.database.model.MovieEntity
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
-import com.softvision.data.network.model.TMDBMovieResponse
-import com.softvision.data.network.model.TMDBMoviesResponse
+import com.softvision.data.network.model.MovieResponse
+import com.softvision.data.network.model.MoviesResponse
 import com.softvision.data.repository.MoviesRepositoryImpl
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 import io.mockk.*
 import io.reactivex.Single
 import org.junit.After
@@ -19,18 +19,18 @@ import org.junit.Test
 class ExplorerRepositoryTest {
     private lateinit var repository: MoviesRepositoryImpl
 
-    private lateinit var mockResult: TMDBMoviesResponse
-    private lateinit var mockDetailsList: List<TMDBItemDetails>
-    private lateinit var mockResponseList: List<TMDBMovieResponse>
-    private lateinit var mockEntityList: List<TMDBMovieEntity>
+    private lateinit var mockResult: MoviesResponse
+    private lateinit var mockDetailsList: List<ItemDetails>
+    private lateinit var mockResponseList: List<MovieResponse>
+    private lateinit var mockEntityList: List<MovieEntity>
     private lateinit var api: ApiEndpoints
-    private lateinit var itemsDAO: TMDBMoviesDAO
+    private lateinit var itemsDAO: MoviesDAO
 
     private lateinit var connectivity: Connectivity
 
-    private lateinit var itemE: TMDBMovieEntity
-    private lateinit var itemR: TMDBMovieResponse
-    private lateinit var itemD: TMDBItemDetails
+    private lateinit var itemE: MovieEntity
+    private lateinit var itemR: MovieResponse
+    private lateinit var itemD: ItemDetails
 
     private val page: Int = 1
 
@@ -39,12 +39,12 @@ class ExplorerRepositoryTest {
 
     @Before
     fun setUp() {
-        itemR = mockk<TMDBMovieResponse>()
-        itemE = mockk<TMDBMovieEntity>() {
+        itemR = mockk<MovieResponse>()
+        itemE = mockk<MovieEntity>() {
             every { id } returns 1
             every { categories } returns mockk()
         }
-        itemD = mockk<TMDBItemDetails>()
+        itemD = mockk<ItemDetails>()
 
         mockResponseList = listOf(itemR, itemR)
         mockEntityList = listOf(itemE, itemE)
@@ -53,7 +53,7 @@ class ExplorerRepositoryTest {
         every { itemR.mapToRoomEntity(any()) } returns itemE
         every { itemE.mapToDomainModel() } returns itemD
 
-        mockResult = mockk<TMDBMoviesResponse>() {
+        mockResult = mockk<MoviesResponse>() {
             every { getContent() } returns mockResponseList
         }
 

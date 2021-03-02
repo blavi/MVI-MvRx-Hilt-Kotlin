@@ -10,16 +10,17 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.jakewharton.rxbinding4.appcompat.queryTextChangeEvents
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.mvi.SearchState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentSearchBinding
+import com.softvision.mvi_mvrx_hilt_kotlin.utils.RxSearchObservable
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -76,38 +77,38 @@ class SearchFragment: Fragment(), MvRxView {
         searchViewModel.asyncSubscribe(
             SearchState::searchRequest,
             onFail = {
+                updateQueryResult()
                 updateLoader(View.GONE)
                 updateNoDataLabel(View.VISIBLE)
             }
         )
 
         searchViewModel.selectSubscribe(SearchState::items) { list ->
-            if (list.isNotEmpty()) {
+//            if (list.isNotEmpty()) {
                 updateQueryResult(list)
-            }
+//            }
         }
 
-        binding.searchView.queryTextChangeEvents()
-            .skipInitialValue()
+        RxSearchObservable.fromView(binding.searchView)
             .debounce(300, TimeUnit.MILLISECONDS)
-            .filter {
-                Timber.i("Query %s", it.queryText)
-                it.queryText.isNotEmpty()
+            .filter { text ->
+                text.isNotEmpty() && text.length >= 3
             }
             .distinctUntilChanged()
-            .doOnNext {
-                Timber.i("Query %s", it.queryText)
-                searchViewModel.executeQuery(it.queryText.toString())
+            .map { text ->
+                text.toLowerCase().trim()
+                Timber.i("Query map %s", text)
+                searchViewModel.executeQuery(text.toString())
             }
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
-    private fun updateQueryResult(list: List<TMDBItemDetails>) {
+    private fun updateQueryResult(list: List<ItemDetails> = emptyList()) {
         updateLoader(View.GONE)
-        if (list.isNotEmpty()) {
-            itemsAdapter.addData(list)
-            binding.noMoviesImgView.visibility = View.GONE
-        }
+        itemsAdapter.updateData(list)
+        binding.noMoviesImgView.visibility = View.GONE
     }
 
     private fun updateNoDataLabel(visibility: Int) {
@@ -117,12 +118,20 @@ class SearchFragment: Fragment(), MvRxView {
     override fun invalidate() {
         withState(searchViewModel) { state ->
             if (state.searchRequest is Loading) {
+                updateQueryResult()
                 updateLoader(View.VISIBLE, getString(R.string.loading_genres))
             }
         }
     }
 
     private fun updateLoader(visibility: Int, message: String = "") {
+        binding.itemsProgressBar.visibility = visibility
+        binding.loadingMessage.text = message
+        binding.loadingMessage.visibility = visibility
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 }

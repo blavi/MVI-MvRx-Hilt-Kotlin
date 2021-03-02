@@ -11,7 +11,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentExplorerBinding
@@ -398,51 +398,51 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateTrendingMoviesList(items: List<TMDBItemDetails>) {
+    private fun updateTrendingMoviesList(items: List<ItemDetails>) {
         updateTrendingMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
-            trendingMoviesAdapter.addData(items)
+            trendingMoviesAdapter.updateData(items)
             binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = View.GONE
         }
     }
 
-    private fun updateTrendingTVShowsList(items: List<TMDBItemDetails>) {
+    private fun updateTrendingTVShowsList(items: List<ItemDetails>) {
         updateTrendingTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
-            trendingTVShowsAdapter.addData(items)
+            trendingTVShowsAdapter.updateData(items)
             binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = View.GONE
         }
     }
 
-    private fun updatePopularMoviesList(items: List<TMDBItemDetails>) {
+    private fun updatePopularMoviesList(items: List<ItemDetails>) {
         updatePopularMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.GONE
-            popularMoviesAdapter.addData(items)
+            popularMoviesAdapter.updateData(items)
         }
     }
 
-    private fun updatePopularTVShowsList(items: List<TMDBItemDetails>) {
+    private fun updatePopularTVShowsList(items: List<ItemDetails>) {
         updatePopularTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.GONE
-            popularTVShowsAdapter.addData(items)
+            popularTVShowsAdapter.updateData(items)
         }
     }
 
-    private fun updateComingSoonMoviesList(items: List<TMDBItemDetails>) {
+    private fun updateComingSoonMoviesList(items: List<ItemDetails>) {
         updateComingSoonMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.GONE
-            comingSoonMoviesAdapter.addData(items)
+            comingSoonMoviesAdapter.updateData(items)
         }
     }
 
-    private fun updateComingSoonTVShowsList(items: List<TMDBItemDetails>) {
+    private fun updateComingSoonTVShowsList(items: List<ItemDetails>) {
         updateComingSoonTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.GONE
-            comingSoonTVShowsAdapter.addData(items)
+            comingSoonTVShowsAdapter.updateData(items)
         }
     }
 
@@ -450,11 +450,11 @@ class ExplorerFragment : Fragment(), MvRxView {
         ------------------ SELECT ITEM HANDLERS ------------------
      */
 
-    private fun setSelectedItem(item: TMDBItemDetails?) {
+    private fun setSelectedItem(item: ItemDetails?) {
         explorerViewModel.setSelectedItem(item)
     }
 
-    private fun displayDetails(item: TMDBItemDetails) {
+    private fun displayDetails(item: ItemDetails) {
         setSelectedItem(null)
         showDetails(item)
     }
@@ -468,7 +468,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         disposables.dispose()
     }
 
-    private fun showDetails(item: TMDBItemDetails) {
+    private fun showDetails(item: ItemDetails) {
         findNavController().navigate(
             ExplorerFragmentDirections.actionNavigationExplorerToDetailsFragment(
                 item

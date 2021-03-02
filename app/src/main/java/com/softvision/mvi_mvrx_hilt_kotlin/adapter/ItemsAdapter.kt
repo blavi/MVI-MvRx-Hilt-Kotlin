@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.softvision.domain.model.TMDBItemDetails
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
+import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.MovieDetails
+import com.softvision.domain.model.TVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
@@ -18,17 +18,17 @@ import io.reactivex.subjects.PublishSubject
 
 
 class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
-    private var items: MutableList<TMDBItemDetails> = mutableListOf()
-    private val movieSelectSubject: PublishSubject<TMDBItemDetails> = PublishSubject.create()
-    val clickEvent: Observable<TMDBItemDetails> = movieSelectSubject.hide()
+    private var items: MutableList<ItemDetails> = mutableListOf()
+    private val movieSelectSubject: PublishSubject<ItemDetails> = PublishSubject.create()
+    val clickEvent: Observable<ItemDetails> = movieSelectSubject.hide()
 
     inner class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TMDBItemDetails) {
+        fun bind(item: ItemDetails) {
             when (item) {
-                is TMDBMovieDetails -> {
+                is MovieDetails -> {
                     item.updateItem(binding)
                 }
-                is TMDBTVShowDetails -> {
+                is TVShowDetails -> {
                     item.updateItem(binding)
                 }
             }
@@ -61,7 +61,7 @@ class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
         }
     }
 
-    private fun TMDBMovieDetails.updateItem(binding: ItemLayoutBinding) {
+    private fun MovieDetails.updateItem(binding: ItemLayoutBinding) {
         poster_path?.let {
             val requestOptions = RequestOptions()
             requestOptions.apply {
@@ -81,7 +81,7 @@ class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
         }
     }
 
-    private fun TMDBTVShowDetails.updateItem(binding: ItemLayoutBinding) {
+    private fun TVShowDetails.updateItem(binding: ItemLayoutBinding) {
         poster_path?.let {
             val requestOptions = RequestOptions()
             requestOptions.apply {
@@ -112,10 +112,12 @@ class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
         holder.bind(items[position])
 
-    fun addData(list: List<TMDBItemDetails>) {
+    fun updateData(list: List<ItemDetails> = emptyList()) {
 //        Timber.i("Explore State: MOVIES - notifydatasetchanged %s", list.size)
         items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
+        if (list.isNotEmpty()) {
+            items.addAll(list)
+            notifyDataSetChanged()
+        }
     }
 }

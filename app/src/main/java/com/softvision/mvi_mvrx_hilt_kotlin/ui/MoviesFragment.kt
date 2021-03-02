@@ -13,7 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.GenresAdapter
@@ -173,10 +173,10 @@ class MoviesFragment: Fragment(), MvRxView {
         binding.noMoviesImgView.visibility = visibility
     }
 
-    private fun updateMoviesList(list: List<TMDBItemDetails>) {
+    private fun updateMoviesList(list: List<ItemDetails>) {
         updateLoader(View.GONE)
         if (list.isNotEmpty()) {
-            itemsAdapter.addData(list)
+            itemsAdapter.updateData(list)
             binding.noMoviesImgView.visibility = View.GONE
         }
     }
@@ -213,11 +213,11 @@ class MoviesFragment: Fragment(), MvRxView {
         ------------------ SELECT ITEM HANDLERS ------------------
      */
 
-    private fun setSelectedItem(item: TMDBItemDetails?) {
+    private fun setSelectedItem(item: ItemDetails?) {
         moviesViewModel.setSelectedItem(item)
     }
 
-    private fun displayDetails(item: TMDBItemDetails) {
+    private fun displayDetails(item: ItemDetails) {
         moviesViewModel.setSelectedItem(null)
         showDetails(item)
     }
@@ -227,7 +227,7 @@ class MoviesFragment: Fragment(), MvRxView {
         disposables.dispose()
     }
 
-    private fun showDetails(item: TMDBItemDetails) {
+    private fun showDetails(item: ItemDetails) {
         findNavController().navigate(MoviesFragmentDirections.actionNavigationMoviesToDetailsFragment(item))
     }
 }

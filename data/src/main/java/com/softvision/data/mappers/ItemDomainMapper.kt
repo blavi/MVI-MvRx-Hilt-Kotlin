@@ -1,5 +1,5 @@
 package com.softvision.data.mappers
 
-interface ItemDomainMapper<D : Any> {
+interface ItemDomainMapper<out D : Any> {
     fun mapToDomainModel(): D
 }

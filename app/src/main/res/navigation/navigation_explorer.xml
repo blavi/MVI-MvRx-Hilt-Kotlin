@@ -23,6 +23,6 @@
         tools:layout="@layout/fragment_details">
         <argument
             android:name="item"
-            app:argType="com.softvision.domain.model.TMDBItemDetails" />
+            app:argType="com.softvision.domain.model.base.ItemDetails" />
     </dialog>
 </navigation>

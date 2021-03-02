@@ -1,10 +1,11 @@
 package com.softvision.domain.model
 
 import android.os.Parcelable
+import com.softvision.domain.model.base.ItemDetails
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TMDBTVShowDetails (
+data class TVShowDetails (
     val id : Int,
     val backdrop_path : String?,
     val genre_ids : List<Int>,
@@ -19,7 +20,7 @@ data class TMDBTVShowDetails (
     val vote_average : Double,
     val vote_count : Int,
     val categories : List<String>
-): Parcelable, TMDBItemDetails()
+): Parcelable, ItemDetails()
 
 
 //@Parcelize

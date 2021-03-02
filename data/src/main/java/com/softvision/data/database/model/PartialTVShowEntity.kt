@@ -2,9 +2,11 @@ package com.softvision.data.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 @Entity
-data class PartialTMDBMovieEntity(
+data class PartialTVShowEntity(
     @ColumnInfo(name = "id")
     val id: Int,
 

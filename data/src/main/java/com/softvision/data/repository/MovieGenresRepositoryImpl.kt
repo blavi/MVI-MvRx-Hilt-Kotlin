@@ -1,25 +1,22 @@
 package com.softvision.data.repository
 
-import android.content.Context
 import com.softvision.data.common.Connectivity
-import com.softvision.data.database.dao.TMDBMovieGenresDAO
-import com.softvision.data.database.model.TMDBMovieGenreEntity
+import com.softvision.data.database.dao.MovieGenresDAO
+import com.softvision.data.database.model.MovieGenreEntity
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.getData
-import com.softvision.domain.model.TMDBGenre
+import com.softvision.domain.model.Genre
 import com.softvision.domain.repository.GenresRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
-class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: TMDBMovieGenresDAO,
+class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: MovieGenresDAO,
                                                     private val resourcesApi: ApiEndpoints,
                                                     connectivity: Connectivity
-): BaseRepository<TMDBGenre, TMDBMovieGenreEntity>(connectivity), GenresRepository<TMDBGenre> {
+): BaseRepository<Genre, MovieGenreEntity>(connectivity), GenresRepository<Genre> {
 
-    override fun getData(): Single<List<TMDBGenre>> {
+    override fun getData(): Single<List<Genre>> {
 
         val apiDataProviderVal = resourcesApi.fetchMovieGenres()
 //        Timber.i("Explore State: type: FETCH GENRES")
@@ -36,11 +33,11 @@ class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: TMDBM
         ).subscribeOn(Schedulers.io())
     }
 
-    private fun insertItems(items: List<TMDBMovieGenreEntity>) {
+    private fun insertItems(items: List<MovieGenreEntity>) {
         genresDAO.insertItems(items)
     }
 
-    private fun loadAllItems(): Single<List<TMDBMovieGenreEntity>> {
+    private fun loadAllItems(): Single<List<MovieGenreEntity>> {
         return genresDAO.loadAllItems().subscribeOn(Schedulers.io())
     }
 }

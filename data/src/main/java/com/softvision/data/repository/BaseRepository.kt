@@ -26,7 +26,7 @@ import javax.inject.Inject
                     }
                 }
                 .onErrorResumeNext {
-                    Timber.i("Explore State - repo error - %s", it.localizedMessage)
+                    Timber.i("XYZ - repo error - base repository - %s", it.localizedMessage)
                     Single.error(it)
                 }
         }

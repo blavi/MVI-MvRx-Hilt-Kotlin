@@ -3,14 +3,15 @@ package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 import com.airbnb.mvrx.*
 import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.di.QueryInteractor
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.mvi.SearchState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.SearchFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import timber.log.Timber
 
 class SearchViewModel @AssistedInject constructor(@Assisted initialState: SearchState,
-                                                  @QueryInteractor var queryInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>
+                                                  @QueryInteractor var queryInteractor: BaseFetchItemsUseCase<String, ItemDetails, Int>
 ): BaseMvRxViewModel<SearchState>(initialState) {
 
     @AssistedInject.Factory
@@ -26,6 +27,7 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
     }
 
     fun executeQuery(query: String, offset: Int = 0) {
+        Timber.i("execute Query %s", query)
         setState {
             copy(searchRequest = Loading())
         }

@@ -4,22 +4,17 @@ import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.data.network.base.DataType
 import com.softvision.domain.base.BaseFetchItemsUseCase
-import com.softvision.domain.di.InteractorModule
 import com.softvision.domain.di.MoviesInteractor
 import com.softvision.domain.di.TvShowsInteractor
-import com.softvision.domain.model.TMDBItemDetails
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import javax.inject.Inject
-import javax.inject.Named
 
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: ExplorerState,
-                                                    @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>,
-                                                    @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, TMDBItemDetails, Int>)
+                                                    @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, ItemDetails, Int>,
+                                                    @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, ItemDetails, Int>)
     :BaseMvRxViewModel<ExplorerState>(initialState) {
 
     init {
@@ -138,7 +133,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
         }
     }
 
-    fun setSelectedItem(item: TMDBItemDetails?) {
+    fun setSelectedItem(item: ItemDetails?) {
         Log.i("Explore State", "item selected")
         setState {
             copy(selectedItem = item)

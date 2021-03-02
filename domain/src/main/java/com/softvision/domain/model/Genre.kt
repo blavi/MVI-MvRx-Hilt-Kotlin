@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TMDBGenre(
+data class Genre(
     val id : Int,
     val name : String
 ): Parcelable

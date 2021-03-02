@@ -11,9 +11,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.softvision.domain.model.TMDBItemDetails
-import com.softvision.domain.model.TMDBMovieDetails
-import com.softvision.domain.model.TMDBTVShowDetails
+import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.MovieDetails
+import com.softvision.domain.model.TVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentDetailsBinding
@@ -24,7 +24,7 @@ import timber.log.Timber
 class DetailsFragment: BottomSheetDialogFragment(){
 
     private lateinit var binding: FragmentDetailsBinding
-    private lateinit var item: TMDBItemDetails
+    private lateinit var item: ItemDetails
 
     companion object {
         const val ITEM = "item"
@@ -35,7 +35,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
 
         arguments?.let {
             if (it.containsKey(ITEM)) {
-                item = it.getParcelable<TMDBItemDetails>(ITEM)!!
+                item = it.getParcelable<ItemDetails>(ITEM)!!
             }
         }
 
@@ -58,16 +58,16 @@ class DetailsFragment: BottomSheetDialogFragment(){
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        (item as? TMDBMovieDetails)?.apply {
+        (item as? MovieDetails)?.apply {
             displayMovieDetails(this)
         }
 
-        (item as? TMDBTVShowDetails)?.apply {
+        (item as? TVShowDetails)?.apply {
             displayTVShowDetails(this)
         }
     }
 
-    private fun displayTVShowDetails(item: TMDBTVShowDetails) {
+    private fun displayTVShowDetails(item: TVShowDetails) {
         item.apply {
             setPoster(backdrop_path)
             setTitle(title)
@@ -75,7 +75,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
         }
     }
 
-    private fun displayMovieDetails(item: TMDBMovieDetails) {
+    private fun displayMovieDetails(item: MovieDetails) {
         item.apply {
             setPoster(backdrop_path)
             setTitle(title)

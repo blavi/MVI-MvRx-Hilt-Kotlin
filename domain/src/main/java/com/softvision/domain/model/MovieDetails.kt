@@ -1,14 +1,15 @@
 package com.softvision.domain.model
 
 import android.os.Parcelable
+import com.softvision.domain.model.base.ItemDetails
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TMDBMovieDetails (
+data class MovieDetails (
     val id : Int,
-    val adult : Boolean,
+    val adult : Boolean?,
     val backdrop_path : String?,
-    val genre_ids : List<Int>,
+    val genre_ids : List<Int>?,
     val original_language : String,
     val original_title : String,
     val overview : String,
@@ -21,4 +22,4 @@ data class TMDBMovieDetails (
     val vote_count : Int,
     val media_type : String?,
     val categories : List<String>
-): Parcelable, TMDBItemDetails()
+): Parcelable, ItemDetails()

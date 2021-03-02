@@ -6,8 +6,8 @@ import com.softvision.domain.interactor.FetchMoviesGenresInteractor
 import com.softvision.domain.interactor.FetchMoviesInteractor
 import com.softvision.domain.interactor.FetchQueryInteractor
 import com.softvision.domain.interactor.FetchTVShowsInteractor
-import com.softvision.domain.model.TMDBGenre
-import com.softvision.domain.model.TMDBItemDetails
+import com.softvision.domain.model.Genre
+import com.softvision.domain.model.base.ItemDetails
 import com.softvision.domain.repository.GenresRepository
 import com.softvision.domain.repository.ItemsRepository
 import dagger.Module
@@ -21,24 +21,24 @@ class InteractorModule {
 
     @Provides
     @MoviesInteractor
-    fun providesMoviesInteractor(@MoviesRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+    fun providesMoviesInteractor(@MoviesRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
         return FetchMoviesInteractor(repository)
     }
 
     @Provides
     @TvShowsInteractor
-    fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+    fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
         return FetchTVShowsInteractor(repository)
     }
 
     @Provides
     @QueryInteractor
-    fun providesQueryInteractor(@QueryRepository repository: ItemsRepository<String, TMDBItemDetails, Int>): BaseFetchItemsUseCase<String, TMDBItemDetails, Int> {
+    fun providesQueryInteractor(@QueryRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
         return FetchQueryInteractor(repository)
     }
 
     @Provides
-    fun bindGenresInteractor(repository: GenresRepository<TMDBGenre>): BaseFetchGenresUseCase<TMDBGenre> {
+    fun bindGenresInteractor(repository: GenresRepository<Genre>): BaseFetchGenresUseCase<Genre> {
         return FetchMoviesGenresInteractor(repository)
     }
 }

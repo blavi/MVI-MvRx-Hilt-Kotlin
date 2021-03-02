@@ -1,5 +1,5 @@
 package com.softvision.data.network.base
 
-interface TMDBRetrofitResponse<T : Any> {
+interface RetrofitResponse<T : Any> {
     fun getContent(): List<T>
 }

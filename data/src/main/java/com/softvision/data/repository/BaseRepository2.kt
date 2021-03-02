@@ -8,8 +8,6 @@ import javax.inject.Inject
 
 
 open class BaseRepository2<D: Any, E: ItemDomainMapper<D>> @Inject constructor(val connectivity: Connectivity){
-//    @Inject
-//    lateinit var connectivity: Connectivity
 
     /**
      * Use this if you need to cache data after fetching it from the api, or retrieve something from cache
@@ -20,42 +18,11 @@ open class BaseRepository2<D: Any, E: ItemDomainMapper<D>> @Inject constructor(v
         return if (connectivity.hasNetworkAccess()) {
             apiDataProvider()
         } else {
-            fetchDataFromDB(dbDataProvider1).zipWith(
-                fetchDataFromDB(dbDataProvider2),
-                { l1, l2 -> l1 + l2 }
-            )
-
-//            val v1 = dbDataProvider1()
-//                .filter {
-//                    it.isNotEmpty()
-//                }
-//                .toSingle()
-//                .map { list ->
-//                    list.map {
-//                        it.mapToDomainModel()
-//                    }
-//                }
-//                .onErrorResumeNext {
-//                    Timber.i("Explore State - repo error - %s", it.localizedMessage)
-//                    Single.error(it)
-//                }
-//
-//            val v2 = dbDataProvider2()
-//                .filter {
-//                    it.isNotEmpty()
-//                }
-//                .toSingle()
-//                .map { list ->
-//                    list.map {
-//                        it.mapToDomainModel()
-//                    }
-//                }
-//                .onErrorResumeNext {
-//                    Timber.i("Explore State - repo error - %s", it.localizedMessage)
-//                    Single.error(it)
-//                }
-//
-//            v1.zipWith(v2, { l1, l2 -> l1 + l2 })
+            fetchDataFromDB(dbDataProvider1)
+                .zipWith(
+                    fetchDataFromDB(dbDataProvider2),
+                    { l1, l2 -> l1 + l2 }
+                )
         }
     }
 
@@ -71,7 +38,7 @@ open class BaseRepository2<D: Any, E: ItemDomainMapper<D>> @Inject constructor(v
                 }
             }
             .onErrorResumeNext {
-                Timber.i("Explore State - repo error - %s", it.localizedMessage)
+                Timber.i("XYZ -  baserepo2  repo error - %s", it.localizedMessage)
                 Single.error(it)
             }
     }
