@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.softvision.data.database.base.TMDB_MOVIES
-import com.softvision.data.database.model.base.ItemEntity
 import com.softvision.domain.model.MovieDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -36,7 +35,7 @@ data class MovieEntity(
     val overview : String,
 
     @ColumnInfo(name = "popularity")
-    val popularity : Double,
+    val popularity : Double?,
 
     @ColumnInfo(name = "poster_path")
     val poster_path : String?,
@@ -61,7 +60,7 @@ data class MovieEntity(
 
     @ColumnInfo(name = "categories")
     val categories : List<String>
-): ItemEntity() {
+): BaseItemEntity() {
     override fun mapToDomainModel(): MovieDetails {
         return MovieDetails(id, adult, backdrop_path, genre_ids, original_language, original_title,
             overview, popularity, poster_path, release_date, title, video, vote_average, vote_count,

@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.model.MovieDetails
 import com.softvision.domain.model.TVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
@@ -24,7 +24,7 @@ import timber.log.Timber
 class DetailsFragment: BottomSheetDialogFragment(){
 
     private lateinit var binding: FragmentDetailsBinding
-    private lateinit var item: ItemDetails
+    private lateinit var item: BaseItemDetails
 
     companion object {
         const val ITEM = "item"
@@ -35,7 +35,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
 
         arguments?.let {
             if (it.containsKey(ITEM)) {
-                item = it.getParcelable<ItemDetails>(ITEM)!!
+                item = it.getParcelable<BaseItemDetails>(ITEM)!!
             }
         }
 

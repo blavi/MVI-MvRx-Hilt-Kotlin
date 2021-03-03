@@ -2,9 +2,6 @@ package com.softvision.data.common
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.softvision.data.common.Connectivity
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ConnectivityImpl @Inject constructor(private val context: Context) : Connectivity {

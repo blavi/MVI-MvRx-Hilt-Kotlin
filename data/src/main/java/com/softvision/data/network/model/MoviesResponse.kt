@@ -15,15 +15,3 @@ data class MoviesResponse (
         return itemResponses
     }
 }
-
-//@JsonClass(generateAdapter = true)
-//data class TMDBMoviesResponse (
-//    @Json(name = "page") val page : Int,
-//    @Json(name = "results") val tmdbItemResponses : List<Item>,
-//    @Json(name = "total_pages") val total_pages : Int,
-//    @Json(name = "total_results") val total_results : Int
-//): TMDBRetrofitResponse<Item> {
-//    override fun getContent(): List<Item> {
-//        return tmdbItemResponses
-//    }
-//}

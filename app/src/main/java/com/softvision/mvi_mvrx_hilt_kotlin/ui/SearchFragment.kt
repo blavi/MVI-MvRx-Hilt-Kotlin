@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.SearchState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
@@ -51,7 +52,14 @@ class SearchFragment: Fragment(), MvRxView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        initListeners()
+        initUpdateListeners()
+        initSearchViewListener()
+        initItemSelectionListener()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
     private fun setupUI() {
@@ -59,24 +67,32 @@ class SearchFragment: Fragment(), MvRxView {
         itemsAdapter = ItemsAdapter()
         val popularTvShowsDisposable = itemsAdapter.clickEvent
             .subscribe {
-//                setSelectedItem(it)
+                setSelectedItem(it)
             }
         disposables.add(popularTvShowsDisposable)
 
-        val gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         binding.itemsRecyclerView.apply {
             adapter = itemsAdapter
             layoutManager = gridLayoutManager
             setInfiniteScrolling(layoutManager as GridLayoutManager){
-//                searchViewModel.loadMoreItems()
+                searchViewModel.loadMoreItems()
             }
         }
     }
 
-    private fun initListeners() {
+    /*
+        ------------------ LISTENERS ------------------
+    */
+
+    private fun initUpdateListeners() {
         searchViewModel.asyncSubscribe(
             SearchState::searchRequest,
+            onSuccess = {
+                updateLoader(View.GONE)
+            },
             onFail = {
+                Timber.i("Query async subscribe %s", it.localizedMessage)
                 updateQueryResult()
                 updateLoader(View.GONE)
                 updateNoDataLabel(View.VISIBLE)
@@ -84,11 +100,11 @@ class SearchFragment: Fragment(), MvRxView {
         )
 
         searchViewModel.selectSubscribe(SearchState::items) { list ->
-//            if (list.isNotEmpty()) {
-                updateQueryResult(list)
-//            }
+            updateQueryResult(list)
         }
+    }
 
+    private fun initSearchViewListener() {
         RxSearchObservable.fromView(binding.searchView)
             .debounce(300, TimeUnit.MILLISECONDS)
             .filter { text ->
@@ -105,8 +121,19 @@ class SearchFragment: Fragment(), MvRxView {
             .subscribe()
     }
 
-    private fun updateQueryResult(list: List<ItemDetails> = emptyList()) {
-        updateLoader(View.GONE)
+    private fun initItemSelectionListener() {
+        searchViewModel.selectSubscribe(SearchState::selectedItem) { item ->
+            item?.let {
+                displayDetails(item)
+            }
+        }
+    }
+
+    /*
+        ------------------ UPDATE UI ------------------
+    */
+
+    private fun updateQueryResult(list: List<BaseItemDetails> = emptyList()) {
         itemsAdapter.updateData(list)
         binding.noMoviesImgView.visibility = View.GONE
     }
@@ -118,8 +145,7 @@ class SearchFragment: Fragment(), MvRxView {
     override fun invalidate() {
         withState(searchViewModel) { state ->
             if (state.searchRequest is Loading) {
-                updateQueryResult()
-                updateLoader(View.VISIBLE, getString(R.string.loading_genres))
+                updateLoader(View.VISIBLE, getString(R.string.loading))
             }
         }
     }
@@ -130,8 +156,21 @@ class SearchFragment: Fragment(), MvRxView {
         binding.loadingMessage.visibility = visibility
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
+
+    /*
+    ------------------ SELECT ITEM HANDLERS ------------------
+ */
+
+    private fun setSelectedItem(item: BaseItemDetails?) {
+        searchViewModel.setSelectedItem(item)
+    }
+
+    private fun displayDetails(item: BaseItemDetails) {
+        searchViewModel.setSelectedItem(null)
+        showDetails(item)
+    }
+
+    private fun showDetails(item: BaseItemDetails) {
+        findNavController().navigate(SearchFragmentDirections.actionNavigationFrgSearchToDetailsFragment(item))
     }
 }

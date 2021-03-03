@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.softvision.data.database.base.TMDB_TV_SHOWS
-import com.softvision.data.database.model.base.ItemEntity
 import com.softvision.domain.model.TVShowDetails
 
 @Entity(tableName = TMDB_TV_SHOWS)
@@ -32,7 +31,7 @@ data class TVShowEntity(
     val overview : String,
 
     @ColumnInfo(name = "popularity")
-    val popularity : Double,
+    val popularity : Double?,
 
     @ColumnInfo(name = "poster_path")
     val poster_path : String?,
@@ -51,7 +50,7 @@ data class TVShowEntity(
 
     @ColumnInfo(name = "categories")
     val categories : List<String>
-): ItemEntity() {
+): BaseItemEntity() {
     override fun mapToDomainModel(): TVShowDetails {
         return TVShowDetails(id, backdrop_path, genre_ids, origin_country, original_language, original_title,
             overview, popularity, poster_path, release_date, title, vote_average, vote_count,

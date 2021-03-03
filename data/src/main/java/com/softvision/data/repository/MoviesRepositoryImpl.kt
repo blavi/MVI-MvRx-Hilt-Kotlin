@@ -3,13 +3,13 @@ package com.softvision.data.repository
 import com.softvision.data.common.Connectivity
 import com.softvision.data.database.dao.MoviesDAO
 import com.softvision.data.database.model.PartialMovieEntity
-import com.softvision.data.database.model.base.ItemEntity
+import com.softvision.data.database.model.BaseItemEntity
 import com.softvision.data.database.model.MovieEntity
 import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.getData
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.ItemsRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -18,9 +18,9 @@ import javax.inject.Inject
 class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: MoviesDAO,
                                                private val resourcesApi: ApiEndpoints,
                                                connectivity: Connectivity
-): BaseRepository<ItemDetails, ItemDomainMapper<ItemDetails>>(connectivity), ItemsRepository<String, ItemDetails, Int> {
+): BaseRepository<BaseItemDetails, ItemDomainMapper<BaseItemDetails>>(connectivity), ItemsRepository<String, BaseItemDetails, Int> {
 
-    override fun getData(type: String, page: Int): Single<List<ItemDetails>> {
+    override fun getData(type: String, page: Int): Single<List<BaseItemDetails>> {
 
 //        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
@@ -47,7 +47,7 @@ class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: Movies
         ).subscribeOn(Schedulers.io())
     }
 
-    private fun insertItems(type: String, items: List<ItemEntity>) {
+    private fun insertItems(type: String, items: List<BaseItemEntity>) {
         items.forEach { itemEntity ->
             (itemEntity as MovieEntity).apply {
                 val foundItem = tmdbMoviesDAO.getItem(id)
@@ -62,10 +62,10 @@ class MoviesRepositoryImpl @Inject constructor(private val tmdbMoviesDAO: Movies
         }
     }
 
-    private fun loadItemsByCategory(type: String): Single<List<ItemEntity>> {
+    private fun loadItemsByCategory(type: String): Single<List<BaseItemEntity>> {
         return tmdbMoviesDAO
             .loadItemsByCategory(type)
-            .map { it as List<ItemEntity> }
+            .map { it as List<BaseItemEntity> }
             .subscribeOn(Schedulers.io())
     }
 }

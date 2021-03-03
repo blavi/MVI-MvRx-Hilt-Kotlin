@@ -9,6 +9,21 @@
         android:id="@+id/navigation_frg_search"
         android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_frg_search_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/detailsFragment"
+        android:name="com.softvision.mvi_mvrx_hilt_kotlin.ui.DetailsFragment"
+        android:label="Details"
+        android:theme="@style/Theme.MaterialComponents.BottomSheetDialog"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="item"
+            app:argType="com.softvision.domain.model.BaseItemDetails" />
+    </dialog>
 
 </navigation>

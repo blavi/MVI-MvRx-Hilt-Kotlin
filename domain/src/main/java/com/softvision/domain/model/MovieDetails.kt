@@ -1,7 +1,6 @@
 package com.softvision.domain.model
 
 import android.os.Parcelable
-import com.softvision.domain.model.base.ItemDetails
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -13,7 +12,7 @@ data class MovieDetails (
     val original_language : String,
     val original_title : String,
     val overview : String,
-    val popularity : Double,
+    val popularity : Double?,
     val poster_path : String?,
     val release_date : String,
     val title : String,
@@ -22,4 +21,4 @@ data class MovieDetails (
     val vote_count : Int,
     val media_type : String?,
     val categories : List<String>
-): Parcelable, ItemDetails()
+): Parcelable, BaseItemDetails()

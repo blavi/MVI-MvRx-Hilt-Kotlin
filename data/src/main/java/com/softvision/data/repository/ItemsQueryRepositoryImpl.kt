@@ -6,7 +6,7 @@ import com.softvision.data.database.dao.TVShowsDAO
 import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.getData
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 //import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.repository.ItemsRepository
 import io.reactivex.Single
@@ -18,10 +18,10 @@ class ItemsQueryRepositoryImpl @Inject constructor(
     private val tvShowsDAO: TVShowsDAO,
     private val resourcesApi: ApiEndpoints,
     connectivity: Connectivity
-) : BaseRepository2<ItemDetails, ItemDomainMapper<ItemDetails>>(connectivity),
-    ItemsRepository<String, ItemDetails, Int> {
+) : BaseRepository2<BaseItemDetails, ItemDomainMapper<BaseItemDetails>>(connectivity),
+    ItemsRepository<String, BaseItemDetails, Int> {
 
-    override fun getData(query: String, page: Int): Single<List<ItemDetails>> {
+    override fun getData(query: String, page: Int): Single<List<BaseItemDetails>> {
 
 //        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = resourcesApi.searchTMDBItems(query = query, page = page).subscribeOn(Schedulers.io())
@@ -44,19 +44,4 @@ class ItemsQueryRepositoryImpl @Inject constructor(
         ).subscribeOn(Schedulers.io())
     }
 
-//    private fun loadItemsByQueryValue(query: String): Single<List<TMDBMovieEntity>> {
-////        return tmdbMoviesDAO.loadItemsByTitle(query)
-////            .concatWith {
-////                tmdbTVShowsDAO.loadItemsByTitle(query)
-////            }
-////            .singleOrError()
-////            .subscribeOn(Schedulers.io())
-//
-//
-//        val movies= tmdbMoviesDAO.loadItemsByTitle(query)
-//        val tvShows = tmdbTVShowsDAO.loadItemsByTitle(query)
-//
-//        return Single.just(movies + tvShows)
-//            .subscribeOn(Schedulers.io())
-//    }
 }

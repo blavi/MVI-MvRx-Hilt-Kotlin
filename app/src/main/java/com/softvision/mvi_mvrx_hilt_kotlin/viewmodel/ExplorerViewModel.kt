@@ -6,15 +6,15 @@ import com.softvision.data.network.base.DataType
 import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.di.MoviesInteractor
 import com.softvision.domain.di.TvShowsInteractor
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: ExplorerState,
-                                                    @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, ItemDetails, Int>,
-                                                    @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, ItemDetails, Int>)
+                                                    @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>,
+                                                    @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>)
     :BaseMvRxViewModel<ExplorerState>(initialState) {
 
     init {
@@ -133,7 +133,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
         }
     }
 
-    fun setSelectedItem(item: ItemDetails?) {
+    fun setSelectedItem(item: BaseItemDetails?) {
         Log.i("Explore State", "item selected")
         setState {
             copy(selectedItem = item)

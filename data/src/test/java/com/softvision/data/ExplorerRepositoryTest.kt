@@ -8,7 +8,7 @@ import com.softvision.data.network.base.DataType
 import com.softvision.data.network.model.MovieResponse
 import com.softvision.data.network.model.MoviesResponse
 import com.softvision.data.repository.MoviesRepositoryImpl
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import io.mockk.*
 import io.reactivex.Single
 import org.junit.After
@@ -20,7 +20,7 @@ class ExplorerRepositoryTest {
     private lateinit var repository: MoviesRepositoryImpl
 
     private lateinit var mockResult: MoviesResponse
-    private lateinit var mockDetailsList: List<ItemDetails>
+    private lateinit var mockDetailsList: List<BaseItemDetails>
     private lateinit var mockResponseList: List<MovieResponse>
     private lateinit var mockEntityList: List<MovieEntity>
     private lateinit var api: ApiEndpoints
@@ -30,7 +30,7 @@ class ExplorerRepositoryTest {
 
     private lateinit var itemE: MovieEntity
     private lateinit var itemR: MovieResponse
-    private lateinit var itemD: ItemDetails
+    private lateinit var itemD: BaseItemDetails
 
     private val page: Int = 1
 
@@ -44,7 +44,7 @@ class ExplorerRepositoryTest {
             every { id } returns 1
             every { categories } returns mockk()
         }
-        itemD = mockk<ItemDetails>()
+        itemD = mockk<BaseItemDetails>()
 
         mockResponseList = listOf(itemR, itemR)
         mockEntityList = listOf(itemE, itemE)

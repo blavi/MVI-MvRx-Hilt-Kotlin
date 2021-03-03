@@ -7,7 +7,7 @@ import com.softvision.domain.interactor.FetchMoviesInteractor
 import com.softvision.domain.interactor.FetchQueryInteractor
 import com.softvision.domain.interactor.FetchTVShowsInteractor
 import com.softvision.domain.model.Genre
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.GenresRepository
 import com.softvision.domain.repository.ItemsRepository
 import dagger.Module
@@ -21,19 +21,19 @@ class InteractorModule {
 
     @Provides
     @MoviesInteractor
-    fun providesMoviesInteractor(@MoviesRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
+    fun providesMoviesInteractor(@MoviesRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
         return FetchMoviesInteractor(repository)
     }
 
     @Provides
     @TvShowsInteractor
-    fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
+    fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
         return FetchTVShowsInteractor(repository)
     }
 
     @Provides
     @QueryInteractor
-    fun providesQueryInteractor(@QueryRepository repository: ItemsRepository<String, ItemDetails, Int>): BaseFetchItemsUseCase<String, ItemDetails, Int> {
+    fun providesQueryInteractor(@QueryRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
         return FetchQueryInteractor(repository)
     }
 

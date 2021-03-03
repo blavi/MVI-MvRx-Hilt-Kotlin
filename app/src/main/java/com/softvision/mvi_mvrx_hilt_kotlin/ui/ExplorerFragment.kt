@@ -11,7 +11,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.FragmentExplorerBinding
@@ -54,6 +54,11 @@ class ExplorerFragment : Fragment(), MvRxView {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         initListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
     private fun setupUI() {
@@ -398,7 +403,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateTrendingMoviesList(items: List<ItemDetails>) {
+    private fun updateTrendingMoviesList(items: List<BaseItemDetails>) {
         updateTrendingMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             trendingMoviesAdapter.updateData(items)
@@ -406,7 +411,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateTrendingTVShowsList(items: List<ItemDetails>) {
+    private fun updateTrendingTVShowsList(items: List<BaseItemDetails>) {
         updateTrendingTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             trendingTVShowsAdapter.updateData(items)
@@ -414,7 +419,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updatePopularMoviesList(items: List<ItemDetails>) {
+    private fun updatePopularMoviesList(items: List<BaseItemDetails>) {
         updatePopularMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.GONE
@@ -422,7 +427,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updatePopularTVShowsList(items: List<ItemDetails>) {
+    private fun updatePopularTVShowsList(items: List<BaseItemDetails>) {
         updatePopularTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.GONE
@@ -430,7 +435,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateComingSoonMoviesList(items: List<ItemDetails>) {
+    private fun updateComingSoonMoviesList(items: List<BaseItemDetails>) {
         updateComingSoonMoviesLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.GONE
@@ -438,7 +443,7 @@ class ExplorerFragment : Fragment(), MvRxView {
         }
     }
 
-    private fun updateComingSoonTVShowsList(items: List<ItemDetails>) {
+    private fun updateComingSoonTVShowsList(items: List<BaseItemDetails>) {
         updateComingSoonTVShowsLoader(View.GONE)
         if (items.isNotEmpty()) {
             binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.GONE
@@ -450,25 +455,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         ------------------ SELECT ITEM HANDLERS ------------------
      */
 
-    private fun setSelectedItem(item: ItemDetails?) {
+    private fun setSelectedItem(item: BaseItemDetails?) {
         explorerViewModel.setSelectedItem(item)
     }
 
-    private fun displayDetails(item: ItemDetails) {
+    private fun displayDetails(item: BaseItemDetails) {
         setSelectedItem(null)
         showDetails(item)
     }
 
-//    private fun showError() {
-//        Toast.makeText(requireContext(), "Failed to load watchlist", Toast.LENGTH_SHORT).show()
-//    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
-    }
-
-    private fun showDetails(item: ItemDetails) {
+    private fun showDetails(item: BaseItemDetails) {
         findNavController().navigate(
             ExplorerFragmentDirections.actionNavigationExplorerToDetailsFragment(
                 item

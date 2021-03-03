@@ -13,7 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.GenresAdapter
@@ -56,6 +56,11 @@ class MoviesFragment: Fragment(), MvRxView {
         initListeners()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
+    }
+
     private fun setupUI() {
         setGenresLayout()
         setMoviesByGenreLayout()
@@ -85,7 +90,7 @@ class MoviesFragment: Fragment(), MvRxView {
             }
         disposables.add(popularTvShowsDisposable)
 
-        val gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         binding.moviesRecyclerView.apply {
             adapter = itemsAdapter
             layoutManager = gridLayoutManager
@@ -128,6 +133,9 @@ class MoviesFragment: Fragment(), MvRxView {
     private fun initMoviesListener() {
         moviesViewModel.asyncSubscribe(
             MoviesByGenreState::moviesByGenreRequest,
+            onSuccess = {
+                updateLoader(View.GONE)
+            },
             onFail = {
                 updateLoader(View.GONE)
                 updateNoDataLabel(View.VISIBLE)
@@ -143,6 +151,9 @@ class MoviesFragment: Fragment(), MvRxView {
     private fun initGenresListener() {
         moviesViewModel.asyncSubscribe(
             MoviesByGenreState::genresRequest,
+            onSuccess = {
+
+            },
             onFail = {
                 updateLoader(View.GONE)
                 updateNoDataLabel(View.VISIBLE)
@@ -173,8 +184,8 @@ class MoviesFragment: Fragment(), MvRxView {
         binding.noMoviesImgView.visibility = visibility
     }
 
-    private fun updateMoviesList(list: List<ItemDetails>) {
-        updateLoader(View.GONE)
+    private fun updateMoviesList(list: List<BaseItemDetails>) {
+//        updateLoader(View.GONE)
         if (list.isNotEmpty()) {
             itemsAdapter.updateData(list)
             binding.noMoviesImgView.visibility = View.GONE
@@ -213,21 +224,16 @@ class MoviesFragment: Fragment(), MvRxView {
         ------------------ SELECT ITEM HANDLERS ------------------
      */
 
-    private fun setSelectedItem(item: ItemDetails?) {
+    private fun setSelectedItem(item: BaseItemDetails?) {
         moviesViewModel.setSelectedItem(item)
     }
 
-    private fun displayDetails(item: ItemDetails) {
+    private fun displayDetails(item: BaseItemDetails) {
         moviesViewModel.setSelectedItem(null)
         showDetails(item)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
-    }
-
-    private fun showDetails(item: ItemDetails) {
+    private fun showDetails(item: BaseItemDetails) {
         findNavController().navigate(MoviesFragmentDirections.actionNavigationMoviesToDetailsFragment(item))
     }
 }

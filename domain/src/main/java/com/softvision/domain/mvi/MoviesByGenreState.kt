@@ -4,7 +4,7 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.softvision.domain.model.Genre
-import com.softvision.domain.model.base.ItemDetails
+import com.softvision.domain.model.BaseItemDetails
 
 data class MoviesByGenreState(
     val genresRequest: Async<List<Genre>> = Uninitialized,
@@ -12,13 +12,13 @@ data class MoviesByGenreState(
 
     val displayedGenre: Genre? = null,
 
-    val moviesByGenreRequest: Async<List<ItemDetails>> = Uninitialized,
-    val moviesByGenreList: List<ItemDetails> = emptyList(),
+    val moviesByGenreRequest: Async<List<BaseItemDetails>> = Uninitialized,
+    val moviesByGenreList: List<BaseItemDetails> = emptyList(),
 
-    val selectedItem: ItemDetails? = null
+    val selectedItem: BaseItemDetails? = null
 ): MvRxState {
 
-    fun combineMoviesByGenre(offset: Int, displayedGenreId: Int, newRequestItems: Async<List<ItemDetails>>): List<ItemDetails> {
+    fun combineMoviesByGenre(offset: Int, displayedGenreId: Int, newRequestItems: Async<List<BaseItemDetails>>): List<BaseItemDetails> {
 
         return (when {
             offset != 0 && this.displayedGenre?.id == displayedGenreId -> this.moviesByGenreList

@@ -1,7 +1,7 @@
-package com.softvision.domain.model.base
+package com.softvision.domain.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-open class ItemDetails: Parcelable
+open class BaseItemDetails: Parcelable
