@@ -17,6 +17,9 @@ interface MoviesDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertItem(item: MovieEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertOrIgnoreItem(item: MovieEntity)
+
     @Query("DELETE FROM $TMDB_MOVIES")
     fun deleteAll()
 
@@ -31,4 +34,7 @@ interface MoviesDAO {
 
     @Query("SELECT * FROM $TMDB_MOVIES WHERE :title in (TITLE)")
     fun loadItemsByTitle(title: String): Single<List<MovieEntity>>
+
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE :genre in (GENRE_IDS)")
+    fun loadItemsByGenre(genre: String): Single<List<MovieEntity>>
 }

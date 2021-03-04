@@ -14,6 +14,7 @@ import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.softvision.domain.model.BaseItemDetails
+import com.softvision.domain.model.GenreDetails
 import com.softvision.domain.mvi.MoviesByGenreState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.GenresAdapter
@@ -110,8 +111,10 @@ class MoviesFragment: Fragment(), MvRxView {
         binding.genresSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val genre = genresAdapter.getItem(position)
-                Timber.i("Movies: genre selected %s", genre.name)
-                moviesViewModel.updateSelectedGenre(genre)
+                (genre as? GenreDetails)?.let {
+                    Timber.i("Movies: genre selected %s", it.name)
+                    moviesViewModel.updateSelectedGenre(it)
+                }
             }
 
             override fun onNothingSelected(adapter: AdapterView<*>?) {}
@@ -123,8 +126,8 @@ class MoviesFragment: Fragment(), MvRxView {
      */
     private fun initGenreSelectionListener() {
         moviesViewModel.selectSubscribe(MoviesByGenreState::displayedGenre) {
-            it?.let {
-                Timber.i("Movies: %s genre selected => display movies", it.name)
+            (it as? GenreDetails)?.let { genre ->
+                Timber.i("Movies: %s genre selected => display movies", genre.name)
                 moviesViewModel.fetchMoviesByGenre()
             }
         }
@@ -202,7 +205,8 @@ class MoviesFragment: Fragment(), MvRxView {
         Timber.i("Movies: spinner redraw")
         withState(moviesViewModel) { state ->
             genresAdapter.addData(state.genres)
-            state.displayedGenre?.let {
+
+            (state.displayedGenre as? GenreDetails)?.let {
                 binding.genresSpinner.setSelection(genresAdapter.getPosition(it), true)
             }
         }

@@ -2,11 +2,7 @@ package com.softvision.domain.di
 
 import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
-import com.softvision.domain.interactor.FetchMoviesGenresInteractor
-import com.softvision.domain.interactor.FetchMoviesInteractor
-import com.softvision.domain.interactor.FetchQueryInteractor
-import com.softvision.domain.interactor.FetchTVShowsInteractor
-import com.softvision.domain.model.Genre
+import com.softvision.domain.interactor.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.GenresRepository
 import com.softvision.domain.repository.ItemsRepository
@@ -26,6 +22,12 @@ class InteractorModule {
     }
 
     @Provides
+    @MoviesByGenreInteractor
+    fun providesMoviesByGenreInteractor(@MoviesByGenreRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
+        return FetchMoviesByGenreInteractor(repository)
+    }
+
+    @Provides
     @TvShowsInteractor
     fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
         return FetchTVShowsInteractor(repository)
@@ -38,7 +40,7 @@ class InteractorModule {
     }
 
     @Provides
-    fun bindGenresInteractor(repository: GenresRepository<Genre>): BaseFetchGenresUseCase<Genre> {
+    fun providesGenresInteractor(repository: GenresRepository<BaseItemDetails>): BaseFetchGenresUseCase<BaseItemDetails> {
         return FetchMoviesGenresInteractor(repository)
     }
 }

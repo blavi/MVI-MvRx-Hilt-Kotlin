@@ -2,6 +2,7 @@ package com.softvision.data.di
 
 import com.softvision.data.BuildConfig
 import com.softvision.data.network.api.ApiEndpoints
+import com.softvision.data.network.base.NetworkConstants
 import com.softvision.data.network.model.Item
 import com.softvision.data.network.model.MovieResponse
 import com.softvision.data.network.model.PersonResponse
@@ -53,7 +54,7 @@ class NetworkModule {
     @Singleton
     fun provideMoshi(): Moshi{
         return Moshi.Builder()
-            .add(PolymorphicJsonAdapterFactory.of(Item::class.java, "media_type")
+            .add(PolymorphicJsonAdapterFactory.of(Item::class.java, NetworkConstants.MEDIA_TYPE)
                 .withSubtype(MovieResponse::class.java, ItemType.movie.name)
                 .withSubtype(TVShowResponse::class.java, ItemType.tv.name)
                 .withSubtype(PersonResponse::class.java, ItemType.person.name))

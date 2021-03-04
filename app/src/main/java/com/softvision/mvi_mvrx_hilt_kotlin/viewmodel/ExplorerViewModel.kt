@@ -11,11 +11,15 @@ import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.ExplorerFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: ExplorerState,
                                                     @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>,
                                                     @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>)
     :BaseMvRxViewModel<ExplorerState>(initialState) {
+
+    private var disposables: CompositeDisposable = CompositeDisposable()
 
     init {
         initiateLoadingMoviesAndTVShows()
@@ -45,68 +49,80 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
 
     private fun fetchPopularMovies(offset: Int = 0) {
         Log.i("Explore State", "popular invoke")
-        moviesInteractor.invoke(DataType.POPULAR_MOVIES, offset / 20 + 1)
+        val disposable = moviesInteractor.invoke(DataType.POPULAR_MOVIES, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     popularMoviesRequest = it,
                     popularMovies = combinePopularMoviesItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     private fun fetchPopularTVShows(offset: Int = 0) {
         Log.i("Explore State", "popular tv shows invoke")
-        tvShowsInteractor.invoke(DataType.POPULAR_TV_SHOWS, offset / 20 + 1)
+        val disposable = tvShowsInteractor.invoke(DataType.POPULAR_TV_SHOWS, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     popularTVShowsRequest = it,
                     popularTVShows = combinePopularTVShowsItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     private fun fetchTrendingMovies(offset: Int = 0) {
         Log.i("Explore State", "trending invoke")
-        moviesInteractor.invoke(DataType.TRENDING_MOVIES, offset / 20 + 1)
+        val disposable = moviesInteractor.invoke(DataType.TRENDING_MOVIES, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     trendingMoviesRequest = it,
                     trendingMovies = combineTrendingMoviesItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     private fun fetchTrendingTVShows(offset: Int = 0) {
         Log.i("Explore State", "trending invoke")
-        tvShowsInteractor.invoke(DataType.TRENDING_TV_SHOWS, offset / 20 + 1)
+        val disposable = tvShowsInteractor.invoke(DataType.TRENDING_TV_SHOWS, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     trendingTVShowsRequest = it,
                     trendingTVShows = combineTrendingTVShowsItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     private fun fetchComingSoonMovies(offset: Int = 0) {
         Log.i("Explore State", "coming soon invoke")
-        moviesInteractor.invoke(DataType.COMING_SOON_MOVIES, offset / 20 + 1)
+        val disposable = moviesInteractor.invoke(DataType.COMING_SOON_MOVIES, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     comingSoonMoviesRequest = it,
                     comingSoonMovies = combineComingSoonMoviesItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     private fun fetchComingSoonTVShows(offset: Int = 0) {
         Log.i("Explore State", "coming soon invoke")
-        tvShowsInteractor.invoke(DataType.COMING_SOON_TV_SHOWS, offset / 20 + 1)
+        val disposable = tvShowsInteractor.invoke(DataType.COMING_SOON_TV_SHOWS, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     comingSoonTVShowsRequest = it,
                     comingSoonTVShows = combineComingSoonTVShowsItems(offset, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     fun loadMorePopularMovies() = withState {
@@ -174,5 +190,10 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
             (viewModelContext as FragmentViewModelContext)
                 .fragment<ExplorerFragment>()
                 .viewModelFactory.create(state)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.clear()
     }
 }

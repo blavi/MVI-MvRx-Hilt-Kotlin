@@ -1,14 +1,9 @@
 package com.softvision.data.network.model
 
-import com.softvision.data.database.model.BaseItemEntity
-import com.softvision.data.database.model.MovieEntity
-import com.softvision.data.database.model.PersonEntity
-import com.softvision.data.database.model.TVShowEntity
+import com.softvision.data.database.model.*
+import com.softvision.data.mappers.ItemRoomMapper
 import com.softvision.data.network.utils.ItemType
-import com.softvision.domain.model.BaseItemDetails
-import com.softvision.domain.model.MovieDetails
-import com.softvision.domain.model.PersonDetails
-import com.softvision.domain.model.TVShowDetails
+import com.softvision.domain.model.*
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -45,6 +40,12 @@ data class MovieResponse(
             overview, popularity, poster_path, release_date, title, video, vote_average,
             vote_count, media_type, emptyList())
     }
+
+    override fun mapToRoomEntity(): MovieEntity {
+        return MovieEntity(id, adult, backdrop_path, genre_ids, original_language, original_title,
+            overview, popularity, poster_path, release_date, title, video, vote_average,
+            vote_count, media_type, emptyList())
+    }
 }
 
 @JsonClass(generateAdapter = true)
@@ -68,6 +69,12 @@ data class TVShowResponse(
         return TVShowEntity(id, backdrop_path, genre_ids, origin_country, original_language, original_title,
             overview, popularity, poster_path, release_date, title, vote_average,
             vote_count, categories)
+    }
+
+    override fun mapToRoomEntity(): TVShowEntity {
+        return TVShowEntity(id, backdrop_path, genre_ids, origin_country, original_language, original_title,
+            overview, popularity, poster_path, release_date, title, vote_average,
+            vote_count, emptyList())
     }
 
     override fun mapToDomainModel(): TVShowDetails {
@@ -95,7 +102,34 @@ data class PersonResponse(
         )
     }
 
-    override fun mapToRoomEntity(categories: List<String>): BaseItemEntity {
+    override fun mapToRoomEntity(categories: List<String>): PersonEntity {
+        return PersonEntity(id, adult, popularity, profile_path, emptyList(), known_for_department, name, gender)
+    }
+
+    override fun mapToRoomEntity(): PersonEntity {
         return PersonEntity(id, adult, popularity, profile_path, emptyList(), known_for_department, name, gender)
     }
 }
+
+//@JsonClass(generateAdapter = true)
+//data class MovieGenreResponse(
+//    @Json(name = "id") val id : Int,
+//    @Json(name = "name") val name : String
+//): Item() {
+//    override fun mapToRoomEntity(categories: List<String>): MovieGenreEntity {
+//        return MovieGenreEntity(id, name)
+//    }
+//
+//    override fun mapToRoomEntity(): MovieGenreEntity {
+//        return MovieGenreEntity(id, name)
+//    }
+//
+//    override fun mapToDomainModel(): Genre {
+//        return Genre(id, name)
+//    }
+//}
+
+//ItemRoomMapper<MovieGenreEntity> {
+//    override fun mapToRoomEntity(): MovieGenreEntity {
+//        return MovieGenreEntity(id, name)
+//    }

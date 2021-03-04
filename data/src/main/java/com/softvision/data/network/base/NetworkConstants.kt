@@ -9,7 +9,7 @@ class DataType {
         const val POPULAR_TV_SHOWS = "popular_tv_shows"
         const val COMING_SOON_MOVIES = "coming_soon_movies"
         const val COMING_SOON_TV_SHOWS = "coming_soon_tv_shows"
-        const val SEARCH_TMDB_ITEMS = "search_items"
+//        const val SEARCH_TMDB_ITEMS = "search_items"
     }
 }
 

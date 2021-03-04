@@ -262,6 +262,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setComingSoonMoviesListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonMoviesRequest,
+            onSuccess = {
+                updateComingSoonMoviesLoader(View.GONE)
+            },
             onFail = {
                 updateComingSoonMoviesLoader(View.GONE)
                 updateNoComingSoonMoviesLabel(View.VISIBLE)
@@ -276,6 +279,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setComingSoonTVShowsListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonTVShowsRequest,
+            onSuccess = {
+                updateComingSoonTVShowsLoader(View.GONE)
+            },
             onFail = {
                 updateComingSoonTVShowsLoader(View.GONE)
                 updateNoComingSoonTVShowsLabel(View.VISIBLE)
@@ -289,6 +295,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setPopularMoviesListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::popularMoviesRequest,
+            onSuccess = {
+                updatePopularMoviesLoader(View.GONE)
+            },
             onFail = {
                 updatePopularMoviesLoader(View.GONE)
                 updateNoPopularMoviesLabel(View.VISIBLE)
@@ -302,6 +311,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setPopularTVShowsListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::popularTVShowsRequest,
+            onSuccess = {
+                updatePopularTVShowsLoader(View.GONE)
+            },
             onFail = {
                 updatePopularTVShowsLoader(View.GONE)
                 updateNoPopularTVShowsLabel(View.VISIBLE)
@@ -315,6 +327,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setTrendingMoviesListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingMoviesRequest,
+            onSuccess = {
+                updateTrendingMoviesLoader(View.GONE)
+            },
             onFail = {
                 updateTrendingMoviesLoader(View.GONE)
                 updateNoTrendingMoviesLabel(View.VISIBLE)
@@ -328,6 +343,9 @@ class ExplorerFragment : Fragment(), MvRxView {
 
     private fun setTrendingTVShowsListeners() {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingTVShowsRequest,
+            onSuccess = {
+                updateTrendingTVShowsLoader(View.GONE)
+            },
             onFail = {
                 updateTrendingTVShowsLoader(View.GONE)
                 updateNoTrendingTVShowsLabel(View.VISIBLE)

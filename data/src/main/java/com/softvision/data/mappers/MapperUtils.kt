@@ -1,6 +1,6 @@
 package com.softvision.data.mappers
 
-fun <R : ItemRoomMapper<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> apiToDB(list: List<R>, category: C): List<E> {
+fun <R : ItemRoomMapperWithExtraInfo<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> apiToDB(list: List<R>, category: C): List<E> {
     return list.map {
         it.mapToRoomEntity(listOf(category))
     }
@@ -12,7 +12,7 @@ fun <R : ItemDomainMapper<D>, D : Any> apiToDomain(list: List<R>): List<D> {
     }
 }
 
-fun <R : GenreRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> apiToDB(list: List<R>): List<E> {
+fun <R : ItemRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> apiToDB(list: List<R>): List<E> {
     return list.map {
         it.mapToRoomEntity()
     }

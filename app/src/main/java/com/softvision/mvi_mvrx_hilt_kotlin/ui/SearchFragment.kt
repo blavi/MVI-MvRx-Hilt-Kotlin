@@ -38,6 +38,10 @@ class SearchFragment: Fragment(), MvRxView {
     lateinit var viewModelFactory: SearchViewModel.Factory
     private val searchViewModel: SearchViewModel by fragmentViewModel(SearchViewModel::class)
 
+    companion object {
+        private const val TAG = "SearchFragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,10 +93,15 @@ class SearchFragment: Fragment(), MvRxView {
         searchViewModel.asyncSubscribe(
             SearchState::searchRequest,
             onSuccess = {
+                Timber.i("%s Query async subscribe success", TAG)
                 updateLoader(View.GONE)
+                if (it.isEmpty()) {
+                    Timber.i("%s Query async subscribe success empty", TAG)
+                    updateNoDataLabel(View.VISIBLE)
+                }
             },
             onFail = {
-                Timber.i("Query async subscribe %s", it.localizedMessage)
+                Timber.i("%s Query async subscribe %s", TAG, it.localizedMessage)
                 updateQueryResult()
                 updateLoader(View.GONE)
                 updateNoDataLabel(View.VISIBLE)
@@ -113,7 +122,7 @@ class SearchFragment: Fragment(), MvRxView {
             .distinctUntilChanged()
             .map { text ->
                 text.toLowerCase().trim()
-                Timber.i("Query map %s", text)
+                Timber.i("%s Query map %s", TAG, text)
                 searchViewModel.executeQuery(text.toString())
             }
             .subscribeOn(Schedulers.io())

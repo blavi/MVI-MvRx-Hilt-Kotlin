@@ -10,7 +10,7 @@ object RxSearchObservable {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
                 subject.onNext(text)
-                searchView.clearFocus() //if you want to close keyboard
+                searchView.clearFocus() // close keyboard
                 return false
             }
 

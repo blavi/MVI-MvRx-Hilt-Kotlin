@@ -2,13 +2,12 @@ package com.softvision.data.network.base
 
 import com.softvision.data.mappers.*
 import io.reactivex.Single
-import timber.log.Timber
 
 /**
  * Cache movie, tv shows items after fetching it from the API, or retrieve from cache
  */
 
-inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> Single<V>.getData(
+inline fun <V : RetrofitResponse<R>, R : ItemRoomMapperWithExtraInfo<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> Single<V>.getData(
     crossinline cacheAction: (List<E>) -> Unit,
     crossinline fetchFromCacheAction: () -> Single<List<E>>,
     category: C
@@ -25,7 +24,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMap
             dbToDomain(it)
         }
         .onErrorResumeNext { error ->
-            Timber.i("XYZ - 1 network error - %s", error.localizedMessage)
             fetchFromCacheAction()
                 .filter { it.isNotEmpty() }
                 .toSingle()
@@ -33,7 +31,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMap
                     dbToDomain(cachedEntities)
                 }
                 .onErrorResumeNext {
-                    Timber.i("XYZ - repo error - network - %s", error.localizedMessage)
                     Single.error(it)
                 }
         }
@@ -67,7 +64,7 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMap
 /**
  * Retrieve movie, tv shows items from API
  */
-inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> Single<V>.getData(
+inline fun <V : RetrofitResponse<R>, R : ItemRoomMapperWithExtraInfo<E, C>, E : ItemDomainMapper<D>, D : Any, C : Any> Single<V>.getData(
     crossinline cacheAction: (List<E>) -> Unit,
     category: C
 ): Single<List<D>> {
@@ -82,7 +79,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMap
             dbToDomain(it)
         }
         .onErrorResumeNext {
-            Timber.i("XYZ %s", it.localizedMessage)
             Single.error(it)
         }
 }
@@ -90,7 +86,7 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E, C>, E : ItemDomainMap
 /**
  * Retrieve genre items from API
  */
-inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> Single<V>.getData(
+inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> Single<V>.getData(
     crossinline cacheAction: (List<E>) -> Unit
 ): Single<List<D>> {
     return this
@@ -104,7 +100,6 @@ inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMappe
             dbToDomain(it)
         }
         .onErrorResumeNext {
-            Timber.i("XYZ - 2 network error - %s", it.localizedMessage)
             Single.error(it)
         }
 }
@@ -112,7 +107,7 @@ inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMappe
 /**
  * Cache genre items after fetching it from the API, or retrieve from cache
  */
-inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> Single<V>.getData(
+inline fun <V : RetrofitResponse<R>, R : ItemRoomMapper<E>, E : ItemDomainMapper<D>, D : Any> Single<V>.getData(
     crossinline cacheAction: (List<E>) -> Unit,
     crossinline fetchFromCacheAction: () -> Single<List<E>>,
 ): Single<List<D>> {
@@ -127,7 +122,6 @@ inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMappe
             dbToDomain(it)
         }
         .onErrorResumeNext { error ->
-            Timber.i("XYZ - 3 network error - %s", error.localizedMessage)
             fetchFromCacheAction()
                 .filter { it.isNotEmpty() }
                 .toSingle()
@@ -135,7 +129,6 @@ inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMappe
                     dbToDomain(cachedEntities)
                 }
                 .onErrorResumeNext {
-                    Timber.i("XYZ - repo error - network - %s", error.localizedMessage)
                     Single.error(it)
                 }
         }
@@ -145,7 +138,7 @@ inline fun <V : RetrofitResponse<R>, R : GenreRoomMapper<E>, E : ItemDomainMappe
  * Cache movie, tv shows items after fetching it from the API, or retrieve from cache
  */
 //
-inline fun <V : RetrofitResponse<R>, R : ItemDomainMapper<D>, E1 : ItemDomainMapper<D1>, E2 : ItemDomainMapper<D2>, D1: D, D2: D, D : Any> Single<V>.getData(
+inline fun <V : RetrofitResponse<R>, R : ItemDomainMapper<D>, E1 : ItemDomainMapper<D1>, E2 : ItemDomainMapper<D2>, D1: D, D2: D, D: Any> Single<V>.getData(
     crossinline fetchFromCacheAction1: () -> Single<List<E1>>,
     crossinline fetchFromCacheAction2: () -> Single<List<E2>>
 ): Single<List<D>> {
@@ -154,8 +147,7 @@ inline fun <V : RetrofitResponse<R>, R : ItemDomainMapper<D>, E1 : ItemDomainMap
         .map {
             apiToDomain(it.getContent())
         }
-        .onErrorResumeNext { error ->
-            Timber.i("XYZ - 1 network error - %s", error.localizedMessage)
+        .onErrorResumeNext { _ ->
             val val1 = fetchFromCacheAction1()
                 .filter { it.isNotEmpty() }
                 .toSingle()
@@ -163,7 +155,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemDomainMapper<D>, E1 : ItemDomainMap
                     dbToDomain(cachedEntities)
                 }
                 .onErrorResumeNext {
-                    Timber.i("XYZ - nr repo error - network - %s", it.localizedMessage)
                     Single.error(it)
                 }
 
@@ -174,7 +165,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemDomainMapper<D>, E1 : ItemDomainMap
                     dbToDomain(cachedEntities)
                 }
                 .onErrorResumeNext {
-                    Timber.i("XYZ - nr repo error - %s", it.localizedMessage)
                     Single.error(it)
                 }
 

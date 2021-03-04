@@ -24,4 +24,6 @@
         <item name="itemIconTint">@drawable/tab_icon</item>
         <item name="itemTextColor">@drawable/tab_icon</item>
     </style>
+
+    <string name="search_hint">Search for a movie, tv show or a person</string>
 </resources>

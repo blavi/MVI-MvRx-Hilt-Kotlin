@@ -4,8 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.softvision.data.database.base.TMDB_MOVIE_GENRES
-import com.softvision.data.mappers.ItemDomainMapper
-import com.softvision.domain.model.Genre
+import com.softvision.domain.model.GenreDetails
 
 @Entity(tableName = TMDB_MOVIE_GENRES)
 data class MovieGenreEntity (
@@ -15,8 +14,8 @@ data class MovieGenreEntity (
 
     @ColumnInfo(name = "name")
     val name : String
-): ItemDomainMapper<Genre> {
-    override fun mapToDomainModel(): Genre {
-        return Genre(id, name)
+): BaseItemEntity() {
+    override fun mapToDomainModel(): GenreDetails {
+        return GenreDetails(id, name)
     }
 }

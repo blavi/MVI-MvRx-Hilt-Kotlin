@@ -5,16 +5,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.softvision.domain.model.Genre
+import com.softvision.domain.model.BaseItemDetails
+import com.softvision.domain.model.GenreDetails
 import timber.log.Timber
 
 
-class GenresAdapter(context: Context, layout: Int, private var genresList: MutableList<Genre>): ArrayAdapter<Genre>(context, layout, genresList) {
+class GenresAdapter(
+    context: Context,
+    layout: Int,
+    private var genresList: MutableList<BaseItemDetails>
+) : ArrayAdapter<BaseItemDetails>(context, layout, genresList) {
     override fun getCount(): Int {
         return genresList.size
     }
 
-    override fun getItem(position: Int): Genre {
+    override fun getItem(position: Int): BaseItemDetails {
         return genresList[position]
     }
 
@@ -23,7 +28,11 @@ class GenresAdapter(context: Context, layout: Int, private var genresList: Mutab
     }
 
     fun getPositionById(genreId: Int): Int {
-        return getPosition(genresList.find { it.id == genreId })
+        return getPosition(
+            genresList.find {
+                (it as? GenreDetails)?.id == genreId
+            }
+        )
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -38,14 +47,16 @@ class GenresAdapter(context: Context, layout: Int, private var genresList: Mutab
         return view
     }
 
-    fun addData(list: List<Genre>) {
+    fun addData(list: List<BaseItemDetails>) {
         Timber.i("Explore State: Genres - notifydatasetchanged")
         genresList.clear()
         genresList.addAll(list)
         notifyDataSetChanged()
     }
 
-    private fun setGenre(view: TextView, genre: Genre) {
-        view.text = genre.name
+    private fun setGenre(view: TextView, genreDetails: BaseItemDetails) {
+        (genreDetails as? GenreDetails)?.let {
+            view.text = it.name
+        }
     }
 }

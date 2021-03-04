@@ -9,11 +9,15 @@ import com.softvision.domain.mvi.SearchState
 import com.softvision.mvi_mvrx_hilt_kotlin.ui.SearchFragment
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class SearchViewModel @AssistedInject constructor(@Assisted initialState: SearchState,
                                                   @QueryInteractor var queryInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>
 ): BaseMvRxViewModel<SearchState>(initialState) {
+
+    private var disposables: CompositeDisposable = CompositeDisposable()
 
     @AssistedInject.Factory
     interface Factory {
@@ -34,13 +38,15 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
             copy(query = query)
         }
 
-        queryInteractor.invoke(query, offset / 20 + 1)
+        val disposable = queryInteractor.invoke(query, offset / 20 + 1)
+            .subscribeOn(Schedulers.io())
             .execute {
                 copy(
                     searchRequest = it,
                     items = combineItems(offset, query, it)
                 )
             }
+        disposables.add(disposable)
     }
 
     fun loadMoreItems() = withState {
@@ -56,5 +62,10 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
         setState {
             copy(selectedItem = item)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.clear()
     }
 }

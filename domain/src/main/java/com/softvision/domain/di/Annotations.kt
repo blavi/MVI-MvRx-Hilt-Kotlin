@@ -8,6 +8,10 @@ annotation class MoviesInteractor
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class MoviesByGenreInteractor
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class TvShowsInteractor
 
 @Qualifier
@@ -19,6 +23,10 @@ annotation class QueryInteractor
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class MoviesRepository
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MoviesByGenreRepository
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

@@ -24,10 +24,10 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
 
 //        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
-            DataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page).subscribeOn(Schedulers.io())
-            DataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page).subscribeOn(Schedulers.io())
-            DataType.COMING_SOON_TV_SHOWS -> resourcesApi.fetchComingSoonTVShows(page = page).subscribeOn(Schedulers.io())
-            else -> resourcesApi.fetchTVShowsByGenre(genre = type, page = page).subscribeOn(Schedulers.io())
+            DataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page)
+            DataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page)
+            else -> resourcesApi.fetchComingSoonTVShows(page = page)
+//            else -> resourcesApi.fetchTVShowsByGenre(genre = type, page = page)
         }
 
         return fetchData(
@@ -44,7 +44,7 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
 //                    )
             },
             dbDataProvider = { loadItemsByCategory(type).map { it } }
-        ).subscribeOn(Schedulers.io())
+        )
     }
 
     private fun insertItems(type: String, items: List<BaseItemEntity>) {
