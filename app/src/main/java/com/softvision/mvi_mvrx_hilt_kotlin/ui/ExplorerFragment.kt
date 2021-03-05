@@ -264,15 +264,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonMoviesRequest,
             onSuccess = {
                 updateComingSoonMoviesLoader(View.GONE)
+                updateNoComingSoonMoviesLabel()
             },
             onFail = {
                 updateComingSoonMoviesLoader(View.GONE)
-                updateNoComingSoonMoviesLabel(View.VISIBLE)
+                updateNoComingSoonMoviesLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::comingSoonMovies) { list ->
-
+            updateComingSoonMoviesLoader(View.GONE)
             updateComingSoonMoviesList(list)
         }
     }
@@ -281,14 +282,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::comingSoonTVShowsRequest,
             onSuccess = {
                 updateComingSoonTVShowsLoader(View.GONE)
+                updateNoComingSoonTVShowsLabel()
             },
             onFail = {
                 updateComingSoonTVShowsLoader(View.GONE)
-                updateNoComingSoonTVShowsLabel(View.VISIBLE)
+                updateNoComingSoonTVShowsLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::comingSoonTVShows) { list ->
+            updateComingSoonTVShowsLoader(View.GONE)
             updateComingSoonTVShowsList(list)
         }
     }
@@ -297,14 +300,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::popularMoviesRequest,
             onSuccess = {
                 updatePopularMoviesLoader(View.GONE)
+                updateNoPopularMoviesLabel()
             },
             onFail = {
                 updatePopularMoviesLoader(View.GONE)
-                updateNoPopularMoviesLabel(View.VISIBLE)
+                updateNoPopularMoviesLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::popularMovies) { list ->
+            updatePopularMoviesLoader(View.GONE)
             updatePopularMoviesList(list)
         }
     }
@@ -313,14 +318,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::popularTVShowsRequest,
             onSuccess = {
                 updatePopularTVShowsLoader(View.GONE)
+                updateNoPopularTVShowsLabel()
             },
             onFail = {
                 updatePopularTVShowsLoader(View.GONE)
-                updateNoPopularTVShowsLabel(View.VISIBLE)
+                updateNoPopularTVShowsLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::popularTVShows) { list ->
+            updatePopularTVShowsLoader(View.GONE)
             updatePopularTVShowsList(list)
         }
     }
@@ -329,14 +336,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingMoviesRequest,
             onSuccess = {
                 updateTrendingMoviesLoader(View.GONE)
+                updateNoTrendingMoviesLabel()
             },
             onFail = {
                 updateTrendingMoviesLoader(View.GONE)
-                updateNoTrendingMoviesLabel(View.VISIBLE)
+                updateNoTrendingMoviesLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::trendingMovies) { list ->
+            updateTrendingMoviesLoader(View.GONE)
             updateTrendingMoviesList(list)
         }
     }
@@ -345,14 +354,16 @@ class ExplorerFragment : Fragment(), MvRxView {
         explorerViewModel.asyncSubscribe(ExplorerState::trendingTVShowsRequest,
             onSuccess = {
                 updateTrendingTVShowsLoader(View.GONE)
+                updateNoTrendingTVShowsLabel()
             },
             onFail = {
                 updateTrendingTVShowsLoader(View.GONE)
-                updateNoTrendingTVShowsLabel(View.VISIBLE)
+                updateNoTrendingTVShowsLabel()
             }
         )
 
         explorerViewModel.selectSubscribe(ExplorerState::trendingTVShows) { list ->
+            updateTrendingTVShowsLoader(View.GONE)
             updateTrendingTVShowsList(list)
         }
     }
@@ -361,28 +372,64 @@ class ExplorerFragment : Fragment(), MvRxView {
         ------------------ UPDATE UI ------------------
     */
 
-    private fun updateNoTrendingMoviesLabel(visibility: Int) {
-        binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = visibility
+    private fun updateNoTrendingMoviesLabel() {
+        withState(explorerViewModel) { state ->
+            binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = if (state.trendingMovies.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
-    private fun updateNoTrendingTVShowsLabel(visibility: Int) {
-        binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = visibility
+    private fun updateNoTrendingTVShowsLabel() {
+        withState(explorerViewModel) { state ->
+            binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = if (state.trendingTVShows.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
-    private fun updateNoPopularMoviesLabel(visibility: Int) {
-        binding.popularMoviesLayout.noPopularMoviesImgView.visibility = visibility
+    private fun updateNoPopularTVShowsLabel() {
+        withState(explorerViewModel) { state ->
+            binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = if (state.popularTVShows.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
-    private fun updateNoPopularTVShowsLabel(visibility: Int) {
-        binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = visibility
+    private fun updateNoPopularMoviesLabel() {
+        withState(explorerViewModel) { state ->
+            binding.popularMoviesLayout.noPopularMoviesImgView.visibility = if (state.popularMovies.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
-    private fun updateNoComingSoonMoviesLabel(visibility: Int) {
-        binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = visibility
+    private fun updateNoComingSoonMoviesLabel() {
+        withState(explorerViewModel) { state ->
+            binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = if (state.comingSoonMovies.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
-    private fun updateNoComingSoonTVShowsLabel(visibility: Int) {
-        binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = visibility
+    private fun updateNoComingSoonTVShowsLabel() {
+        withState(explorerViewModel) { state ->
+            binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = if (state.comingSoonTVShows.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
     private fun updateTrendingMoviesLoader(visibility: Int) {
@@ -422,51 +469,27 @@ class ExplorerFragment : Fragment(), MvRxView {
     }
 
     private fun updateTrendingMoviesList(items: List<BaseItemDetails>) {
-        updateTrendingMoviesLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            trendingMoviesAdapter.updateData(items)
-            binding.trendingMoviesLayout.noTrendingMoviesImgView.visibility = View.GONE
-        }
+        trendingMoviesAdapter.updateData(items)
     }
 
     private fun updateTrendingTVShowsList(items: List<BaseItemDetails>) {
-        updateTrendingTVShowsLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            trendingTVShowsAdapter.updateData(items)
-            binding.trendingTVShowsLayout.noTrendingTVShowsImgView.visibility = View.GONE
-        }
+        trendingTVShowsAdapter.updateData(items)
     }
 
     private fun updatePopularMoviesList(items: List<BaseItemDetails>) {
-        updatePopularMoviesLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            binding.popularMoviesLayout.noPopularMoviesImgView.visibility = View.GONE
-            popularMoviesAdapter.updateData(items)
-        }
+        popularMoviesAdapter.updateData(items)
     }
 
     private fun updatePopularTVShowsList(items: List<BaseItemDetails>) {
-        updatePopularTVShowsLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            binding.popularTVShowsLayout.noPopularTVShowsImgView.visibility = View.GONE
-            popularTVShowsAdapter.updateData(items)
-        }
+        popularTVShowsAdapter.updateData(items)
     }
 
     private fun updateComingSoonMoviesList(items: List<BaseItemDetails>) {
-        updateComingSoonMoviesLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            binding.comingSoonMoviesLayout.noComingSoonMoviesImgView.visibility = View.GONE
-            comingSoonMoviesAdapter.updateData(items)
-        }
+        comingSoonMoviesAdapter.updateData(items)
     }
 
     private fun updateComingSoonTVShowsList(items: List<BaseItemDetails>) {
-        updateComingSoonTVShowsLoader(View.GONE)
-        if (items.isNotEmpty()) {
-            binding.comingSoonTVShowsLayout.noComingSoonTVShowsImgView.visibility = View.GONE
-            comingSoonTVShowsAdapter.updateData(items)
-        }
+        comingSoonTVShowsAdapter.updateData(items)
     }
 
     /*

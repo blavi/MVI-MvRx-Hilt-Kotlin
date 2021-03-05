@@ -2,12 +2,12 @@ package com.softvision.data.repository
 
 import com.softvision.data.common.Connectivity
 import com.softvision.data.database.dao.MoviesDAO
-import com.softvision.data.database.model.PartialMovieEntity
 import com.softvision.data.database.model.BaseItemEntity
 import com.softvision.data.database.model.MovieEntity
+import com.softvision.data.database.model.PartialMovieEntity
 import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
-import com.softvision.data.network.base.DataType
+import com.softvision.data.network.base.MovieDataType
 import com.softvision.data.network.base.getData
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.ItemsRepository
@@ -26,16 +26,18 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getData(type: String, page: Int): Single<List<BaseItemDetails>> {
 
         val apiDataProviderVal = when (type) {
-            DataType.TRENDING_MOVIES -> resourcesApi.fetchTrendingMovies(page = page)
-            DataType.POPULAR_MOVIES -> resourcesApi.fetchPopularMovies(page = page)
-            else -> resourcesApi.fetchComingSoonMovies(page = page)
-//            else -> resourcesApi.fetchMoviesByGenre(genre = type, page = page)
+            MovieDataType.TRENDING_MOVIES -> resourcesApi.fetchTrendingMovies(page = page)
+            MovieDataType.POPULAR_MOVIES -> resourcesApi.fetchPopularMovies(page = page)
+            MovieDataType.COMING_SOON_MOVIES -> resourcesApi.fetchComingSoonMovies(page = page)
+            else -> null
         }
 
-        return fetchData(
-            apiDataProvider = {
-                apiDataProviderVal
-                    .getData(
+        return if (apiDataProviderVal == null) {
+            Single.just(emptyList())
+        } else {
+            fetchData(
+                apiDataProvider = {
+                    apiDataProviderVal.getData(
                         cacheAction = { entities ->
                             Timber.i("Movies: insert - type: %s, page: %s", type, page)
                             insertItems(type, entities)
@@ -47,9 +49,10 @@ class MoviesRepositoryImpl @Inject constructor(
 //                        cacheAction = {  entities -> insertItems(type, entities) },
 //                        type
 //                    )
-            },
-            dbDataProvider = { loadItemsByCategory(type).map { it } }
-        )
+                },
+                dbDataProvider = { loadItemsByCategory(type).map { it } }
+            )
+        }
     }
 
     private fun insertItems(type: String, items: List<BaseItemEntity>) {

@@ -137,17 +137,25 @@ class MoviesFragment: Fragment(), MvRxView {
         moviesViewModel.asyncSubscribe(
             MoviesByGenreState::moviesByGenreRequest,
             onSuccess = {
+                Timber.i("Movies: movies async subscribe - success")
                 updateLoader(View.GONE)
+                updateNoDataLabel()
             },
             onFail = {
+                Timber.i("Movies: movies async subscribe - failed %s - ", it.localizedMessage)
                 updateLoader(View.GONE)
-                updateNoDataLabel(View.VISIBLE)
+                updateNoDataLabel()
             }
         )
 
         moviesViewModel.selectSubscribe(MoviesByGenreState::moviesByGenreList){
-//            Timber.i("Movies: movies select subscribe")
+            if (it.isEmpty()) {
+                Timber.i("Movies: movies select subscribe - is empty")
+            } else {
+                Timber.i("Movies: movies select subscribe - not empty")
+            }
             updateMoviesList(it)
+//            updateNoDataLabel()
         }
     }
 
@@ -155,11 +163,12 @@ class MoviesFragment: Fragment(), MvRxView {
         moviesViewModel.asyncSubscribe(
             MoviesByGenreState::genresRequest,
             onSuccess = {
-
+                updateLoader(View.GONE)
+                updateNoDataLabel()
             },
             onFail = {
                 updateLoader(View.GONE)
-                updateNoDataLabel(View.VISIBLE)
+                updateNoDataLabel()
             }
         )
 
@@ -182,17 +191,26 @@ class MoviesFragment: Fragment(), MvRxView {
         ------------------ UPDATE UI ------------------
     */
 
-    private fun updateNoDataLabel(visibility: Int) {
-        Timber.i("Movies: movies genre no data label %s", visibility)
-        binding.noMoviesImgView.visibility = visibility
+    private fun updateNoDataLabel() {
+        withState(moviesViewModel) { state ->
+            if (state.moviesByGenreList.isEmpty() || state.genres.isEmpty()) {
+                showNoDataMessage()
+            } else {
+                hideNoDataMessage()
+            }
+        }
+    }
+
+    private fun showNoDataMessage() {
+        binding.noMoviesImgView.visibility = View.VISIBLE
+    }
+
+    private fun hideNoDataMessage() {
+        binding.noMoviesImgView.visibility = View.GONE
     }
 
     private fun updateMoviesList(list: List<BaseItemDetails>) {
-//        updateLoader(View.GONE)
-        if (list.isNotEmpty()) {
-            itemsAdapter.updateData(list)
-            binding.noMoviesImgView.visibility = View.GONE
-        }
+        itemsAdapter.updateData(list)
     }
 
     private fun updateLoader(visibility: Int, message: String = "") {
@@ -215,10 +233,12 @@ class MoviesFragment: Fragment(), MvRxView {
     override fun invalidate() {
         withState(moviesViewModel) { state ->
             if (state.genresRequest is Loading) {
+                hideNoDataMessage()
                 updateLoader(View.VISIBLE, getString(R.string.loading_genres))
             }
 
             if (state.moviesByGenreRequest is Loading) {
+                hideNoDataMessage()
                 updateLoader(View.VISIBLE, getString(R.string.loading_movies))
             }
         }

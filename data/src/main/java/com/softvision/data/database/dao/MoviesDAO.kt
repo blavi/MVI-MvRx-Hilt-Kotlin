@@ -29,12 +29,15 @@ interface MoviesDAO {
     @Query("SELECT * FROM $TMDB_MOVIES WHERE ID = :itemID LIMIT 1")
     fun getItem(itemID: Int): MovieEntity?
 
-    @Query("SELECT * FROM $TMDB_MOVIES WHERE :category in (CATEGORIES)")
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE CATEGORIES LIKE '%' || :category || '%' ")
     fun loadItemsByCategory(category: String): Single<List<MovieEntity>>
 
-    @Query("SELECT * FROM $TMDB_MOVIES WHERE :title in (TITLE)")
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE TITLE = :title")
     fun loadItemsByTitle(title: String): Single<List<MovieEntity>>
 
-    @Query("SELECT * FROM $TMDB_MOVIES WHERE :genre in (GENRE_IDS)")
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE TITLE LIKE '%' || :title || '%' ")
+    fun queryItemsByTitle(title: String): Single<List<MovieEntity>>
+
+    @Query("SELECT * FROM $TMDB_MOVIES WHERE GENRE_IDS LIKE '%' || :genre || '%' ")
     fun loadItemsByGenre(genre: String): Single<List<MovieEntity>>
 }

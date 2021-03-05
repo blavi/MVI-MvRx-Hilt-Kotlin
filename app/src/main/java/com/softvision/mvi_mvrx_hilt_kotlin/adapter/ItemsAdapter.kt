@@ -16,12 +16,13 @@ import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
+class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
     private var items: MutableList<BaseItemDetails> = mutableListOf()
     private val movieSelectSubject: PublishSubject<BaseItemDetails> = PublishSubject.create()
     val clickEvent: Observable<BaseItemDetails> = movieSelectSubject.hide()
 
-    inner class DataViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DataViewHolder(private val binding: ItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BaseItemDetails) {
             when (item) {
                 is MovieDetails -> {
@@ -86,11 +87,8 @@ class ItemsAdapter: RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
         holder.bind(items[position])
 
     fun updateData(list: List<BaseItemDetails> = emptyList()) {
-//        Timber.i("Explore State: MOVIES - notifydatasetchanged %s", list.size)
         items.clear()
-        if (list.isNotEmpty()) {
-            items.addAll(list)
-            notifyDataSetChanged()
-        }
+        items.addAll(list)
+        notifyDataSetChanged()
     }
 }

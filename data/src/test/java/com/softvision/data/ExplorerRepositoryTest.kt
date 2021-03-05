@@ -5,6 +5,8 @@ import com.softvision.data.database.dao.MoviesDAO
 import com.softvision.data.database.model.MovieEntity
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.DataType
+import com.softvision.data.network.base.MovieDataType
+import com.softvision.data.network.base.TVShowDataType
 import com.softvision.data.network.model.MovieResponse
 import com.softvision.data.network.model.MoviesResponse
 import com.softvision.data.repository.MoviesRepositoryImpl
@@ -74,7 +76,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get trending movies`() {
-        val mediaType: String = DataType.TRENDING_MOVIES
+        val mediaType: String = MovieDataType.TRENDING_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 
@@ -91,7 +93,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get trending movies with update`() {
-        val mediaType: String = DataType.TRENDING_MOVIES
+        val mediaType: String = MovieDataType.TRENDING_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 
@@ -108,7 +110,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get popular movies`() {
-        val mediaType: String = DataType.POPULAR_MOVIES
+        val mediaType: String = MovieDataType.POPULAR_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 
@@ -125,7 +127,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get popular movies with update`() {
-        val mediaType: String = DataType.POPULAR_MOVIES
+        val mediaType: String = MovieDataType.POPULAR_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 
@@ -142,7 +144,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get coming soon movies`() {
-        val mediaType: String = DataType.COMING_SOON_MOVIES
+        val mediaType: String = MovieDataType.COMING_SOON_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 
@@ -159,7 +161,7 @@ class ExplorerRepositoryTest {
 
     @Test
     fun `repository get coming soon movies with update`() {
-        val mediaType: String = DataType.COMING_SOON_MOVIES
+        val mediaType: String = MovieDataType.COMING_SOON_MOVIES
 
         every { itemE.categories.contains(any())} returns true
 

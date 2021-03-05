@@ -7,7 +7,7 @@ import com.softvision.data.database.model.BaseItemEntity
 import com.softvision.data.database.model.TVShowEntity
 import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
-import com.softvision.data.network.base.DataType
+import com.softvision.data.network.base.TVShowDataType
 import com.softvision.data.network.base.getData
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.ItemsRepository
@@ -24,27 +24,47 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
 
 //        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
-            DataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page)
-            DataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page)
-            else -> resourcesApi.fetchComingSoonTVShows(page = page)
-//            else -> resourcesApi.fetchTVShowsByGenre(genre = type, page = page)
+            TVShowDataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page)
+            TVShowDataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page)
+            TVShowDataType.COMING_SOON_TV_SHOWS -> resourcesApi.fetchComingSoonTVShows(page = page)
+            else -> null
         }
 
-        return fetchData(
-            apiDataProvider = {
-                apiDataProviderVal
-                    .getData(
-                        cacheAction = {  entities -> insertItems(type, entities) },
-                        fetchFromCacheAction = { loadItemsByCategory(type) },
-                        type
-                    )
+        return if (apiDataProviderVal == null) {
+            Single.just(emptyList())
+        } else {
+            fetchData(
+                apiDataProvider = {
+                    apiDataProviderVal
+                        .getData(
+                            cacheAction = {  entities -> insertItems(type, entities) },
+                            fetchFromCacheAction = { loadItemsByCategory(type) },
+                            type
+                        )
 //                    .getData(
 //                        cacheAction = {  entities -> insertItems(type, entities) },
 //                        type
 //                    )
-            },
-            dbDataProvider = { loadItemsByCategory(type).map { it } }
-        )
+                },
+                dbDataProvider = { loadItemsByCategory(type).map { it } }
+            )
+        }
+
+//        return fetchData(
+//            apiDataProvider = {
+//                apiDataProviderVal
+//                    .getData(
+//                        cacheAction = {  entities -> insertItems(type, entities) },
+//                        fetchFromCacheAction = { loadItemsByCategory(type) },
+//                        type
+//                    )
+////                    .getData(
+////                        cacheAction = {  entities -> insertItems(type, entities) },
+////                        type
+////                    )
+//            },
+//            dbDataProvider = { loadItemsByCategory(type).map { it } }
+//        )
     }
 
     private fun insertItems(type: String, items: List<BaseItemEntity>) {

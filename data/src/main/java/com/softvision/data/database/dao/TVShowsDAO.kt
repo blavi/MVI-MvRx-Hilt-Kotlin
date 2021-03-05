@@ -1,7 +1,9 @@
 package com.softvision.data.database.dao
 
 import androidx.room.*
+import com.softvision.data.database.base.TMDB_MOVIES
 import com.softvision.data.database.base.TMDB_TV_SHOWS
+import com.softvision.data.database.model.MovieEntity
 import com.softvision.data.database.model.PartialTVShowEntity
 import com.softvision.data.database.model.TVShowEntity
 import io.reactivex.Single
@@ -26,9 +28,12 @@ interface TVShowsDAO {
     @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE ID = :itemID LIMIT 1")
     fun getItem(itemID: Int): TVShowEntity?
 
-    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE :category in (CATEGORIES)")
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE CATEGORIES LIKE '%' || :category || '%' ")
     fun loadItemsByCategory(category: String): Single<List<TVShowEntity>>
 
-    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE :title in (TITLE)")
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE TITLE LIKE '%' || :title || '%' ")
+    fun queryItemsByTitle(title: String): Single<List<TVShowEntity>>
+
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE TITLE = :title")
     fun loadItemsByTitle(title: String): Single<List<TVShowEntity>>
 }

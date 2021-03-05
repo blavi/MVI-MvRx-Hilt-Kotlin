@@ -24,11 +24,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment: Fragment(), MvRxView {
+class SearchFragment : Fragment(), MvRxView {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var itemsAdapter: ItemsAdapter
 
@@ -79,7 +80,7 @@ class SearchFragment: Fragment(), MvRxView {
         binding.itemsRecyclerView.apply {
             adapter = itemsAdapter
             layoutManager = gridLayoutManager
-            setInfiniteScrolling(layoutManager as GridLayoutManager){
+            setInfiniteScrolling(layoutManager as GridLayoutManager) {
                 searchViewModel.loadMoreItems()
             }
         }
@@ -95,21 +96,18 @@ class SearchFragment: Fragment(), MvRxView {
             onSuccess = {
                 Timber.i("%s Query async subscribe success", TAG)
                 updateLoader(View.GONE)
-                if (it.isEmpty()) {
-                    Timber.i("%s Query async subscribe success empty", TAG)
-                    updateNoDataLabel(View.VISIBLE)
-                }
+                updateNoDataLabel()
             },
             onFail = {
                 Timber.i("%s Query async subscribe %s", TAG, it.localizedMessage)
-                updateQueryResult()
                 updateLoader(View.GONE)
-                updateNoDataLabel(View.VISIBLE)
+                updateNoDataLabel()
             }
         )
 
         searchViewModel.selectSubscribe(SearchState::items) { list ->
             updateQueryResult(list)
+            hideNoDataMessage()
         }
     }
 
@@ -121,7 +119,7 @@ class SearchFragment: Fragment(), MvRxView {
             }
             .distinctUntilChanged()
             .map { text ->
-                text.toLowerCase().trim()
+                text.toLowerCase(Locale.getDefault()).trim()
                 Timber.i("%s Query map %s", TAG, text)
                 searchViewModel.executeQuery(text.toString())
             }
@@ -142,18 +140,32 @@ class SearchFragment: Fragment(), MvRxView {
         ------------------ UPDATE UI ------------------
     */
 
-    private fun updateQueryResult(list: List<BaseItemDetails> = emptyList()) {
+    private fun updateQueryResult(list: List<BaseItemDetails>) {
         itemsAdapter.updateData(list)
-        binding.noMoviesImgView.visibility = View.GONE
     }
 
-    private fun updateNoDataLabel(visibility: Int) {
-        binding.noMoviesImgView.visibility = visibility
+    private fun updateNoDataLabel() {
+        withState(searchViewModel) { state ->
+            if (state.items.isEmpty()) {
+                showNoDataMessage()
+            } else {
+                hideNoDataMessage()
+            }
+        }
+    }
+
+    private fun showNoDataMessage() {
+        binding.noMoviesImgView.visibility = View.VISIBLE
+    }
+
+    private fun hideNoDataMessage() {
+        binding.noMoviesImgView.visibility = View.GONE
     }
 
     override fun invalidate() {
         withState(searchViewModel) { state ->
             if (state.searchRequest is Loading) {
+                hideNoDataMessage()
                 updateLoader(View.VISIBLE, getString(R.string.loading))
             }
         }
@@ -180,6 +192,10 @@ class SearchFragment: Fragment(), MvRxView {
     }
 
     private fun showDetails(item: BaseItemDetails) {
-        findNavController().navigate(SearchFragmentDirections.actionNavigationFrgSearchToDetailsFragment(item))
+        findNavController().navigate(
+            SearchFragmentDirections.actionNavigationFrgSearchToDetailsFragment(
+                item
+            )
+        )
     }
 }

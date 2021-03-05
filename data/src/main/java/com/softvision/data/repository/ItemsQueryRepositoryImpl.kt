@@ -23,24 +23,18 @@ class ItemsQueryRepositoryImpl @Inject constructor(
 
     override fun getData(query: String, page: Int): Single<List<BaseItemDetails>> {
 
-//        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = resourcesApi.searchTMDBItems(query = query, page = page).subscribeOn(Schedulers.io())
 
         return fetchData(
             apiDataProvider = {
                 apiDataProviderVal
                     .getData(
-                        fetchFromCacheAction1 = { moviesDAO.loadItemsByTitle(query) },
-                        fetchFromCacheAction2 = { tvShowsDAO.loadItemsByTitle(query) }
+                        fetchFromCacheAction1 = { moviesDAO.queryItemsByTitle(query) },
+                        fetchFromCacheAction2 = { tvShowsDAO.queryItemsByTitle(query) }
                      )
-//                    .map { it }
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        type
-//                    )
             },
-            dbDataProvider1 = { moviesDAO.loadItemsByTitle(query).map { it } },
-            dbDataProvider2 = { tvShowsDAO.loadItemsByTitle(query).map { it } }
+            dbDataProvider1 = { moviesDAO.queryItemsByTitle(query).map { it } },
+            dbDataProvider2 = { tvShowsDAO.queryItemsByTitle(query).map { it } }
         ).subscribeOn(Schedulers.io())
     }
 

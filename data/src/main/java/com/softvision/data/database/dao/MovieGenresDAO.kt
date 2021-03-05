@@ -7,7 +7,7 @@ import io.reactivex.Single
 
 @Dao
 interface MovieGenresDAO {
-    @Query("SELECT * FROM $TMDB_MOVIE_GENRES ORDER BY ID")
+    @Query("SELECT * FROM $TMDB_MOVIE_GENRES ORDER BY LOWER(NAME) ASC")
     fun loadAllItems(): Single<List<MovieGenreEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,12 +19,6 @@ interface MovieGenresDAO {
     @Query("DELETE FROM $TMDB_MOVIE_GENRES")
     fun deleteAll()
 
-//    @Update(entity = TMDBGenreEntity::class)
-//    fun update(partialItem: PartialTMDBMovieEntity)
-
     @Query("SELECT * FROM $TMDB_MOVIE_GENRES WHERE ID = :itemID LIMIT 1")
     fun getItem(itemID: Int): MovieGenreEntity?
-
-//    @Query("SELECT * FROM $TMDB_MOVIE_GENRES WHERE :category in (CATEGORIES)")
-//    fun loadItemsByCategory(category: String): List<TMDBMovieEntity>
 }
