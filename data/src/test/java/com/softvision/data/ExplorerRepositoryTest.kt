@@ -4,14 +4,16 @@ import com.softvision.data.common.Connectivity
 import com.softvision.data.database.dao.MoviesDAO
 import com.softvision.data.database.model.MovieEntity
 import com.softvision.data.network.api.ApiEndpoints
-import com.softvision.data.network.base.DataType
 import com.softvision.data.network.base.MovieDataType
-import com.softvision.data.network.base.TVShowDataType
 import com.softvision.data.network.model.MovieResponse
 import com.softvision.data.network.model.MoviesResponse
 import com.softvision.data.repository.MoviesRepositoryImpl
 import com.softvision.domain.model.BaseItemDetails
-import io.mockk.*
+import com.softvision.domain.model.MovieDetails
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Before
@@ -24,7 +26,7 @@ class ExplorerRepositoryTest {
     private lateinit var mockResult: MoviesResponse
     private lateinit var mockDetailsList: List<BaseItemDetails>
     private lateinit var mockResponseList: List<MovieResponse>
-    private lateinit var mockEntityList: List<MovieEntity>
+    private lateinit var mockEntityList: Single<List<MovieEntity>>
     private lateinit var api: ApiEndpoints
     private lateinit var itemsDAO: MoviesDAO
 
@@ -32,7 +34,7 @@ class ExplorerRepositoryTest {
 
     private lateinit var itemE: MovieEntity
     private lateinit var itemR: MovieResponse
-    private lateinit var itemD: BaseItemDetails
+    private lateinit var itemD: MovieDetails
 
     private val page: Int = 1
 
@@ -41,21 +43,21 @@ class ExplorerRepositoryTest {
 
     @Before
     fun setUp() {
-        itemR = mockk<MovieResponse>()
-        itemE = mockk<MovieEntity>() {
+        itemR = mockk()
+        itemE = mockk {
             every { id } returns 1
             every { categories } returns mockk()
         }
-        itemD = mockk<BaseItemDetails>()
+        itemD = mockk()
 
         mockResponseList = listOf(itemR, itemR)
-        mockEntityList = listOf(itemE, itemE)
+        mockEntityList = Single.just(listOf(itemE, itemE))
         mockDetailsList = listOf(itemD, itemD)
 
         every { itemR.mapToRoomEntity(any()) } returns itemE
         every { itemE.mapToDomainModel() } returns itemD
 
-        mockResult = mockk<MoviesResponse>() {
+        mockResult = mockk {
             every { getContent() } returns mockResponseList
         }
 
@@ -70,8 +72,7 @@ class ExplorerRepositoryTest {
 
         connectivity = mockk()
 
-        repository = MoviesRepositoryImpl(itemsDAO, api)
-        repository.connectivity = connectivity
+        repository = MoviesRepositoryImpl(itemsDAO, api, connectivity)
     }
 
     @Test
