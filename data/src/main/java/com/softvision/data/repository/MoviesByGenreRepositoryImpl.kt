@@ -50,10 +50,6 @@ class MoviesByGenreRepositoryImpl @Inject constructor(
         items.forEach { itemEntity ->
             (itemEntity as MovieEntity).apply {
                 tmdbMoviesDAO.insertOrIgnoreItem(this)
-//                val foundItem = tmdbMoviesDAO.getItem(id)
-//                if (foundItem == null) {
-//                    tmdbMoviesDAO.insertOrReplaceItem(this)
-//                }
             }
         }
     }

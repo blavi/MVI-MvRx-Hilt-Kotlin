@@ -25,20 +25,20 @@ interface ApiEndpoints {
 
     @GET("trending/{media_type}/{time_window}")
     fun fetchTrendingMovies(
-        @Path(MEDIA_TYPE) media_type: String = NetworkConstants.MEDIA_TYPE_MOVIES,
-        @Path(TIME_WINDOW) time_window: String = NetworkConstants.TIME_WINDOW_DAY,
+        @Path(MEDIA_TYPE) mediaType: String = NetworkConstants.MEDIA_TYPE_MOVIES,
+        @Path(TIME_WINDOW) timeWindow: String = NetworkConstants.TIME_WINDOW_DAY,
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query(PAGE) page: Int,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false
     ): Single<MoviesResponse>
 
     @GET("trending/{media_type}/{time_window}")
     fun fetchTrendingTVShows(
-        @Path(MEDIA_TYPE) media_type: String = NetworkConstants.MEDIA_TYPE_TV_SHOWS,
-        @Path(TIME_WINDOW) time_window: String = NetworkConstants.TIME_WINDOW_DAY,
+        @Path(MEDIA_TYPE) mediaType: String = NetworkConstants.MEDIA_TYPE_TV_SHOWS,
+        @Path(TIME_WINDOW) timeWindow: String = NetworkConstants.TIME_WINDOW_DAY,
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query(PAGE) page: Int,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false
     ): Single<TVShowsResponse>
 
     @GET("discover/movie")
@@ -52,7 +52,7 @@ interface ApiEndpoints {
     fun fetchPopularTVShows(
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query(SORT_BY) sortByValue: String = NetworkConstants.SORT_BY_POPULAR_DESCENDING,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(PAGE) page: Int
     ): Single<TVShowsResponse>
 
@@ -61,7 +61,7 @@ interface ApiEndpoints {
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query(MOVIE_RELEASE_YEAR) releaseYear: String = "2021",
         @Query(SORT_BY) sortByValue: String = NetworkConstants.SORT_BY_COMING_SOON_MOVIES,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(PAGE) page: Int
     ): Single<MoviesResponse>
 
@@ -70,7 +70,7 @@ interface ApiEndpoints {
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query(TV_SHOW_RELEASE_YEAR) year: String = "2021",
         @Query(SORT_BY) sortByValue: String = NetworkConstants.SORT_BY_COMING_SOON_TV_SHOWS,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(PAGE) page: Int
     ): Single<TVShowsResponse>
 
@@ -78,7 +78,7 @@ interface ApiEndpoints {
     @GET("discover/movie")
     fun fetchMoviesByGenre(
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(WITH_GENRES) genre: String,
         @Query(PAGE) page: Int
     ): Single<MoviesResponse>
@@ -86,7 +86,7 @@ interface ApiEndpoints {
     @GET("discover/movie")
     fun fetchTVShowsByGenre(
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(WITH_GENRES) genre: String,
         @Query(PAGE) page: Int
     ): Single<TVShowsResponse>
@@ -100,7 +100,7 @@ interface ApiEndpoints {
     @GET("search/multi")
     fun searchTMDBItems(
         @Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query(INCLUDE_ADULT) include_adult: Boolean = false,
+        @Query(INCLUDE_ADULT) includeAdult: Boolean = false,
         @Query(QUERY) query: String,
         @Query(PAGE) page: Int
     ): Single<MultiItemsResponse>

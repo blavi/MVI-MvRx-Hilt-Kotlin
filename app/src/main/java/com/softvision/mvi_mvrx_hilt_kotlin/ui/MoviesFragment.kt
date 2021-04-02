@@ -117,7 +117,9 @@ class MoviesFragment: Fragment(), MvRxView {
                 }
             }
 
-            override fun onNothingSelected(adapter: AdapterView<*>?) {}
+            override fun onNothingSelected(adapter: AdapterView<*>?) {
+                // do nothing
+            }
         }
     }
 
@@ -155,7 +157,6 @@ class MoviesFragment: Fragment(), MvRxView {
                 Timber.i("Movies: movies select subscribe - not empty")
             }
             updateMoviesList(it)
-//            updateNoDataLabel()
         }
     }
 

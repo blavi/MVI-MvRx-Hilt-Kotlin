@@ -34,31 +34,6 @@ inline fun <V : RetrofitResponse<R>, R : ItemRoomMapperWithExtraInfo<E, C>, E : 
                     Single.error(it)
                 }
         }
-
-//        return this
-//            .map {
-//                var entities = emptyList<E>()
-//                it.getContent().forEach { entity ->
-//                    entities = entities.plus(entity.mapToRoomEntity(listOf(category)))
-//                }
-//                cacheAction(entities)
-//
-//                entities.forEach { entity ->
-//                    domainEntities = domainEntities.plus(entity.mapToDomainModel())
-//                }
-//
-//                domainEntities
-//            }
-//            .onErrorReturn {
-//                val cachedEntities = fetchFromCacheAction()
-//
-//                cachedEntities.forEach { entity ->
-//                    domainEntities = domainEntities.plus(entity.mapToDomainModel())
-//                }
-//
-//                domainEntities
-//            }
-
 }
 
 /**

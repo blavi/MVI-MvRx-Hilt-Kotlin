@@ -36,7 +36,7 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
     }
 
     private fun MovieDetails.updateItem(binding: ItemLayoutBinding) {
-        poster_path?.let {
+        posterPath?.let {
             val requestOptions = RequestOptions()
             requestOptions.apply {
                 placeholder(R.drawable.ic_baseline_hourglass_bottom_24)
@@ -51,12 +51,11 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
 
         binding.root.setOnClickListener {
             movieSelectSubject.onNext(this)
-//                clickListener(item)
         }
     }
 
     private fun TVShowDetails.updateItem(binding: ItemLayoutBinding) {
-        poster_path?.let {
+        posterPath?.let {
             val requestOptions = RequestOptions()
             requestOptions.apply {
                 placeholder(R.drawable.ic_baseline_hourglass_bottom_24)
@@ -71,7 +70,6 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
 
         binding.root.setOnClickListener {
             movieSelectSubject.onNext(this)
-//                clickListener(item)
         }
     }
 

@@ -22,13 +22,13 @@ data class PersonEntity(
     val popularity : Double?,
 
     @ColumnInfo(name = "profile_path")
-    val profile_path : String?,
+    val profilePath : String?,
 
     @ColumnInfo(name = "known_for")
-    val known_for : List<BaseItemDetails>,
+    val knownFor : List<BaseItemDetails>,
 
     @ColumnInfo(name = "known_for_department")
-    val known_for_department : String,
+    val knownForDepartment : String,
 
     @ColumnInfo(name = "name")
     val name : String,
@@ -38,7 +38,7 @@ data class PersonEntity(
 
     ): BaseItemEntity() {
     override fun mapToDomainModel(): PersonDetails {
-        return PersonDetails(id, profile_path, adult, known_for, known_for_department, name, gender, popularity)
+        return PersonDetails(id, profilePath, adult, knownFor, knownForDepartment, name, gender, popularity)
     }
 
 }

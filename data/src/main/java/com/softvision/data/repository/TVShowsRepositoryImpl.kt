@@ -49,22 +49,6 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
                 dbDataProvider = { loadItemsByCategory(type).map { it } }
             )
         }
-
-//        return fetchData(
-//            apiDataProvider = {
-//                apiDataProviderVal
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        fetchFromCacheAction = { loadItemsByCategory(type) },
-//                        type
-//                    )
-////                    .getData(
-////                        cacheAction = {  entities -> insertItems(type, entities) },
-////                        type
-////                    )
-//            },
-//            dbDataProvider = { loadItemsByCategory(type).map { it } }
-//        )
     }
 
     private fun insertItems(type: String, items: List<BaseItemEntity>) {

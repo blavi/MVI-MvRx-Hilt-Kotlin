@@ -7,7 +7,6 @@ import com.softvision.data.mappers.ItemDomainMapper
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.network.base.getData
 import com.softvision.domain.model.BaseItemDetails
-//import com.softvision.domain.model.TMDBMovieDetails
 import com.softvision.domain.repository.ItemsRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +17,7 @@ class ItemsQueryRepositoryImpl @Inject constructor(
     private val tvShowsDAO: TVShowsDAO,
     private val resourcesApi: ApiEndpoints,
     connectivity: Connectivity
-) : BaseRepository2<BaseItemDetails, ItemDomainMapper<BaseItemDetails>>(connectivity),
+) : BaseRepository<BaseItemDetails, ItemDomainMapper<BaseItemDetails>>(connectivity),
     ItemsRepository<String, BaseItemDetails, Int> {
 
     override fun getData(query: String, page: Int): Single<List<BaseItemDetails>> {

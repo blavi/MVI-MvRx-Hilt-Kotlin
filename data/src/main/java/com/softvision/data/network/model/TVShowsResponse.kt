@@ -7,11 +7,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class TVShowsResponse (
     @Json(name = "page") val page : Int,
-    @Json(name = "results") val itemRespons : List<TVShowResponse>,
-    @Json(name = "total_pages") val total_pages : Int,
-    @Json(name = "total_results") val total_results : Int
+    @Json(name = "results") val itemResponse : List<TVShowResponse>,
+    @Json(name = "total_pages") val totalPages : Int,
+    @Json(name = "total_results") val totalResults : Int
 ): RetrofitResponse<TVShowResponse> {
     override fun getContent(): List<TVShowResponse> {
-        return itemRespons
+        return itemResponse
     }
 }

@@ -8,8 +8,8 @@ import com.squareup.moshi.JsonClass
 data class MoviesResponse (
     @Json(name = "page") val page : Int,
     @Json(name = "results") val itemResponses : List<MovieResponse>,
-    @Json(name = "total_pages") val total_pages : Int,
-    @Json(name = "total_results") val total_results : Int
+    @Json(name = "total_pages") val totalPages : Int,
+    @Json(name = "total_results") val totalResults : Int
 ): RetrofitResponse<MovieResponse> {
     override fun getContent(): List<MovieResponse> {
         return itemResponses

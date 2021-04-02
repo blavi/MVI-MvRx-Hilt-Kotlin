@@ -69,7 +69,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
 
     private fun displayTVShowDetails(item: TVShowDetails) {
         item.apply {
-            setPoster(backdrop_path)
+            setPoster(backdropPath)
             setTitle(title)
             setDescription(overview)
         }
@@ -77,7 +77,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
 
     private fun displayMovieDetails(item: MovieDetails) {
         item.apply {
-            setPoster(backdrop_path)
+            setPoster(backdropPath)
             setTitle(title)
             setDescription(overview)
         }

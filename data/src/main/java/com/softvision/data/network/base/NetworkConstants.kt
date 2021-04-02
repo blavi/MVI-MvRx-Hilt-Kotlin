@@ -46,3 +46,9 @@ class NetworkConstants {
     }
 }
 
+class NetworkErrors {
+    companion object {
+        const val NO_INTERNET_CONNECTION = "No Internet connection"
+    }
+}
+

@@ -6,17 +6,17 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TVShowDetails (
     val id : Int,
-    val backdrop_path : String?,
-    val genre_ids : List<Int>,
-    val origin_country: List<String>,
-    val original_language : String,
-    val original_title : String,
+    val backdropPath : String?,
+    val genreIds : List<Int>,
+    val originCountry: List<String>,
+    val originalLanguage : String,
+    val originalTitle : String,
     val overview : String,
     val popularity : Double?,
-    val poster_path : String?,
-    val release_date : String,
+    val posterPath : String?,
+    val releaseDate : String,
     val title : String,
-    val vote_average : Double,
-    val vote_count : Int,
+    val voteAverage : Double,
+    val voteCount : Int,
     val categories : List<String>
 ): Parcelable, BaseItemDetails()

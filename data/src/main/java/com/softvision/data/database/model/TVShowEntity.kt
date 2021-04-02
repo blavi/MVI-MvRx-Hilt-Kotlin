@@ -13,19 +13,19 @@ data class TVShowEntity(
     val id : Int,
 
     @ColumnInfo(name = "backdrop_path")
-    val backdrop_path : String?,
+    val backdropPath : String?,
 
     @ColumnInfo(name = "genre_ids")
-    val genre_ids : List<Int>,
+    val genreIds : List<Int>,
 
     @ColumnInfo(name = "origin_country")
-    val origin_country : List<String>,
+    val originCountry : List<String>,
 
     @ColumnInfo(name = "original_language")
-    val original_language : String,
+    val originalLanguage : String,
 
     @ColumnInfo(name = "original_title")
-    val original_title : String,
+    val originalTitle : String,
 
     @ColumnInfo(name = "overview")
     val overview : String,
@@ -34,26 +34,26 @@ data class TVShowEntity(
     val popularity : Double?,
 
     @ColumnInfo(name = "poster_path")
-    val poster_path : String?,
+    val posterPath : String?,
 
     @ColumnInfo(name = "release_date")
-    val release_date : String,
+    val releaseDate : String,
 
     @ColumnInfo(name = "title")
     val title : String,
 
     @ColumnInfo(name = "vote_average")
-    val vote_average : Double,
+    val voteAverage : Double,
 
     @ColumnInfo(name = "vote_count")
-    val vote_count : Int,
+    val voteCount : Int,
 
     @ColumnInfo(name = "categories")
     val categories : List<String>
 ): BaseItemEntity() {
     override fun mapToDomainModel(): TVShowDetails {
-        return TVShowDetails(id, backdrop_path, genre_ids, origin_country, original_language, original_title,
-            overview, popularity, poster_path, release_date, title, vote_average, vote_count,
+        return TVShowDetails(id, backdropPath, genreIds, originCountry, originalLanguage, originalTitle,
+            overview, popularity, posterPath, releaseDate, title, voteAverage, voteCount,
             categories)
     }
 }
