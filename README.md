@@ -12,9 +12,9 @@ Libraries used:
 
 - Room - persistence library providing an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite
 
-- Rx Android - Reactive Extensions for Android
+- RxAndroid - Reactive Extensions for Android
 
-- Rx Kotlin - Kotlin Extensions for RxJava
+- RxKotlin - Kotlin Extensions for RxJava
 
 - RxBinding - a set of support libraries to make the implementation of user interaction with the UI elements in Android easier
 
