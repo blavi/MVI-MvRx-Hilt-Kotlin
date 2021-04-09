@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: ExplorerState,
                                                     @MoviesInteractor var moviesInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>,
                                                     @TvShowsInteractor var tvShowsInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>)
-    :BaseMvRxViewModel<ExplorerState>(initialState) {
+    : BaseViewModel<ExplorerState>(initialState) {
 
     private var disposables: CompositeDisposable = CompositeDisposable()
 

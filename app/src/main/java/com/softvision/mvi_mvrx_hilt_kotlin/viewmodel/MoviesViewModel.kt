@@ -19,7 +19,7 @@ class MoviesViewModel @AssistedInject constructor(
     @Assisted initialState: MoviesByGenreState,
     @MoviesByGenreInteractor private val moviesInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>,
     private val genresInteractor: BaseFetchGenresUseCase<BaseItemDetails>
-) : BaseMvRxViewModel<MoviesByGenreState>(initialState) {
+) : BaseViewModel<MoviesByGenreState>(initialState) {
 
     private var disposables: CompositeDisposable = CompositeDisposable()
 

@@ -15,7 +15,7 @@ import timber.log.Timber
 
 class SearchViewModel @AssistedInject constructor(@Assisted initialState: SearchState,
                                                   @QueryInteractor var queryInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>
-): BaseMvRxViewModel<SearchState>(initialState) {
+): BaseViewModel<SearchState>(initialState) {
 
     private var disposables: CompositeDisposable = CompositeDisposable()
 
