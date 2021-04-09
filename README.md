@@ -10,7 +10,7 @@ A TMBD Kotlin app, following Clean Architecture and the MVI pattern on the UI la
 Libraries used
 ------------------------
 
-* [Hilt] - a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection
+* [Hilt](https://dagger.dev/hilt/) - a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection
 
 * [MvRx/Mavericks](https://github.com/airbnb/mavericks) - Android MVI framework built by Airbnb
 
@@ -24,7 +24,7 @@ Libraries used
 
 * [RxKotlin](https://github.com/ReactiveX/RxKotlin) - Kotlin Extensions for RxJava
 
-* [RxBinding] - a set of support libraries to make the implementation of user interaction with the UI elements in Android easier
+* [RxBinding](https://github.com/JakeWharton/RxBinding) - a set of support libraries to make the implementation of user interaction with the UI elements in Android easier
 
 * [Navigation](https://developer.android.com/guide/navigation/navigation-getting-started) - Android Jetpack's Navigation component helps you implement navigation, from simple button clicks to more complex patterns
 
