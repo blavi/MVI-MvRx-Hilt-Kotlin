@@ -31,6 +31,7 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
                 is TVShowDetails -> {
                     item.updateItem(binding)
                 }
+                // TODO: PersonDetails
             }
         }
     }
