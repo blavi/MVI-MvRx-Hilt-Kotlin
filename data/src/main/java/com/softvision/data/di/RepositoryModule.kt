@@ -3,13 +3,11 @@ package com.softvision.data.di
 import com.softvision.data.common.Connectivity
 import com.softvision.data.database.dao.MovieGenresDAO
 import com.softvision.data.database.dao.MoviesDAO
+import com.softvision.data.database.dao.TVShowGenresDAO
 import com.softvision.data.database.dao.TVShowsDAO
 import com.softvision.data.network.api.ApiEndpoints
 import com.softvision.data.repository.*
-import com.softvision.domain.di.MoviesByGenreRepository
-import com.softvision.domain.di.MoviesRepository
-import com.softvision.domain.di.QueryRepository
-import com.softvision.domain.di.TvShowsRepository
+import com.softvision.domain.di.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.repository.GenresRepository
 import com.softvision.domain.repository.ItemsRepository
@@ -41,13 +39,26 @@ class RepositoryModule {
     }
 
     @Provides
+    @MovieGenresRepository
     fun provideMovieGenresRepository(genresDAO: MovieGenresDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): GenresRepository<BaseItemDetails> {
         return MovieGenresRepositoryImpl(genresDAO, resourcesApi, connectivity)
+    }
+
+    @Provides
+    @TvShowGenresRepository
+    fun provideTvShowGenresRepository(genresDAO: TVShowGenresDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): GenresRepository<BaseItemDetails> {
+        return TVShowGenresRepositoryImpl(genresDAO, resourcesApi, connectivity)
     }
 
     @Provides
     @MoviesByGenreRepository
     fun provideMovieByGenreRepository(moviesDAO: MoviesDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): ItemsRepository<String, BaseItemDetails, Int> {
         return MoviesByGenreRepositoryImpl(moviesDAO, resourcesApi, connectivity)
+    }
+
+    @Provides
+    @TvShowsByGenreRepository
+    fun provideTvShowsByGenreRepository(tvShowsDAO: TVShowsDAO, resourcesApi: ApiEndpoints, connectivity: Connectivity): ItemsRepository<String, BaseItemDetails, Int> {
+        return TVShowsByGenreRepositoryImpl(tvShowsDAO, resourcesApi, connectivity)
     }
 }

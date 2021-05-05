@@ -12,14 +12,9 @@ import com.softvision.data.network.base.NetworkConstants.Companion.SORT_BY
 import com.softvision.data.network.base.NetworkConstants.Companion.TIME_WINDOW
 import com.softvision.data.network.base.NetworkConstants.Companion.TV_SHOW_RELEASE_YEAR
 import com.softvision.data.network.base.NetworkConstants.Companion.WITH_GENRES
-import com.softvision.data.network.model.MovieGenresResponse
-import com.softvision.data.network.model.MoviesResponse
-import com.softvision.data.network.model.MultiItemsResponse
-import com.softvision.data.network.model.TVShowsResponse
+import com.softvision.data.network.model.*
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiEndpoints {
 
@@ -95,7 +90,7 @@ interface ApiEndpoints {
     fun fetchMovieGenres(@Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY): Single<MovieGenresResponse>
 
     @GET("genre/tv/list")
-    fun fetchTVShowGenres(@Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY): Single<MovieGenresResponse>
+    fun fetchTVShowGenres(@Query(API_KEY) apiKey: String = BuildConfig.TMDB_API_KEY): Single<TvShowGenresResponse>
 
     @GET("search/multi")
     fun searchTMDBItems(

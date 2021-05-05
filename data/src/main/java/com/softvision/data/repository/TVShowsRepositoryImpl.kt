@@ -22,7 +22,6 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
 
     override fun getData(type: String, page: Int): Single<List<BaseItemDetails>> {
 
-//        Timber.i("Explore State: type: %s, page: %s", type, page)
         val apiDataProviderVal = when (type) {
             TVShowDataType.TRENDING_TV_SHOWS -> resourcesApi.fetchTrendingTVShows(page = page)
             TVShowDataType.POPULAR_TV_SHOWS -> resourcesApi.fetchPopularTVShows(page = page)
@@ -41,10 +40,6 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
                             fetchFromCacheAction = { loadItemsByCategory(type) },
                             type
                         )
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        type
-//                    )
                 },
                 dbDataProvider = { loadItemsByCategory(type).map { it } }
             )
@@ -70,6 +65,5 @@ class TVShowsRepositoryImpl @Inject constructor(private val tmdbTVShowsDAO: TVSh
         return tmdbTVShowsDAO
             .loadItemsByCategory(type)
             .map { it as List<BaseItemEntity> }
-            .subscribeOn(Schedulers.io())
     }
 }

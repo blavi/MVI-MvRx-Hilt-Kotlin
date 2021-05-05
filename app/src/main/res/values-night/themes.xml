@@ -1,24 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MVIKnotHiltKotlin" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.MVIKnotHiltKotlin" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/copper_rose</item>
-        <item name="colorPrimaryVariant">@color/rose_taupe</item>
+        <item name="colorPrimary">@color/eerie_black</item>
+        <item name="colorPrimaryVariant">@color/eerie_black</item>
         <item name="colorOnPrimary">@color/magnolia</item>
 
         <item name="android:colorBackground">@color/eerie_black</item>
-        <!--        <item name="android:windowBackground">@color/orange_900</item>-->
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/copper_rose</item>
+        <item name="colorSecondary">@color/magnolia</item>
         <item name="colorSecondaryVariant">@color/battleship_gray</item>
-        <item name="colorOnSecondary">@color/battleship_gray</item>
+        <item name="colorOnSecondary">@color/silver_sand</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="android:textColor">@color/battleship_gray</item>
+        <item name="android:textColor">@color/magnolia</item>
 
         <item name="bottomSheetDialogTheme">@style/MyBottomSheetDialogTheme</item>
     </style>
+
 
 </resources>

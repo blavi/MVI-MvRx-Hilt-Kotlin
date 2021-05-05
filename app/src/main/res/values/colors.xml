@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!--    <color name="purple_200">#FFBB86FC</color>-->
+<!--    <color name="purple_500">#FF6200EE</color>-->
+<!--    <color name="purple_700">#FF3700B3</color>-->
+<!--    <color name="teal_200">#FF03DAC5</color>-->
+<!--    <color name="teal_700">#FF018786</color>-->
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
 
 
-    <color name="orange_700">#E64A19</color>
-    <color name="orange_900">#BF360C</color>
-<!--    <color name="gray_600">#757575</color>-->
-    <color name="gray_800">#424242</color>
-    <color name="gray_900">#212121</color>
-    <color name="brown_900">#3E2723</color>
+<!--    <color name="orange_700">#E64A19</color>-->
+<!--    <color name="orange_900">#BF360C</color>-->
+<!--&lt;!&ndash;    <color name="gray_600">#757575</color>&ndash;&gt;-->
+<!--    <color name="gray_800">#424242</color>-->
+<!--    <color name="gray_900">#212121</color>-->
+<!--    <color name="brown_900">#3E2723</color>-->
 
-    <color name="space_cadet">#2d3142</color>
-    <color name="independence">#4f5d75</color>
-    <color name="silver">#bfc0c0</color>
-    <color name="mandarin">#ef8354</color>
-    <color name="flame">#ea5c1f</color>
+<!--    <color name="space_cadet">#2d3142</color>-->
+<!--    <color name="independence">#4f5d75</color>-->
+<!--    <color name="silver">#bfc0c0</color>-->
+<!--    <color name="mandarin">#ef8354</color>-->
+<!--    <color name="flame">#ea5c1f</color>-->
 
     <color name="eerie_black">#141414</color>
     <color name="translucid_eerie_black">#E6141414</color>
@@ -32,4 +32,7 @@
     <color name="green_sheen">#7DAA92</color>
     <color name="copper_rose">#A26769</color>
     <color name="rose_taupe">#8B5557</color>
+
+    <color name="gray">#5b5b5b</color>
+    <color name="blue">#DBE9EE</color>
 </resources>

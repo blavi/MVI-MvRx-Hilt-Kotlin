@@ -23,7 +23,7 @@ android {
             properties.load(rootProject.file("local.properties").newDataInputStream())
         }
 
-        manifestPlaceholders = [ tmdbApiKey : properties.getProperty("TMDB_API_KEY", "") ]
+//        manifestPlaceholders = [ tmdbApiKey : properties.getProperty("TMDB_API_KEY", "") ]
     }
 
     buildTypes {

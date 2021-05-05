@@ -1,9 +1,9 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
-import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
+import com.softvision.domain.di.MovieGenresInteractor
 import com.softvision.domain.di.MoviesByGenreInteractor
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.model.GenreDetails
@@ -18,7 +18,7 @@ import timber.log.Timber
 class MoviesViewModel @AssistedInject constructor(
     @Assisted initialState: MoviesByGenreState,
     @MoviesByGenreInteractor private val moviesInteractor: BaseFetchItemsUseCase<String, BaseItemDetails, Int>,
-    private val genresInteractor: BaseFetchGenresUseCase<BaseItemDetails>
+    @MovieGenresInteractor private val genresInteractor: BaseFetchGenresUseCase<BaseItemDetails>
 ) : BaseViewModel<MoviesByGenreState>(initialState) {
 
     private var disposables: CompositeDisposable = CompositeDisposable()
@@ -75,7 +75,6 @@ class MoviesViewModel @AssistedInject constructor(
     }
 
     fun setSelectedItem(item: BaseItemDetails?) {
-        Log.i("Explore State", "item selected")
         setState {
             copy(selectedItem = item)
         }

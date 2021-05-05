@@ -22,7 +22,7 @@ class ItemsQueryRepositoryImpl @Inject constructor(
 
     override fun getData(query: String, page: Int): Single<List<BaseItemDetails>> {
 
-        val apiDataProviderVal = resourcesApi.searchTMDBItems(query = query, page = page).subscribeOn(Schedulers.io())
+        val apiDataProviderVal = resourcesApi.searchTMDBItems(query = query, page = page)
 
         return fetchData(
             apiDataProvider = {
@@ -34,7 +34,7 @@ class ItemsQueryRepositoryImpl @Inject constructor(
             },
             dbDataProvider1 = { moviesDAO.queryItemsByTitle(query).map { it } },
             dbDataProvider2 = { tvShowsDAO.queryItemsByTitle(query).map { it } }
-        ).subscribeOn(Schedulers.io())
+        )
     }
 
 }

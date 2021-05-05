@@ -28,6 +28,12 @@ class InteractorModule {
     }
 
     @Provides
+    @TvShowsByGenreInteractor
+    fun providesTvShowsByGenreInteractor(@TvShowsByGenreRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
+        return FetchTVShowsByGenreInteractor(repository)
+    }
+
+    @Provides
     @TvShowsInteractor
     fun providesTVShowsInteractor(@TvShowsRepository repository: ItemsRepository<String, BaseItemDetails, Int>): BaseFetchItemsUseCase<String, BaseItemDetails, Int> {
         return FetchTVShowsInteractor(repository)
@@ -40,7 +46,14 @@ class InteractorModule {
     }
 
     @Provides
-    fun providesGenresInteractor(repository: GenresRepository<BaseItemDetails>): BaseFetchGenresUseCase<BaseItemDetails> {
+    @MovieGenresInteractor
+    fun providesMovieGenresInteractor(@MovieGenresRepository repository: GenresRepository<BaseItemDetails>): BaseFetchGenresUseCase<BaseItemDetails> {
         return FetchMoviesGenresInteractor(repository)
+    }
+
+    @Provides
+    @TvShowGenresInteractor
+    fun providesTvShowGenresInteractor(@TvShowGenresRepository repository: GenresRepository<BaseItemDetails>): BaseFetchGenresUseCase<BaseItemDetails> {
+        return FetchTVShowsGenresInteractor(repository)
     }
 }

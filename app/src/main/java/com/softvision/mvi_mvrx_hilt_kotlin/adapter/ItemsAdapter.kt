@@ -13,8 +13,8 @@ import com.softvision.domain.model.TVShowDetails
 import com.softvision.mvi_mvrx_hilt_kotlin.BuildConfig
 import com.softvision.mvi_mvrx_hilt_kotlin.R
 import com.softvision.mvi_mvrx_hilt_kotlin.databinding.ItemLayoutBinding
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.DataViewHolder>() {
     private var items: MutableList<BaseItemDetails> = mutableListOf()

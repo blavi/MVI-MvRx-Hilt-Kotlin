@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.softvision.data.database.base.EntitiesDatabase
 import com.softvision.data.database.dao.MovieGenresDAO
 import com.softvision.data.database.dao.MoviesDAO
+import com.softvision.data.database.dao.TVShowGenresDAO
 import com.softvision.data.database.dao.TVShowsDAO
 import dagger.Module
 import dagger.Provides
@@ -32,6 +33,12 @@ class DatabaseModule {
     @Singleton
     fun provideMovieGenresDAO(appDatabase: EntitiesDatabase): MovieGenresDAO {
         return appDatabase.getMovieGenresDAO()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTvShowGenresDAO(appDatabase: EntitiesDatabase): TVShowGenresDAO {
+        return appDatabase.getTvShowGenresDAO()
     }
 
     @Provides

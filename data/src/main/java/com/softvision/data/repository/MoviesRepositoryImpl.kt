@@ -45,10 +45,6 @@ class MoviesRepositoryImpl @Inject constructor(
                         fetchFromCacheAction = { loadItemsByCategory(type) },
                         type
                     )
-//                    .getData(
-//                        cacheAction = {  entities -> insertItems(type, entities) },
-//                        type
-//                    )
                 },
                 dbDataProvider = { loadItemsByCategory(type).map { it } }
             )
@@ -79,6 +75,5 @@ class MoviesRepositoryImpl @Inject constructor(
         return tmdbMoviesDAO
             .loadItemsByCategory(type)
             .map { it as List<BaseItemEntity> }
-            .subscribeOn(Schedulers.io())
     }
 }

@@ -19,6 +19,9 @@ interface TVShowsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertItem(item: TVShowEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertOrIgnoreItem(item: TVShowEntity)
+
     @Query("DELETE FROM $TMDB_TV_SHOWS")
     fun deleteAll()
 
@@ -36,4 +39,7 @@ interface TVShowsDAO {
 
     @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE TITLE = :title")
     fun loadItemsByTitle(title: String): Single<List<TVShowEntity>>
+
+    @Query("SELECT * FROM $TMDB_TV_SHOWS WHERE GENRE_IDS LIKE '%' || :genre || '%' ")
+    fun loadItemsByGenre(genre: String): Single<List<TVShowEntity>>
 }

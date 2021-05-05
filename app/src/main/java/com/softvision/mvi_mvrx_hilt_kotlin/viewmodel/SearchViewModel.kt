@@ -57,8 +57,13 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
         }
     }
 
+    fun clearResults() = withState {
+        it.apply {
+            (items as ArrayList).clear()
+        }
+    }
+
     fun setSelectedItem(item: BaseItemDetails?) {
-        Log.i("Search State", "item selected")
         setState {
             copy(selectedItem = item)
         }

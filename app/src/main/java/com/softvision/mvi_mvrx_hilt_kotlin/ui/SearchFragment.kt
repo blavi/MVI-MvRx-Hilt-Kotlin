@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,13 +21,14 @@ import com.softvision.mvi_mvrx_hilt_kotlin.utils.RxSearchObservable
 import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(), MvRxView {
@@ -84,6 +86,18 @@ class SearchFragment : Fragment(), MvRxView {
                 searchViewModel.loadMoreItems()
             }
         }
+
+        val searchView: View = binding.searchView
+        if (searchView != null) {
+            val searchText = searchView.findViewById<AutoCompleteTextView>(androidx.appcompat.R.id.search_src_text)
+            if (searchText != null) {
+                searchText.maxLines = 1
+                searchText.isSingleLine = true
+                searchText.setTextColor(resources.getColor(R.color.magnolia))
+                searchText.setHintTextColor(resources.getColor(R.color.battleship_gray))
+                searchText.background = null
+            }
+        }
     }
 
     /*
@@ -112,20 +126,30 @@ class SearchFragment : Fragment(), MvRxView {
     }
 
     private fun initSearchViewListener() {
-        RxSearchObservable.fromView(binding.searchView)
+        val searchObservable = RxSearchObservable.queryObservableFromView(binding.searchView)
             .debounce(300, TimeUnit.MILLISECONDS)
             .filter { text ->
                 text.isNotEmpty() && text.length >= 3
             }
             .distinctUntilChanged()
             .map { text ->
-                text.toLowerCase(Locale.getDefault()).trim()
+                text.toString().toLowerCase(Locale.getDefault()).trim()
                 Timber.i("%s Query map %s", TAG, text)
                 searchViewModel.executeQuery(text.toString())
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
+
+        val closeObservable = RxSearchObservable.closeObservableFromView(binding.searchView)
+            .map {
+                searchViewModel.clearResults()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+        disposables.addAll(searchObservable, closeObservable)
     }
 
     private fun initItemSelectionListener() {

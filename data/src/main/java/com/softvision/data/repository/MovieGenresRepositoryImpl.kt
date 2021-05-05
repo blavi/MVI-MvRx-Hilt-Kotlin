@@ -42,6 +42,6 @@ class MovieGenresRepositoryImpl @Inject constructor(private val genresDAO: Movie
     private fun loadAllItems(): Single<List<BaseItemEntity>> {
         return genresDAO
             .loadAllItems()
-            .map { it as List<BaseItemEntity> }
+            .map { it }
     }
 }

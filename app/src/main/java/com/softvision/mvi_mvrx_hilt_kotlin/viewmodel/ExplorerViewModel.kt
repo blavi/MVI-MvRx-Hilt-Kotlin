@@ -1,6 +1,5 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
-import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.data.network.base.MovieDataType
 import com.softvision.data.network.base.TVShowDataType
@@ -49,7 +48,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchPopularMovies(offset: Int = 0) {
-        Log.i("Explore State", "popular invoke")
         val disposable = moviesInteractor.invoke(MovieDataType.POPULAR_MOVIES, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -62,7 +60,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchPopularTVShows(offset: Int = 0) {
-        Log.i("Explore State", "popular tv shows invoke")
         val disposable = tvShowsInteractor.invoke(TVShowDataType.POPULAR_TV_SHOWS, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -75,7 +72,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchTrendingMovies(offset: Int = 0) {
-        Log.i("Explore State", "trending invoke")
         val disposable = moviesInteractor.invoke(MovieDataType.TRENDING_MOVIES, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -88,7 +84,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchTrendingTVShows(offset: Int = 0) {
-        Log.i("Explore State", "trending invoke")
         val disposable = tvShowsInteractor.invoke(TVShowDataType.TRENDING_TV_SHOWS, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -101,7 +96,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchComingSoonMovies(offset: Int = 0) {
-        Log.i("Explore State", "coming soon invoke")
         val disposable = moviesInteractor.invoke(MovieDataType.COMING_SOON_MOVIES, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -114,7 +108,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     private fun fetchComingSoonTVShows(offset: Int = 0) {
-        Log.i("Explore State", "coming soon invoke")
         val disposable = tvShowsInteractor.invoke(TVShowDataType.COMING_SOON_TV_SHOWS, offset / 20 + 1)
             .subscribeOn(Schedulers.io())
             .execute {
@@ -151,7 +144,6 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     }
 
     fun setSelectedItem(item: BaseItemDetails?) {
-        Log.i("Explore State", "item selected")
         setState {
             copy(selectedItem = item)
         }

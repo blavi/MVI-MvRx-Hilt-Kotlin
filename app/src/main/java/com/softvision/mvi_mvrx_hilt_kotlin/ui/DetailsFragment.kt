@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailsFragment: BottomSheetDialogFragment(){
+class DetailsFragment: BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var item: BaseItemDetails
@@ -72,6 +72,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
             setPoster(backdropPath)
             setTitle(title)
             setDescription(overview)
+//            setReleaseDate(releaseDate)
         }
     }
 
@@ -80,6 +81,7 @@ class DetailsFragment: BottomSheetDialogFragment(){
             setPoster(backdropPath)
             setTitle(title)
             setDescription(overview)
+//            setReleaseDate(releaseDate)
         }
     }
 
@@ -90,6 +92,18 @@ class DetailsFragment: BottomSheetDialogFragment(){
     private fun setTitle(title: String) {
         binding.title.text = title
     }
+
+//    private fun setReleaseDate(releaseDate: String) {
+//        binding.releaseData.text = releaseDate
+//    }
+//
+//    private fun setGenres(genres: List<String>) {
+//        var allGenres = ""
+//        for (genre in genres) {
+//            allGenres += " - $genre"
+//        }
+//        binding.releaseData.text = allGenres
+//    }
 
     private fun setPoster(posterPath: String?) {
         posterPath?.let {

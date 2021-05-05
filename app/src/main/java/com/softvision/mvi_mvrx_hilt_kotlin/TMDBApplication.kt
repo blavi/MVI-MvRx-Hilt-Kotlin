@@ -12,7 +12,6 @@ class TMDBApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         Mavericks.initialize(applicationContext)
-//        MvRx.viewModelConfigFactory = MvRxViewModelConfigFactory(applicationContext)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())

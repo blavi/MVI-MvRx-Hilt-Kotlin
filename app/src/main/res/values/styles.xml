@@ -7,7 +7,7 @@
     </style>
 
     <style name="MYBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/magnolia</item>
+        <item name="android:background">@color/eerie_black</item>
     </style>
 
     <style name="Title">
@@ -17,7 +17,7 @@
     </style>
 
     <style name="spinnerStyle">
-        <item name="android:popupBackground">@color/translucid_magnolia</item>
+        <item name="android:popupBackground">@color/translucid_eerie_black</item>
     </style>
 
     <style name="BottomNavigation">
@@ -25,5 +25,13 @@
         <item name="itemTextColor">@drawable/tab_icon</item>
     </style>
 
-    <string name="search_hint">Search for a movie, tv show or a person</string>
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@color/eerie_black</item>
+        <item name="searchHintIcon">@null</item>
+        <item name="searchIcon">@drawable/ic_search_white_24dp</item>
+        <item name="closeIcon">@drawable/ic_clear_white_24dp</item>
+        <item name="queryHint">@string/search_hint</item>
+        <item name="paddingStart">20dp</item>
+    </style>
+
 </resources>

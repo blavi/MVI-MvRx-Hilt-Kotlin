@@ -36,7 +36,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomNavigationBar() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-        val navGraphIds = listOf(R.navigation.navigation_explorer, R.navigation.navigation_movies, R.navigation.navigation_search, R.navigation.navigation_tv_shows, R.navigation.navigation_favorites)
+        val navGraphIds = listOf(
+            R.navigation.navigation_explorer,
+            R.navigation.navigation_movies,
+            R.navigation.navigation_search,
+            R.navigation.navigation_tv_shows,
+            R.navigation.navigation_favorites
+        )
         val controller = bottomNavigationView.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
@@ -44,14 +50,10 @@ class MainActivity : AppCompatActivity() {
             intent = intent
         )
 
-        // Whenever the selected controller changes, setup the action bar.
-        controller.observe(this, Observer { navController ->
-            setupActionBarWithNavController(navController)
-        })
         currentNavController = controller
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return currentNavController?.value?.navigateUp() ?: false
+        return currentNavController.value?.navigateUp() ?: false
     }
 }
