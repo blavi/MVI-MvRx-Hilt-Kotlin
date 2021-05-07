@@ -55,9 +55,9 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
         }
     }
 
-    fun clearResults() = withState {
-        it.apply {
-            (items as ArrayList).clear()
+    fun clearResults() {
+        setState {
+            copy(items = emptyList())
         }
     }
 

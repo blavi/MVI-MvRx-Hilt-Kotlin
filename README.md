@@ -53,7 +53,7 @@ MVI using Mavericks (MvRx)
 
 ### Components
 
-* MavericksState (MvRxState in v 1.x)
+* **MavericksState (MvRxState in v 1.x)**
     - Is a kotlin data class
     - Uses only immutable properties
     - Has default values for every property to ensure that your screen can be rendered immediately
@@ -61,7 +61,7 @@ MVI using Mavericks (MvRx)
         - used for asynchronous actions
         - possible values: Uninitialized, Loading, Success, Fail
 <br/> <br/>
-* MavericksViewModel (MvRxViewModel in v. 1.x)
+* **MavericksViewModel (MvRxViewModel in v. 1.x)**
     - conceptually nearly identical to Jetpack ViewModels with the addition of being generic on a MavericksState class.
     - reducer method: 
         ```
@@ -84,7 +84,7 @@ MVI using Mavericks (MvRx)
            Mavericks will automatically dispose of the subscription in onCleared of the ViewModel so you never have to manage the lifecycle or unsubscribing.
            For each event it emits, it will call the reducer which takes the current state and returns an updated state just like setState
 <br/> <br/>
-* MavericksView (MvRxView in v 1.x)
+* **MavericksView (MvRxView in v 1.x)**
     - access state:
     ```
         withState { state -> ... }

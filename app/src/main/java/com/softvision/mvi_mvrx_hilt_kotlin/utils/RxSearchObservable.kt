@@ -27,8 +27,8 @@ object RxSearchObservable {
         val subject: PublishSubject<Boolean> = PublishSubject.create()
 
         searchView.setOnCloseListener {
-            subject.onComplete()
-            true
+            subject.onNext(true)
+            false
         }
 
         return subject
