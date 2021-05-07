@@ -46,8 +46,7 @@ MVI using Mavericks (MvRx)
 
 * [MvRx 1.x](https://github.com/airbnb/mavericks/wiki)  
     - build to support RxJava
-
-
+\
 * [Mavericks 2.x](https://airbnb.io/mavericks/#/) 
     - build to support Coroutines. Mavericks 2.0 includes a mavericks-rxjava2 artifact which adds back all existing RxJava based APIs (although they now wrap the internal coroutines implementation).
     - [differences](https://airbnb.io/mavericks/#/new-2x)
@@ -61,8 +60,7 @@ MVI using Mavericks (MvRx)
     - Contains Async properties 
         - used for asynchronous actions
         - possible values: Uninitialized, Loading, Success, Fail
-
-
+\
 * MavericksViewModel (MvRxViewModel in v. 1.x)
     - conceptually nearly identical to Jetpack ViewModels with the addition of being generic on a MavericksState class.
     - reducer method: 
@@ -85,8 +83,7 @@ MVI using Mavericks (MvRx)
          - When you call execute, it will begin executing it, immediately emit Loading, and then emit Success or Fail when it succeeds, emits a new value, or fails.
            Mavericks will automatically dispose of the subscription in onCleared of the ViewModel so you never have to manage the lifecycle or unsubscribing.
            For each event it emits, it will call the reducer which takes the current state and returns an updated state just like setState
-
-
+\
 * MavericksView (MvRxView in v 1.x)
     - access state:
     ```
