@@ -105,7 +105,7 @@ class SearchFragment : Fragment(), MvRxView {
     */
 
     private fun initUpdateListeners() {
-        searchViewModel.asyncSubscribe(
+        searchViewModel.onAsync(
             SearchState::searchRequest,
             onSuccess = {
                 Timber.i("%s Query async subscribe success", TAG)
@@ -119,7 +119,7 @@ class SearchFragment : Fragment(), MvRxView {
             }
         )
 
-        searchViewModel.selectSubscribe(SearchState::items) { list ->
+        searchViewModel.onEach(SearchState::items) { list ->
             updateQueryResult(list)
             hideNoDataMessage()
         }
@@ -153,7 +153,7 @@ class SearchFragment : Fragment(), MvRxView {
     }
 
     private fun initItemSelectionListener() {
-        searchViewModel.selectSubscribe(SearchState::selectedItem) { item ->
+        searchViewModel.onEach(SearchState::selectedItem) { item ->
             item?.let {
                 displayDetails(item)
             }

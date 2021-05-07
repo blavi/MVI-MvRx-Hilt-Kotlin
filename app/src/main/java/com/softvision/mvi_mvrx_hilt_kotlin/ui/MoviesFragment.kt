@@ -127,7 +127,7 @@ class MoviesFragment: Fragment(), MvRxView {
         ------------------ LISTENERS ------------------
      */
     private fun initGenreSelectionListener() {
-        moviesViewModel.selectSubscribe(MoviesByGenreState::displayedGenre) {
+        moviesViewModel.onEach(MoviesByGenreState::displayedGenre) {
             (it as? GenreDetails)?.let { genre ->
                 Timber.i("Movies: %s genre selected => display movies", genre.name)
                 moviesViewModel.fetchMoviesByGenre()
@@ -136,7 +136,7 @@ class MoviesFragment: Fragment(), MvRxView {
     }
 
     private fun initMoviesListener() {
-        moviesViewModel.asyncSubscribe(
+        moviesViewModel.onAsync(
             MoviesByGenreState::moviesByGenreRequest,
             onSuccess = {
                 Timber.i("Movies: movies async subscribe - success")
@@ -150,7 +150,7 @@ class MoviesFragment: Fragment(), MvRxView {
             }
         )
 
-        moviesViewModel.selectSubscribe(MoviesByGenreState::moviesByGenreList){
+        moviesViewModel.onEach(MoviesByGenreState::moviesByGenreList){
             if (it.isEmpty()) {
                 Timber.i("Movies: movies select subscribe - is empty")
             } else {
@@ -161,7 +161,7 @@ class MoviesFragment: Fragment(), MvRxView {
     }
 
     private fun initGenresListener() {
-        moviesViewModel.asyncSubscribe(
+        moviesViewModel.onAsync(
             MoviesByGenreState::genresRequest,
             onSuccess = {
                 updateLoader(View.GONE)
@@ -173,7 +173,7 @@ class MoviesFragment: Fragment(), MvRxView {
             }
         )
 
-        moviesViewModel.selectSubscribe(MoviesByGenreState::genres) { list ->
+        moviesViewModel.onEach(MoviesByGenreState::genres) { list ->
             if (list.isNotEmpty()) {
                 updateGenresDropdown()
             }
@@ -181,7 +181,7 @@ class MoviesFragment: Fragment(), MvRxView {
     }
 
     private fun setItemSelectionListener() {
-        moviesViewModel.selectSubscribe(MoviesByGenreState::selectedItem) { item ->
+        moviesViewModel.onEach(MoviesByGenreState::selectedItem) { item ->
             item?.let {
                 displayDetails(item)
             }

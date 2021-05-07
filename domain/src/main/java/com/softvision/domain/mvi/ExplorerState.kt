@@ -1,6 +1,7 @@
 package com.softvision.domain.mvi
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.softvision.domain.model.BaseItemDetails
@@ -25,7 +26,7 @@ data class ExplorerState(
     val comingSoonTVShows: List<BaseItemDetails> = emptyList(),
 
     val selectedItem: BaseItemDetails? = null
-): MvRxState {
+): MavericksState {
 
     fun combineTrendingMoviesItems(offset: Int, newRequestItems: Async<List<BaseItemDetails>>): List<BaseItemDetails> =
         (when {

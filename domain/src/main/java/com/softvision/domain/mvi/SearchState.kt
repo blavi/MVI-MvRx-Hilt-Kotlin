@@ -1,6 +1,7 @@
 package com.softvision.domain.mvi
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.softvision.domain.model.BaseItemDetails
@@ -10,7 +11,7 @@ data class SearchState(
     val items: List<BaseItemDetails> = emptyList(),
     val query: String = "",
     val selectedItem: BaseItemDetails? = null
-): MvRxState {
+): MavericksState {
     fun combineItems(offset: Int, query: String, newRequestItems: Async<List<BaseItemDetails>>): List<BaseItemDetails> {
 
         return (when {

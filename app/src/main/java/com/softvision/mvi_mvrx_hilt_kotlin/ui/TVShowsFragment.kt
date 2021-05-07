@@ -125,7 +125,7 @@ class TVShowsFragment : Fragment(), MvRxView {
         ------------------ LISTENERS ------------------
      */
     private fun initGenreSelectionListener() {
-        tvShowsViewModel.selectSubscribe(TVShowsByGenreState::displayedGenre) {
+        tvShowsViewModel.onEach(TVShowsByGenreState::displayedGenre) {
             (it as? GenreDetails)?.let { genre ->
                 Timber.i("Movies: %s genre selected => display movies", genre.name)
                 tvShowsViewModel.fetchTvShowsByGenre()
@@ -134,7 +134,7 @@ class TVShowsFragment : Fragment(), MvRxView {
     }
 
     private fun initMoviesListener() {
-        tvShowsViewModel.asyncSubscribe(
+        tvShowsViewModel.onAsync(
             TVShowsByGenreState::tvShowsByGenreRequest,
             onSuccess = {
                 Timber.i("Movies: movies async subscribe - success")
@@ -148,7 +148,7 @@ class TVShowsFragment : Fragment(), MvRxView {
             }
         )
 
-        tvShowsViewModel.selectSubscribe(TVShowsByGenreState::tvShowsByGenreList){
+        tvShowsViewModel.onEach(TVShowsByGenreState::tvShowsByGenreList){
             if (it.isEmpty()) {
                 Timber.i("Movies: movies select subscribe - is empty")
             } else {
@@ -159,7 +159,7 @@ class TVShowsFragment : Fragment(), MvRxView {
     }
 
     private fun initGenresListener() {
-        tvShowsViewModel.asyncSubscribe(
+        tvShowsViewModel.onAsync(
             TVShowsByGenreState::genresRequest,
             onSuccess = {
                 updateLoader(View.GONE)
@@ -171,7 +171,7 @@ class TVShowsFragment : Fragment(), MvRxView {
             }
         )
 
-        tvShowsViewModel.selectSubscribe(TVShowsByGenreState::genres) { list ->
+        tvShowsViewModel.onEach(TVShowsByGenreState::genres) { list ->
             if (list.isNotEmpty()) {
                 updateGenresDropdown()
             }
@@ -179,7 +179,7 @@ class TVShowsFragment : Fragment(), MvRxView {
     }
 
     private fun setItemSelectionListener() {
-        tvShowsViewModel.selectSubscribe(TVShowsByGenreState::selectedItem) { item ->
+        tvShowsViewModel.onEach(TVShowsByGenreState::selectedItem) { item ->
             item?.let {
                 displayDetails(item)
             }

@@ -39,13 +39,74 @@ Libraries used
 * [Mockk](https://mockk.io/) - mocking library for Kotlin
 
 
-MvRx Pros and Cons
+MVI using Mavericks (MvRx)
 ------------------------
+
+###Versions:
+
+* [MvRx 1.x](https://github.com/airbnb/mavericks/wiki)  
+    - build to support RxJava
+
+* [Mavericks 2.x](https://airbnb.io/mavericks/#/) 
+    - build to support Coroutines. Mavericks 2.0 includes a mavericks-rxjava2 artifact which adds back all existing RxJava based APIs (although they now wrap the internal coroutines implementation).
+    - [differences](https://airbnb.io/mavericks/#/new-2x)
+
+###Components:
+
+* MavericksState (MvRxState in v 1.x)
+    - Is a kotlin data class
+    - Uses only immutable properties
+    - Has default values for every property to ensure that your screen can be rendered immediately
+    - Contains Async properties 
+        - used for asynchronous actions
+        - possible values: Uninitialized, Loading, Success, Fail
+
+* MavericksViewModel (MvRxViewModel in v. 1.x)
+    - conceptually nearly identical to Jetpack ViewModels with the addition of being generic on a MavericksState class.
+    - reducer method: 
+        ```
+            setState { copy(yourProp = newValue) } 
+        ```
+    - access state:
+        ```
+            withState { state -> ... }
+        ```
+    - asynchronous actions (network, db, etc.) with execute() method:
+        ```
+            moviesInteractor.invoke()
+                .execute {
+                    copy(
+                       ...
+                    )
+                }
+        ```
+         - When you call execute, it will begin executing it, immediately emit Loading, and then emit Success or Fail when it succeeds, emits a new value, or fails.
+           Mavericks will automatically dispose of the subscription in onCleared of the ViewModel so you never have to manage the lifecycle or unsubscribing.
+           For each event it emits, it will call the reducer which takes the current state and returns an updated state just like setState
+
+* MavericksView (MvRxView in v 1.x)
+    - access state:
+    ```
+        withState { state -> ... }
+    ```
+    - subscribe to state (v 2.x):
+        - invalidate() - called any time the state for any view model accessed by the above delegates changes. invalidate() is used to redraw the UI on each state change.
+        - onEach() - subscribe only to particular parts of state
+        - onAsync() - subscribe only to Async parts of state
+    - subscribe to state (v 1.x):
+        - invalidate() - called any time the state for any view model accessed by the above delegates changes. invalidate() is used to redraw the UI on each state change.
+        - selectSubscribe() - subscribe only to particular parts of state
+        - asyncSubscribe() - subscribe only to Async parts of state
+
+
+Mavericks Pros and Cons
+------------------------
+
 ### Pros
-* Wrapping all the properties necessary to render a screen in a MvRxState, it makes it easier to scan over them.
+* Wrapping all the properties necessary to render a screen in a MavericksState, it makes it easier to scan over them.
 * View decoupled of State.
-* MvRx is lifecycle aware, because it’s built respecting Jetpack’s LifecycleOwner. This means no manual handle subscription needed. MvRxViewModel uses CompositeDisposable that’s automatically disposed in onCleared. Also, in the MvRxView, invalidate function — where you’re supposed to handle UI according to state changes — is only called when current View’s lifecyle is at least STARTED (that means STARTED and RESUMED).
-* MvRxView offers specific subscribers - selectSubscribe, asyncSubscribe - which allow specific handling for each state property.
+* Mavericks is lifecycle aware, because it’s built respecting Jetpack’s LifecycleOwner. This means no manual handle subscription needed. MavericksViewModel uses CompositeDisposable that’s automatically disposed in onCleared. Also, in the MvRxView, invalidate function — where you’re supposed to handle UI according to state changes — is only called when current View’s lifecyle is at least STARTED (that means STARTED and RESUMED).
+* MavericksView offers specific subscribers - onEach/selectSubscribe, onAsync/asyncSubscribe - which allow specific handling for each state property.
 
 ### Cons
 * It doesn't support ViewModel handling for Activities.

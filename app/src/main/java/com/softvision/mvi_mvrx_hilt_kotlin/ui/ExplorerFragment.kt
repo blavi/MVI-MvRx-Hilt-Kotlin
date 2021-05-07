@@ -260,7 +260,7 @@ class ExplorerFragment : Fragment(), MvRxView {
     }
 
     private fun setItemSelectionListener() {
-        explorerViewModel.selectSubscribe(ExplorerState::selectedItem) { item ->
+        explorerViewModel.onEach(ExplorerState::selectedItem) { item ->
             item?.let {
                 displayDetails(item)
             }
@@ -268,7 +268,7 @@ class ExplorerFragment : Fragment(), MvRxView {
     }
 
     private fun setComingSoonMoviesListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::comingSoonMoviesRequest,
+        explorerViewModel.onAsync(ExplorerState::comingSoonMoviesRequest,
             onSuccess = {
                 updateComingSoonMoviesLoader(View.GONE)
                 updateNoComingSoonMoviesLabel()
@@ -279,14 +279,14 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::comingSoonMovies) { list ->
+        explorerViewModel.onEach(ExplorerState::comingSoonMovies) { list ->
             updateComingSoonMoviesLoader(View.GONE)
             updateComingSoonMoviesList(list)
         }
     }
 
     private fun setComingSoonTVShowsListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::comingSoonTVShowsRequest,
+        explorerViewModel.onAsync(ExplorerState::comingSoonTVShowsRequest,
             onSuccess = {
                 updateComingSoonTVShowsLoader(View.GONE)
                 updateNoComingSoonTVShowsLabel()
@@ -297,14 +297,14 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::comingSoonTVShows) { list ->
+        explorerViewModel.onEach(ExplorerState::comingSoonTVShows) { list ->
             updateComingSoonTVShowsLoader(View.GONE)
             updateComingSoonTVShowsList(list)
         }
     }
 
     private fun setPopularMoviesListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::popularMoviesRequest,
+        explorerViewModel.onAsync(ExplorerState::popularMoviesRequest,
             onSuccess = {
                 updatePopularMoviesLoader(View.GONE)
                 updateNoPopularMoviesLabel()
@@ -315,14 +315,14 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::popularMovies) { list ->
+        explorerViewModel.onEach(ExplorerState::popularMovies) { list ->
             updatePopularMoviesLoader(View.GONE)
             updatePopularMoviesList(list)
         }
     }
 
     private fun setPopularTVShowsListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::popularTVShowsRequest,
+        explorerViewModel.onAsync(ExplorerState::popularTVShowsRequest,
             onSuccess = {
                 updatePopularTVShowsLoader(View.GONE)
                 updateNoPopularTVShowsLabel()
@@ -333,14 +333,14 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::popularTVShows) { list ->
+        explorerViewModel.onEach(ExplorerState::popularTVShows) { list ->
             updatePopularTVShowsLoader(View.GONE)
             updatePopularTVShowsList(list)
         }
     }
 
     private fun setTrendingMoviesListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::trendingMoviesRequest,
+        explorerViewModel.onAsync(ExplorerState::trendingMoviesRequest,
             onSuccess = {
                 updateTrendingMoviesLoader(View.GONE)
                 updateNoTrendingMoviesLabel()
@@ -351,14 +351,14 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::trendingMovies) { list ->
+        explorerViewModel.onEach(ExplorerState::trendingMovies) { list ->
             updateTrendingMoviesLoader(View.GONE)
             updateTrendingMoviesList(list)
         }
     }
 
     private fun setTrendingTVShowsListeners() {
-        explorerViewModel.asyncSubscribe(ExplorerState::trendingTVShowsRequest,
+        explorerViewModel.onAsync(ExplorerState::trendingTVShowsRequest,
             onSuccess = {
                 updateTrendingTVShowsLoader(View.GONE)
                 updateNoTrendingTVShowsLabel()
@@ -369,7 +369,7 @@ class ExplorerFragment : Fragment(), MvRxView {
             }
         )
 
-        explorerViewModel.selectSubscribe(ExplorerState::trendingTVShows) { list ->
+        explorerViewModel.onEach(ExplorerState::trendingTVShows) { list ->
             updateTrendingTVShowsLoader(View.GONE)
             updateTrendingTVShowsList(list)
         }
