@@ -19,6 +19,7 @@ import com.softvision.mvi_mvrx_hilt_kotlin.utils.setInfiniteScrolling
 import com.softvision.mvi_mvrx_hilt_kotlin.viewmodel.ExplorerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -227,26 +228,32 @@ class ExplorerFragment : Fragment(), MvRxView {
     override fun invalidate() {
         withState(explorerViewModel) { state ->
             if (state.trendingMoviesRequest is Loading) {
+                Timber.i("explorer - trending movies loading")
                 updateTrendingMoviesLoader(View.VISIBLE)
             }
 
             if (state.trendingTVShowsRequest is Loading) {
+                Timber.i("explorer - trending tv shows loading")
                 updateTrendingTVShowsLoader(View.VISIBLE)
             }
 
             if (state.popularMoviesRequest is Loading) {
+                Timber.i("explorer - popular movies loading")
                 updatePopularMoviesLoader(View.VISIBLE)
             }
 
             if (state.popularTVShowsRequest is Loading) {
+                Timber.i("explorer - popular tv shows loading")
                 updatePopularTVShowsLoader(View.VISIBLE)
             }
 
             if (state.comingSoonMoviesRequest is Loading) {
+                Timber.i("explorer - coming soon movies loading")
                 updateComingSoonMoviesLoader(View.VISIBLE)
             }
 
             if (state.comingSoonTVShowsRequest is Loading) {
+                Timber.i("explorer - coming soon tv shows loading")
                 updateComingSoonTVShowsLoader(View.VISIBLE)
             }
         }

@@ -22,21 +22,10 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
     private var disposables: CompositeDisposable = CompositeDisposable()
 
     init {
-        initiateLoadingMoviesAndTVShows()
+        loadMoviesAndTVShows()
     }
 
-    private fun initiateLoadingMoviesAndTVShows() {
-        setState {
-            copy(trendingMoviesRequest = Loading())
-            copy(trendingTVShowsRequest = Loading())
-
-            copy(popularMoviesRequest = Loading())
-            copy(popularTVShowsRequest = Loading())
-
-            copy(comingSoonMoviesRequest = Loading())
-            copy(comingSoonTVShowsRequest = Loading())
-        }
-
+    private fun loadMoviesAndTVShows() {
         fetchTrendingMovies()
         fetchTrendingTVShows()
 
@@ -119,24 +108,24 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
         disposables.add(disposable)
     }
 
-    fun loadMorePopularMovies() = withState {
-        it.apply {
+    fun loadMorePopularMovies() = withState { explorerState ->
+        explorerState.apply {
             if (popularMoviesRequest.complete && popularMovies.isNotEmpty()) {
                 fetchPopularMovies(popularMovies.count())
             }
         }
     }
 
-    fun loadMoreTrendingMovies() = withState {
-        it.apply{
+    fun loadMoreTrendingMovies() = withState { explorerState ->
+        explorerState.apply{
             if (trendingMoviesRequest.complete && trendingMovies.isNotEmpty()) {
                 fetchTrendingMovies(trendingMovies.count())
             }
         }
     }
 
-    fun loadMoreComingSoonMovies() = withState {
-        it.apply {
+    fun loadMoreComingSoonMovies() = withState { explorerState ->
+        explorerState.apply {
             if (comingSoonMoviesRequest.complete && comingSoonMovies.isNotEmpty()) {
                 fetchComingSoonMovies(comingSoonMovies.count())
             }
@@ -149,24 +138,24 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
         }
     }
 
-    fun loadMoreComingSoonTVShows() = withState {
-        it.apply {
+    fun loadMoreComingSoonTVShows() = withState { explorerState ->
+        explorerState.apply {
             if (comingSoonTVShowsRequest.complete && comingSoonTVShows.isNotEmpty()) {
                 fetchComingSoonTVShows(comingSoonTVShows.count())
             }
         }
     }
 
-    fun loadMorePopularTVShows() = withState {
-        it.apply {
+    fun loadMorePopularTVShows() = withState { explorerState ->
+        explorerState.apply {
             if (popularTVShowsRequest.complete && popularTVShows.isNotEmpty()) {
                 fetchPopularTVShows(popularTVShows.count())
             }
         }
     }
 
-    fun loadMoreTrendingTVShows() = withState {
-        it.apply{
+    fun loadMoreTrendingTVShows() = withState { explorerState ->
+        explorerState.apply{
             if (trendingTVShowsRequest.complete && trendingTVShows.isNotEmpty()) {
                 fetchTrendingTVShows(trendingTVShows.count())
             }
@@ -178,7 +167,7 @@ class ExplorerViewModel @AssistedInject constructor(@Assisted initialState: Expl
         fun create(initialState: ExplorerState): ExplorerViewModel
     }
 
-    companion object : MvRxViewModelFactory<ExplorerViewModel, ExplorerState> {
+    companion object : MavericksViewModelFactory<ExplorerViewModel, ExplorerState> {
         override fun create(viewModelContext: ViewModelContext, state: ExplorerState): ExplorerViewModel =
             (viewModelContext as FragmentViewModelContext)
                 .fragment<ExplorerFragment>()

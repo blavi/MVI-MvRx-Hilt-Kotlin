@@ -1,9 +1,6 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
-import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.ViewModelContext
+import com.airbnb.mvrx.*
 import com.softvision.domain.base.BaseFetchGenresUseCase
 import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.di.TvShowGenresInteractor
@@ -27,14 +24,10 @@ class TVShowsViewModel @AssistedInject constructor(
     private var disposables: CompositeDisposable = CompositeDisposable()
 
     init {
-        initiateLoadingGenresAndTvShows()
+        loadGenresAndTvShows()
     }
 
-    private fun initiateLoadingGenresAndTvShows() {
-        setState {
-            copy(genresRequest = Loading())
-        }
-
+    private fun loadGenresAndTvShows() {
         fetchGenres()
     }
 
@@ -95,7 +88,7 @@ class TVShowsViewModel @AssistedInject constructor(
         fun create(initialState: TVShowsByGenreState): TVShowsViewModel
     }
 
-    companion object : MvRxViewModelFactory<TVShowsViewModel, TVShowsByGenreState> {
+    companion object : MavericksViewModelFactory<TVShowsViewModel, TVShowsByGenreState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: TVShowsByGenreState

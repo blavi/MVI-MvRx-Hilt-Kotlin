@@ -24,14 +24,10 @@ class MoviesViewModel @AssistedInject constructor(
     private var disposables: CompositeDisposable = CompositeDisposable()
 
     init {
-        initiateLoadingGenresAndMovies()
+        loadGenresAndMovies()
     }
 
-    private fun initiateLoadingGenresAndMovies() {
-        setState {
-            copy(genresRequest = Loading())
-        }
-
+    private fun loadGenresAndMovies() {
         fetchGenres()
     }
 
@@ -92,7 +88,7 @@ class MoviesViewModel @AssistedInject constructor(
         fun create(initialState: MoviesByGenreState): MoviesViewModel
     }
 
-    companion object : MvRxViewModelFactory<MoviesViewModel, MoviesByGenreState> {
+    companion object : MavericksViewModelFactory<MoviesViewModel, MoviesByGenreState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: MoviesByGenreState

@@ -1,6 +1,5 @@
 package com.softvision.mvi_mvrx_hilt_kotlin.viewmodel
 
-import android.util.Log
 import com.airbnb.mvrx.*
 import com.softvision.domain.base.BaseFetchItemsUseCase
 import com.softvision.domain.di.QueryInteractor
@@ -24,7 +23,7 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
         fun create(initialState: SearchState): SearchViewModel
     }
 
-    companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
+    companion object : MavericksViewModelFactory<SearchViewModel, SearchState> {
         override fun create(viewModelContext: ViewModelContext, state: SearchState): SearchViewModel =
             (viewModelContext as FragmentViewModelContext)
                 .fragment<SearchFragment>()
@@ -34,7 +33,6 @@ class SearchViewModel @AssistedInject constructor(@Assisted initialState: Search
     fun executeQuery(query: String, offset: Int = 0) {
         Timber.i("execute Query %s", query)
         setState {
-            copy(searchRequest = Loading())
             copy(query = query)
         }
 
