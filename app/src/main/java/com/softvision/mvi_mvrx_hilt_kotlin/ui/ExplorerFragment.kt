@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.ExplorerState
 import com.softvision.mvi_mvrx_hilt_kotlin.adapter.ItemsAdapter
@@ -23,7 +20,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ExplorerFragment : Fragment(), MvRxView {
+class ExplorerFragment : Fragment(), MavericksView {
 
     private lateinit var binding: FragmentExplorerBinding
 

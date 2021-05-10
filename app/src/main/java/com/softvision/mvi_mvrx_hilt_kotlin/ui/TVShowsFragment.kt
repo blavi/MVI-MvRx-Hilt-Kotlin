@@ -8,10 +8,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.model.GenreDetails
 import com.softvision.domain.mvi.TVShowsByGenreState
@@ -27,7 +24,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TVShowsFragment : Fragment(), MvRxView {
+class TVShowsFragment : Fragment(), MavericksView {
 
     private lateinit var binding: FragmentTvShowsBinding
 

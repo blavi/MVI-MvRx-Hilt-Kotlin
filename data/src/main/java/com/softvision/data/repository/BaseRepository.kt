@@ -27,7 +27,6 @@ import javax.inject.Inject
                     }
                 }
                 .onErrorResumeNext {
-                    Timber.i("XYZ - repo error - base repository - %s", it.localizedMessage)
                     Single.error(it)
                 }
         }
@@ -70,7 +69,6 @@ import javax.inject.Inject
                  }
              }
              .onErrorResumeNext {
-                 Timber.i("XYZ -  baserepo2  repo error - %s", it.localizedMessage)
                  Single.error(it)
              }
      }

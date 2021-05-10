@@ -9,10 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.model.GenreDetails
 import com.softvision.domain.mvi.MoviesByGenreState
@@ -29,7 +26,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MoviesFragment: Fragment(), MvRxView {
+class MoviesFragment: Fragment(), MavericksView {
 
     private lateinit var binding: FragmentMoviesBinding
 

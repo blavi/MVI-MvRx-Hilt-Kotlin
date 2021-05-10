@@ -8,10 +8,7 @@ import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.softvision.domain.model.BaseItemDetails
 import com.softvision.domain.mvi.SearchState
 import com.softvision.mvi_mvrx_hilt_kotlin.R
@@ -31,7 +28,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), MvRxView {
+class SearchFragment : Fragment(), MavericksView {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var itemsAdapter: ItemsAdapter
 
